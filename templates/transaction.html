@@ -1,0 +1,57 @@
+<ion-view>
+    <ion-header-bar class="bar bar-dark" align-title="center">
+        <div class="buttons nav-bar-left"></div>
+        <h1 class="title">历史</h1>
+        <div class="buttons nav-bar-right"></div>
+    </ion-header-bar>
+    <ion-content class="transaction">
+        <div class="filter button-bar">
+            <button class="button button-small button-dark" ng-class="{checked: filter.type=='all'}" ng-click="filterData('all')">全部</button>
+            <button class="button button-small button-dark" ng-class="{checked: filter.type=='inout'}" ng-click="filterData('inout')">出入金</button>
+            <button class="button button-small button-dark" ng-class="{checked: filter.type=='close'}" ng-click="filterData('close')">平仓</button>
+            <button class="button button-small button-dark" ng-class="{checked: filter.type=='others'}" ng-click="filterData('others')">其他</button>
+        </div>
+        <div class="datepickercontainer row row-center">
+            <div class="col col-40">
+                <input type="text" placeholder="开始时间" ng-model="opendate" datetime="yyyyMMdd" ng-readonly="true" ng-click="openDatePicker('opendate')">
+            </div>
+            <div class="col col-4"><i class="icon ion-arrow-right-c"></i></div>
+            <div class="col col-40">
+                <input type="text" placeholder="结束时间" ng-model="enddate" datetime="yyyyMMdd" ng-readonly="true" ng-click="openDatePicker('enddate')">
+            </div>
+            <div class="col col-16">
+                <button class="button button-small" ng-click="query()">查询</button>
+            </div>
+        </div>
+        <ion-scroll direction="y" style="width:100%;padding-top: 4px" has-bouncing="false" cal-height>
+            <div class="list">
+                <div class="item item-divider row">
+                    <div class="col col-25">
+                        <p>日期</p>
+                        <p>时间</p>
+                    </div>
+                    <div class="col col-25">
+                        <p>账户变动</p>
+                        <p>账户权益</p>
+                    </div>
+                    <div class="col col-50">
+                        <p>事件</p>
+                    </div>
+                </div>
+                <div class="item row row-center" ng-repeat="item in show_data">
+                    <div class="col col-25">
+                        <p>{{ item.dt | limitTo: 10}}</p>
+                        <p>{{ item.dt | limitTo: 8 : 11}}</p>
+                    </div>
+                    <div class="col col-25" align="left ">
+                        <p>{{ item.delta | number: 2}}</p>
+                        <p>{{ item.value | number: 2}}</p>
+                    </div>
+                    <div class="col col-50">
+                        <p>{{item.reason}}</p>
+                    </div>
+                </div>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

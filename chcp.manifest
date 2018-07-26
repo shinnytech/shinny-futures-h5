@@ -1,0 +1,482 @@
+[
+  {
+    "file": "css/ionic.app.css",
+    "hash": "43b34adf3af31779feb852486e020330"
+  },
+  {
+    "file": "css/ionic.app.min.css",
+    "hash": "5b6ed8fc842e0910b1425fedab9d3f41"
+  },
+  {
+    "file": "css/label_icon/blue-a.svg",
+    "hash": "6d4a5b1ebaf0f0ab9d78173b11a53561"
+  },
+  {
+    "file": "css/label_icon/blue-b.svg",
+    "hash": "1a9dac1f975b3c617a947df01472bf89"
+  },
+  {
+    "file": "css/label_icon/blue-c.svg",
+    "hash": "f3ae55a3638f3279f240e70e59a54655"
+  },
+  {
+    "file": "css/label_icon/blue-d.svg",
+    "hash": "4153abfeefc68e832583e9676e702a6e"
+  },
+  {
+    "file": "css/label_icon/blue-e.svg",
+    "hash": "e5535e206bd4f9e40eb981aca45c31f7"
+  },
+  {
+    "file": "css/label_icon/purple-a.svg",
+    "hash": "516e61de1f4db811d502708aa783cd65"
+  },
+  {
+    "file": "css/label_icon/purple-b.svg",
+    "hash": "f295d7d40ff92c4490d9c1e2dbb2a32b"
+  },
+  {
+    "file": "css/label_icon/purple-c.svg",
+    "hash": "dcdf698950bc5aad9971bd7c7a628ef0"
+  },
+  {
+    "file": "css/label_icon/red-a.svg",
+    "hash": "587a1720e872993ea688e34e266924f0"
+  },
+  {
+    "file": "css/label_icon/red-b.svg",
+    "hash": "ea3536f4518ec9191d54ed9bea9acddf"
+  },
+  {
+    "file": "css/label_icon/red-c.svg",
+    "hash": "dbf9898f8bad57870d3e122676ae97cc"
+  },
+  {
+    "file": "css/label_icon/yellow-a.svg",
+    "hash": "ad0465926ae7f1ec13b6d377640067b4"
+  },
+  {
+    "file": "css/label_icon/yellow-b.svg",
+    "hash": "020b2863933527705c808fc22c54db34"
+  },
+  {
+    "file": "css/label_icon/yellow-c.svg",
+    "hash": "f1373042c5e01f3b48731d8cb77a6f54"
+  },
+  {
+    "file": "css/style.css",
+    "hash": "f13a121b2ddddcec269c2fb6f6a98825"
+  },
+  {
+    "file": "favicon.ico",
+    "hash": "1234754d1a2f7523b32815b3d0952832"
+  },
+  {
+    "file": "img/logo.png",
+    "hash": "6a19e36bc8c7951eafd860966750b80a"
+  },
+  {
+    "file": "img/pc-account-bg.jpg",
+    "hash": "a252601f2ddde304b0a1b5243ceaad31"
+  },
+  {
+    "file": "img/pc-act-bg.jpg",
+    "hash": "b0879c30a80929cfe6e69a6fbb480e2a"
+  },
+  {
+    "file": "img/pc-sim-bg.jpg",
+    "hash": "8b66ad68b2200eb5f134866611cbf6db"
+  },
+  {
+    "file": "index.html",
+    "hash": "183b7f04bb10a9834e8e81fdc73e2d52"
+  },
+  {
+    "file": "js/common.js",
+    "hash": "8a38b1eba0b9a9717669f24d6f84112a"
+  },
+  {
+    "file": "js/controllers/certController.js",
+    "hash": "2290cc40b2a85db6d936eedd61936243"
+  },
+  {
+    "file": "js/controllers/collectController.js",
+    "hash": "2decb1ef6bd6abc0fb2b09e1cc08a49a"
+  },
+  {
+    "file": "js/controllers/depositoryController.js",
+    "hash": "1fe4462edb8eb5d7dfca8b3860d9f99c"
+  },
+  {
+    "file": "js/controllers/loginController.js",
+    "hash": "86c78c56528e8d8ed47acab7930d401a"
+  },
+  {
+    "file": "js/controllers/profileController.js",
+    "hash": "8047e60357b25f7b86d99bb10f5e8358"
+  },
+  {
+    "file": "js/controllers/protocolController.js",
+    "hash": "cec8b13351d8982d5e308c40134691e8"
+  },
+  {
+    "file": "js/controllers/videoController.js",
+    "hash": "a891365d73a83147c62238bc579715ed"
+  },
+  {
+    "file": "js/cordova/takePic.js",
+    "hash": "a411271e2683caea9d9662f8328abf52"
+  },
+  {
+    "file": "js/forge.bundle.js",
+    "hash": "d13a6e0aa239ea44bb5bd2ed7ae7245c"
+  },
+  {
+    "file": "js/forge.min.js",
+    "hash": "533003655dbf31ee0840d082af09a26f"
+  },
+  {
+    "file": "js/index.js",
+    "hash": "229ada0e4eeb6a8225c9098484610ec1"
+  },
+  {
+    "file": "js/services/openTypeService.js",
+    "hash": "c9a694de494ea4adca84487882cc6bf1"
+  },
+  {
+    "file": "lib/CanvasRenderer.js",
+    "hash": "9f9e69b31fdac17382bd14e48b284e08"
+  },
+  {
+    "file": "lib/datetime.js",
+    "hash": "5e175364cf48ab1a58599998c86beec5"
+  },
+  {
+    "file": "lib/ionic-datepicker.bundle.min.js",
+    "hash": "aa0df1bc71eb109e04680b42b09fe929"
+  },
+  {
+    "file": "lib/ionic/css/ionic.css",
+    "hash": "d9f1a41af4e693155ebff4820501dd92"
+  },
+  {
+    "file": "lib/ionic/css/ionic.min.css",
+    "hash": "5b49b6261b82f3fccaaeaa9732820607"
+  },
+  {
+    "file": "lib/ionic/fonts/ionicons.eot",
+    "hash": "2c2ae068be3b089e0a5b59abb1831550"
+  },
+  {
+    "file": "lib/ionic/fonts/ionicons.svg",
+    "hash": "621bd386841f74e0053cb8e67f8a0604"
+  },
+  {
+    "file": "lib/ionic/fonts/ionicons.ttf",
+    "hash": "24712f6c47821394fba7942fbb52c3b2"
+  },
+  {
+    "file": "lib/ionic/fonts/ionicons.woff",
+    "hash": "05acfdb568b3df49ad31355b19495d4a"
+  },
+  {
+    "file": "lib/ionic/js/angular-ui/angular-ui-router.js",
+    "hash": "1f7fe3573d463743394e98d8b00eb228"
+  },
+  {
+    "file": "lib/ionic/js/angular-ui/angular-ui-router.min.js",
+    "hash": "83f32131b638a8686a43510fbd645b1b"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-animate.js",
+    "hash": "b1a0315d4738ba305aca3b00146e232c"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-animate.min.js",
+    "hash": "fb61c6d539943f24f85f49cad4c187b5"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-resource.js",
+    "hash": "523cfbb962e367e90da4bf1976b53d7f"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-resource.min.js",
+    "hash": "8da982bb4bc3275659b4c081f34f9b7c"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-sanitize.js",
+    "hash": "7b57f04a2b23847203394400eeb2c97d"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-sanitize.min.js",
+    "hash": "04a7b73d1dc5d573a5b17d70122e8781"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular.js",
+    "hash": "1b3d5bfbeb67c93df0f8ee9de569a206"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular.min.js",
+    "hash": "0744b6e5cd7b7cdad98cefb3d9c141c6"
+  },
+  {
+    "file": "lib/ionic/js/ionic-angular.js",
+    "hash": "1133d4ae24c4e4dbfa0d6aef4c1eab45"
+  },
+  {
+    "file": "lib/ionic/js/ionic-angular.min.js",
+    "hash": "2244ce0a43649ac14ff76709a851b222"
+  },
+  {
+    "file": "lib/ionic/js/ionic.bundle.js",
+    "hash": "c680888c6767b1189d2d6bc6e16ad13c"
+  },
+  {
+    "file": "lib/ionic/js/ionic.bundle.min.js",
+    "hash": "649bff948e39e3fda4000c5de5789599"
+  },
+  {
+    "file": "lib/ionic/js/ionic.js",
+    "hash": "55f150998acc957ee195f71739ffb71b"
+  },
+  {
+    "file": "lib/ionic/js/ionic.min.js",
+    "hash": "c33408e514a0764bfaff38533382bcfd"
+  },
+  {
+    "file": "lib/ionic/version.json",
+    "hash": "dad8b70ac11bec5ce5e51d7de697228c"
+  },
+  {
+    "file": "lib/jquery-3.1.1.min.js",
+    "hash": "e071abda8fe61194711cfc2ab99fe104"
+  },
+  {
+    "file": "lib/js.cookie.min.js",
+    "hash": "51e87c6871523b63a469e88b244f0429"
+  },
+  {
+    "file": "lib/moment.js",
+    "hash": "77019cff78ddd9dadd3a586e7239ff49"
+  },
+  {
+    "file": "lib/NIM_Web_SDK_v3.2.0.js",
+    "hash": "96a6e617e6e24a94e88aadc9e7b337ba"
+  },
+  {
+    "file": "lib/three.js",
+    "hash": "b526fe32819caea017ecf671c666d5e5"
+  },
+  {
+    "file": "lib/three.min.js",
+    "hash": "b75744d7c1fcb55be265ad35e023bd76"
+  },
+  {
+    "file": "lib/zepto.min.js",
+    "hash": "50a4556b0089cfa1cb61e88ea23bbcce"
+  },
+  {
+    "file": "manifest.json",
+    "hash": "4613dbfce3e9f173a5e8671ad278aac6"
+  },
+  {
+    "file": "service-worker.js",
+    "hash": "3f99e6cc6ec3fb75c0aae4cbe284b2a6"
+  },
+  {
+    "file": "templates/banktransfer.html",
+    "hash": "9806afcf28785713c37bf2c4c612857a"
+  },
+  {
+    "file": "templates/chart-popover.html",
+    "hash": "82372ee05df5a190799c0b0d9e405948"
+  },
+  {
+    "file": "templates/community.html",
+    "hash": "f1380021b0d09c3ec10a37e6c5b5f9a4"
+  },
+  {
+    "file": "templates/feedback.html",
+    "hash": "7477df318533c65dedbc3554273d046f"
+  },
+  {
+    "file": "templates/help.html",
+    "hash": "461e144e7a911fb619aa3be767821ee2"
+  },
+  {
+    "file": "templates/home.html",
+    "hash": "ba5ca372f7d65d7f6445fcc20f964966"
+  },
+  {
+    "file": "templates/makeorder.html",
+    "hash": "f923313690a223882216d9166caf8a79"
+  },
+  {
+    "file": "templates/menu.html",
+    "hash": "0ed038a51cbe920a4674d3e484c23e71"
+  },
+  {
+    "file": "templates/modals/changepwd.html",
+    "hash": "d1366c4b18e14469e32dcdab52f962cb"
+  },
+  {
+    "file": "templates/modals/login.html",
+    "hash": "f394fb4d69f85c1e3da4fa34a9296645"
+  },
+  {
+    "file": "templates/modals/register.html",
+    "hash": "6ec20cab0bb99128a921a860816c92c0"
+  },
+  {
+    "file": "templates/numericKeyboard.html",
+    "hash": "728b4930f0996aa4682678496ca4532f"
+  },
+  {
+    "file": "templates/other-pos-popover.html",
+    "hash": "ecdd3e9afecccb1cc697a784ec0d9dd9"
+  },
+  {
+    "file": "templates/posdetail.html",
+    "hash": "2d49a0de22508ddea69688203915ff8b"
+  },
+  {
+    "file": "templates/position.html",
+    "hash": "19a43f299c9a342e3ae947dbcc963c1f"
+  },
+  {
+    "file": "templates/quote.html",
+    "hash": "fdf187b64c1cd568558e4e81b1e1724d"
+  },
+  {
+    "file": "templates/tabs.html",
+    "hash": "9ee0f46ab8aebc551597c8853f302959"
+  },
+  {
+    "file": "templates/transaction.html",
+    "hash": "581510d804d826232484190e66680480"
+  },
+  {
+    "file": "templates/userinfo.html",
+    "hash": "30d49842dc4a9f8b49c1e6986227fa98"
+  },
+  {
+    "file": "zqjs/app.js",
+    "hash": "dfdb9a756bec716fd7f16e4af5cade6a"
+  },
+  {
+    "file": "zqjs/baseService.js",
+    "hash": "d75f93e2c651398a21e945cc59a89be8"
+  },
+  {
+    "file": "zqjs/charts/chart.js",
+    "hash": "cda1eda630810401066839046218b64a"
+  },
+  {
+    "file": "zqjs/charts/chart3D.js",
+    "hash": "81478018d84a0b95f3b20e4db83e59e2"
+  },
+  {
+    "file": "zqjs/charts/chartset.js",
+    "hash": "450608d2438a3fda0fa2ac15d846bf1f"
+  },
+  {
+    "file": "zqjs/charts/config.js",
+    "hash": "48ae428089f267f7b9ff77fae0d420da"
+  },
+  {
+    "file": "zqjs/chat.js",
+    "hash": "c80c4e9a0f6a74433bfc2f96e2529301"
+  },
+  {
+    "file": "zqjs/configuration.js",
+    "hash": "eca9de7bebd387ab2ce66382996cb1a9"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_App.js",
+    "hash": "fd12908eda85f0c7268040688967fdab"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Banktransfer.js",
+    "hash": "ca2fa45a1787f944b59e5e12a966f405"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Community.js",
+    "hash": "ceb189ebd962fd9ef97187e24574b3fc"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Feedback.js",
+    "hash": "b36d652edc6e167e82e632fa06dbf8a3"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Help.js",
+    "hash": "6cc54ea580c5b9823d55c89e8b7318cc"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Home.js",
+    "hash": "e1dc8a9d96edcdf714f6a8eaa36c6786"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Makeorder.js",
+    "hash": "b5293e6c37e2ae8ab7911f834b8859a0"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Posdetail.js",
+    "hash": "5485b45778b53605e657c70170edfe14"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Position.js",
+    "hash": "d0868165a975f11411be7d2e8f8ba7ea"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Quote.js",
+    "hash": "f13b33442a89614dd7fc5f31ca180f54"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Transaction.js",
+    "hash": "40ea5f00180467d4e68df494e7156b02"
+  },
+  {
+    "file": "zqjs/ctrls/Ctrl_Userinfo.js",
+    "hash": "941994a43b31d9b90438925f09846697"
+  },
+  {
+    "file": "zqjs/datamanager.js",
+    "hash": "e016b6070eac5ac098593bfc38dbe049"
+  },
+  {
+    "file": "zqjs/directives.js",
+    "hash": "5a0ef5a6dd767bf3d2d6f51e2649a89c"
+  },
+  {
+    "file": "zqjs/draws/Draw_App.js",
+    "hash": "1b629934f04969139c895dfdce18de62"
+  },
+  {
+    "file": "zqjs/draws/Draw_Makeorder.js",
+    "hash": "b7284dfef37256a02efbadebf2ea62aa"
+  },
+  {
+    "file": "zqjs/draws/Draw_Posdetail.js",
+    "hash": "7ac19e7899a09628102c9cdde6ca7e2a"
+  },
+  {
+    "file": "zqjs/draws/Draw_Postion.js",
+    "hash": "ffc973523395175a3f89be7856f52982"
+  },
+  {
+    "file": "zqjs/draws/Draw_Quote.js",
+    "hash": "946b6b42a927983645e61497fb8f5b74"
+  },
+  {
+    "file": "zqjs/numericKeyboard.js",
+    "hash": "f84804fe10c9b768a5b1975bb5a38cd0"
+  },
+  {
+    "file": "zqjs/services.js",
+    "hash": "347c30335a7997ed34630dfe75eda936"
+  },
+  {
+    "file": "zqjs/websocket.js",
+    "hash": "5b91f59099b2c3bdefff685b09abc039"
+  }
+]

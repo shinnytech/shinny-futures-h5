@@ -1,0 +1,7 @@
+<ion-popover-view>
+    <ion-header-bar>
+        <h1 class="title">选择合约</h1></ion-header-bar>
+    <ion-content>
+        <ion-radio ng-repeat="item in insList.array" ng-model="insList.selected" ng-value="item" ng-click="closePopover('choose_other_pos')">{{item}}</ion-radio>
+    </ion-content>
+</ion-popover-view>

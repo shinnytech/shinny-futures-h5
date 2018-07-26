@@ -1,0 +1,24 @@
+<ion-view class="userinfo">
+    <ion-header-bar class="bar bar-dark" align-title="center">
+        <div class="buttons">
+            <button class="button button-icon button-clear button-balance ion-navicon" menu-toggle="left"></button>
+        </div>
+        <h1 class="title">帮助</h1></ion-header-bar>
+    <ion-content class="userinfo" ng-class="login_params.type">
+        <div class="bg"></div>
+        <div class="content">
+            <div class="list header"><img class="logo" src="img/logo.png">
+                <h3>{{ login_states.type=='sim'?'正在使用模拟环境':(login_states.type=='act'?'正在使用实盘环境':'未登录') }}</h3></div>
+            <div class="row">
+                <div class="col">
+                    <button class="left button button-block button-outline" nav-transition="none" ng-click="loginModal.show();">切换到{{ login_params.type=='sim'?'模拟':'实盘' }}登录</button>
+                </div>
+            </div>
+            <div class="row" ng-if="login_states.type!=='act'">
+                <div class="col">
+                    <button class="left button button-block" ng-click="openAccount();">注册开户</button>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

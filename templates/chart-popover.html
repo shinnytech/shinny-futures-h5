@@ -1,0 +1,32 @@
+<ion-popover-view>
+    <ion-header-bar>
+        <h1 class="title">设置</h1></ion-header-bar>
+    <ion-content>
+        <ul class="list">
+            <li class="item item-toggle">显示持仓
+                <label class="toggle toggle-assertive">
+                    <input type="checkbox" ng-model="setting.showPositions">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+            <li class="item item-toggle">显示挂单
+                <label class="toggle toggle-balance">
+                    <input type="checkbox" ng-model="setting.showOrders">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+            <li class="item item-toggle">显示均线
+                <label class="toggle toggle-positive">
+                    <input type="checkbox" ng-model="setting.showAvgline">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+        </ul>
+    </ion-content>
+</ion-popover-view>

@@ -1,0 +1,318 @@
+/*home*/
+
+.home .col {
+    padding: 3px 20px;
+}
+
+
+/*number keyboard*/
+
+.keyboard {
+    position: fixed;
+    z-index: 29;
+    width: 100%;
+}
+
+.keyboard .keyboard-content table {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.keyboard .keyboard-content table tr {
+    width: 100%;
+}
+
+.keyboard .keyboard-content table tr td {
+    width: 25%;
+    height: 45px;
+    padding: 1px;
+    background-color: #eee;
+    vertical-align: middle;
+    border: 1px solid #484848;
+}
+
+.keyboard .keyboard-content table tr td button {
+    font-size: 22px;
+    width: 100%;
+    height: 45px;
+    border: none;
+    background-color: transparent;
+}
+
+.keyboard .keyboard-content table tr td button.big {
+    height: 90px;
+}
+
+.keyboard-clear {
+    background-color: lightgray !important;
+    color: white;
+}
+
+.keyboard-done {
+    background-color: blue !important;
+    color: white;
+}
+
+.keyboard-focus {
+    border: 1px solid #c0c000;
+}
+
+
+/*transaction*/
+
+.transaction .filter.button-bar {
+    position: absolute;
+    top: 0px;
+}
+
+.transaction .filter.button-bar .button {
+    color: #ccc;
+    font-size: 14px;
+    border-radius: 0px;
+    border-width: 0px;
+}
+
+.transaction .filter.button-bar .button.checked {
+    color: #ff0;
+    font-weight: bold;
+    border-bottom-width: 1px;
+    border-bottom-color: #ff0;
+}
+
+.transaction .datepickercontainer.row {
+    position: absolute;
+    top: 40px;
+    padding: 0px 0px 12px 0px;
+}
+
+.transaction .datepickercontainer .col {
+    padding: 0px 4px;
+}
+
+.transaction .datepickercontainer .col-40 {
+    flex: 0 0 40%;
+    max-width: 40%;
+}
+
+.transaction .datepickercontainer .col-16 {
+    flex: 0 0 14%;
+    max-width: 14%;
+}
+
+.transaction .datepickercontainer .col-4 {
+    padding-top: 6px;
+    flex: 0 0 6%;
+    max-width: 6%;
+}
+
+.transaction .datepickercontainer input {
+    border-radius: 4px;
+    padding-left: 2px;
+    height: 32px;
+    width: 100%;
+}
+
+.transaction .col {
+    padding: 2px;
+    font-size: small;
+    text-align: center;
+    /*white-space: normal;
+    word-wrap: break-word;
+    word-break: normal;
+    overflow: hidden;*/
+}
+
+.transaction .col p {
+    line-height: 15px;
+    font-size: 13px;
+    color: #dddddd;
+    white-space: normal;
+}
+
+.transaction .col:first-child {
+    text-align: left;
+}
+
+.transaction .col:nth-child(2) {
+    text-align: right;
+}
+
+
+/*banktransfer*/
+
+.banktransfer .item-content-balance {
+    height: 34px;
+    line-height: 34px;
+}
+
+.banktransfer .row button {
+    padding: 0px 20px;
+}
+
+.banktransfer .row {
+    padding: 0px 0px;
+}
+
+.banktransfer .col {
+    padding: 0px 5px;
+}
+
+
+/*userinfo*/
+
+.userinfo .bar {
+    position: relative;
+}
+
+
+/*quote*/
+
+.qt_container {
+    width: 100%;
+    font-size: 14px;
+}
+
+.qt_rwrapper,
+.qt_cwrapper {
+    overflow: hidden;
+    position: absolute;
+    z-index: 1004;
+    background-color: #666;
+}
+
+.qt_rwrapper {
+    top: 44px;
+}
+
+.platform-ios.platform-cordova:not(.fullscreen) .qt_rwrapper {
+    top: 64px;
+}
+
+.qt_cwrapper {
+    top: 44px;
+    left: 0px;
+}
+
+.platform-ios.platform-cordova:not(.fullscreen) .qt_cwrapper {
+    top: 64px;
+}
+
+table.qt_rc {
+    background-color: #666;
+    position: absolute;
+    top: 44px;
+    z-index: 1005;
+    width: 70px;
+}
+
+.platform-ios.platform-cordova:not(.fullscreen) table.qt_rc {
+    top: 64px;
+}
+
+table.qt_r {
+    width: 490px;
+    position: relative;
+}
+
+table.qt_c {
+    width: 70px;
+    position: relative;
+}
+
+table.qt {
+    width: 70px;
+}
+
+table.quote {
+    table-layout: fixed;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+table.quote tr.odd:first-child {
+    border-top: 1px solid #eee;
+}
+
+table.quote tr.even {
+    border-bottom: 1px solid #eee;
+}
+
+table.quote.qt_r thead {
+    border-bottom: 2px solid #eee;
+}
+
+table.quote td:first-child {
+    /*border-left: 1px solid #666;*/
+}
+
+table.quote td {
+    /*border-right: 1px solid #666;*/
+    table-layout: fixed;
+    height: 20px;
+    width: 70px;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #fff;
+}
+
+table.quote td:after {
+    content: attr(data-content);
+}
+
+table.quote td:not(:first-child) {
+    text-align: right;
+}
+
+table.quote td.r,
+table.quote td.R {
+    color: #F00;
+}
+
+table.quote td.g,
+table.quote td.G {
+    color: #0F0;
+}
+
+
+/*popup-other-pos*/
+
+.popup-other-pos .item.BUY {
+    background-color: #4F4149;
+}
+
+.popup-other-pos .item.SELL {
+    background-color: #415F69;
+}
+
+.popup-other-pos .item .R {
+    color: #F00;
+}
+
+.popup-other-pos .item .G {
+    color: #0F0;
+}
+
+
+/*feedback*/
+
+.feedback .item-input {
+    padding: 5px 0px;
+}
+
+.feedback .item-input input {
+    background-color: #ffffff;
+}
+
+.feedback .item-input textarea {
+    height: 200px;
+    background-color: #ffffff;
+}
+
+.popover .item-radio input + .radio-content .item-content {
+    background: #fafafa;
+}
+
+.popover .item-radio input:checked + .radio-content .item-content {
+    background: #26e1ed;
+}

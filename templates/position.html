@@ -1,0 +1,85 @@
+<ion-view>
+    <ion-header-bar class="bar bar-dark" align-title="center">
+        <div class="buttons nav-bar-left"></div>
+        <h1 class="title">账户资金</h1>
+        <div class="buttons">
+            <div ng-if="login_states.type == 'act'">
+                <button ng-click="$state.go('app.banktransfer')" class="button button-assertive">出入金</button>
+            </div>
+            <div class="nav-bar-right" ng-if="login_states.type != 'act'"></div>
+        </div>
+    </ion-header-bar>
+    <ion-content class="pos_container">
+        <div class="account_info">
+            <div class="row">
+                <div class="col status hidden">账户状态</div>
+            </div>
+            <div class="row">
+                <div class="col col-20">
+                    <p>账户资金</p>
+                    <p class="static_balance">0</p>
+                </div>
+                <div class="col col-20">
+                    <p>持仓盈亏</p>
+                    <p class="float_profit">0</p>
+                </div>
+                <div class="col col-20">
+                    <p>占用资金</p>
+                    <p class="using">0</p>
+                </div>
+                <div class="col col-20">
+                    <p>可用资金</p>
+                    <p class="available">0</p>
+                </div>
+                <div class="col col-20">
+                    <p>账户市值</p>
+                    <p class="balance">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="panel button-bar">
+            <button class="button button-dark" ng-class="{checked: panel.type=='positions'}" ng-click="switchType('panel','positions')">持仓</button>
+            <button class="button button-dark" ng-class="{checked: panel.type=='orders'}" ng-click="switchType('panel','orders')">挂单</button>
+        </div>
+        <ion-scroll direction="y" style="width:100%" has-bouncing="false" cal-height>
+            <div class="panel positions_list" ng-if="panel.type=='positions'">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>合约</td>
+                            <td>方向</td>
+                            <td>浮动盈亏</td>
+                            <td>成本价</td>
+                        </tr>
+                        <tr>
+                            <td>名称</td>
+                            <td>手数</td>
+                            <td>浮盈比例</td>
+                            <td>占用资金</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="panel orders_list" ng-if="panel.type=='orders'">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>合约</td>
+                            <td>方向</td>
+                            <td>报单价格</td>
+                            <td>冻结资金</td>
+                        </tr>
+                        <tr>
+                            <td>名称</td>
+                            <td>手数</td>
+                            <td>报单时间</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

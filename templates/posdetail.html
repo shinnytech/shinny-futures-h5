@@ -1,0 +1,167 @@
+<ion-view>
+    <ion-header-bar class="bar bar-dark" align-title="center">
+        <div class="buttons">
+            <button ng-click="goBack()" class="button button-clear"><i class="icon ion-ios-arrow-thin-left"></i></button>
+        </div>
+        <h1 class="title">{{ins_id}}({{ins_name}})</h1>
+        <div class="buttons">
+            <button ng-click="$state.go('app.makeorder')" class="button button-energized">
+                交易
+            </button>
+        </div>
+    </ion-header-bar>
+    <!-- <ion-nav-buttons side="left">
+        <button ng-click="goBack()" class="button button-clear">
+            <i class="icon ion-ios-arrow-thin-left"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        
+    </ion-nav-buttons> -->
+    <ion-content class="posdetail">
+        <div class="chart button-bar">
+            <button class="button button-small button-dark" ng-class="{checked: chart.type=='TODAY'}" ng-click="switchType('chart','TODAY')">当日</button>
+            <button class="button button-small button-dark" ng-class="{checked: chart.type=='D1'}" ng-click="switchType('chart','D1')">日线</button>
+            <button class="button button-small button-dark" ng-class="{checked: chart.type=='H1'}" ng-click="switchType('chart','H1')">小时</button>
+            <button class="button button-small button-dark" ng-class="{checked: chart.type=='M5'}" ng-click="switchType('chart','M5')">5分钟</button>
+            <button class="button button-small button-dark" ng-click="openPopover('setting')">设置</button>
+        </div>
+        <div class="chart container">
+        </div>
+        <!--<div class="panel button-bar">
+            <button class="button button-small button-dark" ng-class="{checked: panel.type=='info'}" ng-click="switchType('panel','info')">信息</button>
+            <button class="button button-small button-dark" ng-class="{checked: panel.type=='discuss'}" ng-click="switchType('panel','discuss')">讨论</button>
+            <button class="button button-small button-dark" ng-class="{checked: panel.type=='plan'}" ng-click="switchType('panel','plan')">计划</button>
+            <button class="button button-small button-dark" ng-class="{checked: panel.type=='tools'}" ng-click="switchType('panel','tools')">工具</button>
+        </div>-->
+        <ion-scroll direction="y" style="width:100%;" has-bouncing='false' cal-height>
+            <div class="panel-container info" ng-if="panel.type=='info'">
+                <div class="frame frame-left">
+                    <div class="row">
+                        <div class="col col-50">当前状态</div>
+                        <div class="col col-50 status"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">合约乘数</div>
+                        <div class="col col-50 ">{{insObj.volume_multiple}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">价格单位</div>
+                        <div class="col col-50 ">{{insObj.price_tick}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">退市日期</div>
+                        <div class="col col-50 ">{{insObj.expire_date}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">每手占用资金</div>
+                        <div class="col col-50 margin_per_volume"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">每手手续费</div>
+                        <div class="col col-50 commission_per_volume"></div>
+                    </div>
+                </div>
+                <div class="frame frame-right">
+                    <div class="row">
+                        <div class="col col-50">涨停价</div>
+                        <div class="col col-50 upper_limit"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">今最高</div>
+                        <div class="col col-50 highest"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">卖一价</div>
+                        <div class="col col-50 bid_price1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">最新价</div>
+                        <div class="col col-50 last_price"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">买一价</div>
+                        <div class="col col-50 ask_price1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">今最低</div>
+                        <div class="col col-50 lowest"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">跌停价</div>
+                        <div class="col col-50 lower_limit"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-container discuss" ng-if="panel.type=='discuss'">
+                <div class="messages"></div>
+                <div class="input_container">
+                    <div class="item item-input-inset">
+                        <label class="item-input-wrapper">
+                            <input type="text" placeholder="" ng-model="msg.text">
+                        </label>
+                        <button class="button button-small" ng-click="sendMessage()">
+                            发送
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-container" ng-if="panel.type=='plan'">plan</div>
+            <div class="panel-container" ng-if="panel.type=='tools'">tools</div>
+        </ion-scroll>
+    </ion-content>
+    <script type="text/ng-template" id='chart-popover.html'>
+        <ion-popover-view>
+            <ion-header-bar>
+                <h1 class="title">设置</h1>
+            </ion-header-bar>
+            <ion-content>
+                <ul class="list">
+                    <li class="item item-toggle">显示持仓
+                        <label class="toggle toggle-assertive">
+                            <input type="checkbox" ng-model="setting.showPositions">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </li>
+                    <li class="item item-toggle">显示挂单
+                        <label class="toggle toggle-balance">
+                            <input type="checkbox" ng-model="setting.showOrders">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+            </ion-content>
+        </ion-popover-view>
+    </script>
+    <script type="text/ng-template" id='other-pos-popover.html'>
+        <ion-popover-view>
+            <ion-header-bar>
+                <h1 class="title">设置</h1>
+            </ion-header-bar>
+            <ion-content>
+                <ul class="list">
+                    <li class="item item-toggle">显示持仓
+                        <label class="toggle toggle-assertive">
+                    <input type="checkbox" ng-model="setting.showPositions">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+                    </li>
+                    <li class="item item-toggle">显示挂单
+                        <label class="toggle toggle-balance">
+                    <input type="checkbox" ng-model="setting.showOrders">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+                    </li>
+                </ul>
+            </ion-content>
+        </ion-popover-view>
+    </script>
+</ion-view>

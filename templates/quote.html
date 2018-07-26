@@ -1,0 +1,27 @@
+<div class="qt_container" table-addon on-hold="onHold($event)">
+    <ion-header-bar class="bar bar-dark" align-title="center">
+        <div class="buttons nav-bar-left"></div>
+        <h1 class="title" ng-click="openPopover()">{{insList.title}} <i class="icon ion-chevron-down"></i></h1>
+        <div class="buttons">
+            <div>
+                <button class="button button-icon button-clear ion-plus" ng-click="search()"></button>
+            </div>
+            <div class="nav-bar-right"></div>
+        </div>
+    </ion-header-bar>
+    <ion-content direction="xy" on-scroll="followScroll()" has-bouncing="false" delegate-handle="handler" overflow-scroll="false">
+        <div>
+            <table class="quote qt">
+                <thead>
+                    <tr class="odd" table-addon-odd>
+                        <td>合约代码</td>
+                    </tr>
+                    <tr class="even" table-addon-even>
+                        <td>合约名称</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </ion-content>
+</div>

@@ -1,0 +1,74 @@
+<div class="keyboard" ng-show="isOpen" ng-click="close()">
+    <div class="keyboard-content" ng-click="stopPropagation($event)">
+        <table>
+            <tr ng-show="keyboardType == 'price'">
+                <td>
+                    <button class="keyboard-cell" ng-click="reset('排队价')">排队价</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell" ng-click="reset('对手价')">对手价</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell" ng-click="reset('市价')">市价</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell ion-chevron-down" ng-click="done()"></button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="keyboard-cell" ng-click="append('1')">1</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell" ng-click="append('2')">2</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell" ng-click="append('3')">3</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell ion-chevron-down" ng-hide="keyboardType == 'price'" ng-click="done()"></button>
+                    <button class="keyboard-cell" ng-show="keyboardType == 'price'" ng-click="reset('涨停价')">涨停价</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="keyboard-cell" ng-click="append('4')">4</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell" ng-click="append('5')">5</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell" ng-click="append('6')">6</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell" ng-show="keyboardType == 'price'" ng-click="reset('跌停价')">跌停价</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="keyboard-cell" ng-click="append('7')">7</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell" ng-click="append('8')">8</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell" ng-click="append('9')">9</button>
+                </td>
+                <td rowspan="2" ng-click="done()">
+                    <button class="keyboard-cell">确定</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="keyboard-cell" ng-show="keyboardType == 'price'" ng-click="append('.')">.</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell" ng-click="append('0')">0</button>
+                </td>
+                <td>
+                    <button class="keyboard-cell ion-backspace-outline" ng-click="deleteOne()"></button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
