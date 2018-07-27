@@ -1,14 +1,11 @@
 <ion-view>
     <ion-header-bar class="bar bar-dark" align-title="center">
         <div class="buttons">
-            <button ng-click="goBack()" class="button button-clear"><i class="icon ion-ios-arrow-thin-left"></i></button>
-        </div>
-        <h1 class="title">{{ins_id}}({{ins_name}})</h1>
-        <div class="buttons">
-            <button ng-click="$state.go('app.makeorder')" class="button button-energized">
-                交易
+            <button ng-click="goBack()" class="button button-clear">
+                <i class="icon ion-ios-arrow-thin-left"></i>
             </button>
         </div>
+        <h1 class="title">{{ins_id}}({{ins_name}})</h1>
     </ion-header-bar>
     <!-- <ion-nav-buttons side="left">
         <button ng-click="goBack()" class="button button-clear">
@@ -28,14 +25,15 @@
         </div>
         <div class="chart container">
         </div>
-        <!--<div class="panel button-bar">
+        <div class="panel button-bar">
             <button class="button button-small button-dark" ng-class="{checked: panel.type=='info'}" ng-click="switchType('panel','info')">信息</button>
-            <button class="button button-small button-dark" ng-class="{checked: panel.type=='discuss'}" ng-click="switchType('panel','discuss')">讨论</button>
-            <button class="button button-small button-dark" ng-class="{checked: panel.type=='plan'}" ng-click="switchType('panel','plan')">计划</button>
-            <button class="button button-small button-dark" ng-class="{checked: panel.type=='tools'}" ng-click="switchType('panel','tools')">工具</button>
-        </div>-->
+            <button class="button button-small button-dark" ng-class="{checked: panel.type=='discuss'}" ng-click="switchType('panel','discuss')">持仓</button>
+            <button class="button button-small button-dark" ng-class="{checked: panel.type=='plan'}" ng-click="switchType('panel','plan')">委托</button>
+            <button class="button button-small button-dark" ng-class="{checked: panel.type=='plan_2'}" ng-click="switchType('panel','plan_2')">未成交</button>
+            <button class="button button-small button-dark" ng-class="{checked: panel.type=='tools'}" ng-click="switchType('panel','tools')">交易</button>
+        </div>
         <ion-scroll direction="y" style="width:100%;" has-bouncing='false' cal-height>
-            <div class="panel-container info" ng-if="panel.type=='info'">
+            <div class="panel-container info flex" ng-if="panel.type=='info'">
                 <div class="frame frame-left">
                     <div class="row">
                         <div class="col col-50">当前状态</div>
@@ -94,20 +92,107 @@
                 </div>
             </div>
             <div class="panel-container discuss" ng-if="panel.type=='discuss'">
-                <div class="messages"></div>
-                <div class="input_container">
-                    <div class="item item-input-inset">
-                        <label class="item-input-wrapper">
-                            <input type="text" placeholder="" ng-model="msg.text">
-                        </label>
-                        <button class="button button-small" ng-click="sendMessage()">
-                            发送
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>合约</th>
+                            <th>多空</th>
+                            <th>手数</th>
+                            <th>开仓均价</th>
+                            <th>持仓盈亏</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="panel-container plan" ng-if="panel.type=='plan'">
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th width="10%">合约</th>
+                            <th width="40%">状态</th>
+                            <th width="10%">开平</th>
+                            <th width="10%">委托价</th>
+                            <th width="10%">数量</th>
+                            <th width="20%">时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-container plan_2" ng-if="panel.type=='plan_2'">
+                    <table style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>合约</th>
+                                <th>状态</th>
+                                <th>开平</th>
+                                <th>委托价</th>
+                                <th>数量</th>
+                                <th>时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            <div class="panel-container flex tools" ng-if="panel.type=='tools'">
+                <div class="frame frame-left">
+                    <div class="row">
+                        <div class="col col-20">价格</div>
+                        <div class="col col-80">
+                            <input type="number" name="" id="" ng-model="order.price">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-20">手数</div>
+                        <div class="col col-80">
+                            <input type="number" name="" id="" ng-model="order.volume">
+                        </div>
+                    </div>
+                </div>
+                <div class="frame frame-right">
+                    <div class="row">
+                        <div class="col col-20">新</div>
+                        <div class="col col-40 last_price"></div>
+                        <div class="col col-40 volume"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-20">卖</div>
+                        <div class="col col-40 ask_price1"></div>
+                        <div class="col col-40 ask_volume1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-20">买</div>
+                        <div class="col col-40 bid_price1"></div>
+                        <div class="col col-40 bid_volume1"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" style="padding:0 10px">
+                        <button class="button button-block button-assertive" ng-click="insert_order('OPEN','BUY')">
+                            <div>买多</div>
+                        </button>
+                    </div>
+                    <div class="col" style="padding:0 10px">
+                        <button class="button button-block button-balanced" ng-click="insert_order('OPEN','SELL')">
+                            <div>卖空</div>
+                        </button>
+                    </div>
+                    <div class="col" style="padding:0 10px">
+                        <button class="button button-block button-light " ng-click="insert_order('CLOSE', 'BUY')">
+                            <div>买平</div>
+                        </button>
+                        <button class="button button-block button-light " ng-click="insert_order('CLOSE', 'SELL')">
+                            <div>卖平</div>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="panel-container" ng-if="panel.type=='plan'">plan</div>
-            <div class="panel-container" ng-if="panel.type=='tools'">tools</div>
+            </div>
         </ion-scroll>
     </ion-content>
     <script type="text/ng-template" id='chart-popover.html'>

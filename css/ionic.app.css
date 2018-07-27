@@ -10064,14 +10064,15 @@ a.button {
   font-size: smaller;
   margin: 12px 0px;
   width: 100%; }
-  .posdetail .panel-container.info {
-    display: flex; }
-    .posdetail .panel-container.info .frame {
+  .posdetail .panel-container.flex {
+    display: flex; 
+    flex-wrap: wrap;}
+    .posdetail .panel-container .frame {
       display: block;
       flex: 0 0 50%;
       max-width: 50%; }
-      .posdetail .panel-container.info .frame.frame-left {
-        border-right: 1px solid #666666; }
+      .posdetail .panel-container .frame.frame-left {
+        border-right: 1px solid #999999; }
   .posdetail .panel-container.discuss {
     display: block; }
     .posdetail .panel-container.discuss .messages .msg-item {

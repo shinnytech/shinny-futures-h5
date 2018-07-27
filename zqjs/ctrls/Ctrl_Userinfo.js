@@ -1,95 +1,60 @@
 angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', '$scope', '$ionicLoading', '$ionicHistory', 'LoginService', '$interval', '$http',
     function($rootScope, $scope, $ionicLoading, $ionicHistory, LoginService, $interval, $http) {
         $scope.content = {
-            title: '',
-            longTitle: ''
+            title: '上期技术'
         }
-
-        $scope.setContent = function() {
-            if ($rootScope.login_states.type == 'sim') {
-                $scope.content.title = '模拟';
-                $scope.content.longTitle = '正在使用模拟环境';
-            } else if ($rootScope.login_states.type == 'act') {
-                $scope.content.title = '实盘';
-                $scope.content.longTitle = '正在使用实盘环境';
-            } else {
-                $scope.content.title = '未登录';
-                $scope.content.longTitle = '未登录';
-            }
-        }
-
-        $scope.$watch('login_states.type', function(t) {
-            $scope.setContent();
-        });
+        // $scope.setContent = function() {
+        //     if ($rootScope.login_states.type == 'sim') {
+        //         $scope.content.title = '上期技术';
+        //     } else if ($rootScope.login_states.type == 'act') {
+        //         $scope.content.title = '实盘';
+        //     } else {
+        //         $scope.content.title = '未登录';
+        //     }
+        // }
+        // $scope.$watch('login_states.type', function(t) {
+        //     $scope.setContent();
+        // });
 
         $scope.do_login = function(account_id, password) {
-            LoginService.do_http_login({
-                "account_id": account_id,
+
+            TR_WS.send({
+                "aid": "req_login",
+                "bid": "S上期技术",
+                "user_name": account_id,
                 "password": password
-            }).then(function(response) {
-                if (response.status == 200) {
-                    var d = response.data;
-
-                    // 重连服务器
-                    if (d["broker_id"] == 'sim') {
-                        WS.reinit(SETTING.sim_server_url);
-                    } else {
-                        WS.reinit(SETTING.act_server_url);
-                    }
-
-                    // 更新存储数据
-                    localStorage.setItem('Shinny-Session', d["Shinny-Session"]);
-                    localStorage.setItem('account_id', d["account_id"]);
-                    localStorage.setItem('broker_id', d["broker_id"]);
-                    localStorage.setItem('expire_time', d["expire_time"]);
-                    localStorage.setItem('user_id', d["user_id"]);
-
-                    $http.defaults.headers.common['Shinny-Session'] = localStorage.getItem('Shinny-Session');
-
-                    var stop = $interval(function() {
-                        if (DM.datas.session_id && LoginService.is_login_server()) {
-                            $interval.cancel(stop);
-                            $ionicLoading.hide().then(function() {
-                                $rootScope.login_states.type = $rootScope.login_params.type;
-                                $rootScope.login_error = false;
-                                $rootScope.login_error_msg = "";
-                            });
-                            $ionicHistory.goBack();
-                        } else {
-                            if (DM.datas.session_id) {
-                                $ionicLoading.hide().then(function() {
-                                    $rootScope.login_states.type = 'none';
-                                    $rootScope.login_error = true;
-                                    $rootScope.login_error_msg = '发生错误 登录交易服务器失败';
-                                });
-                                $interval.cancel(stop);
-                            } else {
-                                $rootScope.login_error = true;
-                                $rootScope.login_error_msg = '正在登录';
-                            }
-                        }
-                    }, 100);
-
-                } else {
-                    $ionicLoading.hide().then(function() {
-                        $rootScope.login_error = true;
-                        $rootScope.login_error_msg = '发生错误  [' + response.status + ']';
-                    });
-
-                }
-            }, function(response) {
-                if (response.status == 403) {
-                    $ionicLoading.hide().then(function() {
-                        $rootScope.login_error = true;
-                        $rootScope.login_error_msg = "用户名或密码错误";
-                    });
-                } else {
-                    $ionicLoading.hide().then(function() {
-                        $rootScope.login_error = true;
-                        $rootScope.login_error_msg = '发生错误  [' + response.status + ']';
-                    });
-                }
             });
+
+            var stop = $interval(function() {
+                var login_success = false;
+                var login_connect_trade_front = false;
+                var length = 0;
+                if ( DM.datas.notify ){
+                    for(var n in DM.datas.notify){
+                        length ++;
+                        var notify = DM.datas.notify[n];
+                        if(notify.content === '已经连接到交易前置' ) login_connect_trade_front = true;
+                        else if(notify.content === '登录成功' ) login_success = true;
+                    }
+                } 
+                if( length >= 2 && login_connect_trade_front && login_success) {
+                    DM.datas.account_id = account_id;
+                    $interval.cancel(stop);
+                    $ionicLoading.hide().then(function() {
+                        $rootScope.login_states.type = $rootScope.login_params.type;
+                        $rootScope.login_error = false;
+                        $rootScope.login_error_msg = "";
+                    });
+                    $ionicHistory.goBack();
+                } else if( length >= 2 ) {
+                    $ionicLoading.hide().then(function() {
+                        $rootScope.login_states.type = 'none';
+                        $rootScope.login_error = true;
+                        $rootScope.login_error_msg = login_connect_trade_front ? '登录失败，请检查密码。' : '连接交易前置失败，请检查网络。';
+                    });
+                    $interval.cancel(stop);
+                }
+            }, 100);
         }
 
         $scope.do_resetPassword = function(mobile, broker_id){
@@ -133,7 +98,7 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                     if (account_id == undefined) {
                         $ionicLoading.hide().then(function() {
                             $rootScope.login_error = true;
-                            $rootScope.login_error_msg = "请输入手机号";
+                            $rootScope.login_error_msg = "请输入账号";
                         });
                         return;
                     } 
@@ -163,6 +128,8 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                 if ($rootScope.login_params.type == 'sim') {
                     account_id = $rootScope.login_states.mobile;
                     password = $rootScope.login_states.sim_password;
+
+
                     if (account_id == undefined) {
                         $ionicLoading.hide().then(function() {
                             $rootScope.login_error = true;
@@ -177,6 +144,7 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                         return;
                     }
                     localStorage.setItem('mobile', $rootScope.login_states.mobile);
+
                 } else if ($rootScope.login_params.type == 'act') {
                     account_id = $rootScope.login_states.account;
                     password = $rootScope.login_states.act_password;

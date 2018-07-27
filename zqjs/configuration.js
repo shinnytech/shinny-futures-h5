@@ -3,6 +3,7 @@ var DOMAIN = "mdapi.shinnytech.com";
 var SETTING = {
     server_base_url: 'http://' + DOMAIN,
     sim_server_url: 'ws://mdapi.shinnytech.com/t/md/front/mobile',
+    tr_server_url: 'ws://118.31.237.98:3918',
     // sim_server_url: 'ws://u.shinnytech.com/t/md/front/mobile',
     act_server_url: 'ws://mdapi.shinnytech.com/t/md/front/mobile',
 };
@@ -33,6 +34,14 @@ var CONST = {
         'lowest',
         'lower_limit',
         'upper_limit'
+    ],
+    pos_detail_quote_tools: [
+        'ask_price1',
+        'bid_price1',
+        'last_price',
+        'ask_volume1',
+        'bid_volume1',
+        'volume',
     ],
     pos_orders_attrs: [
         { id: 'order_code', name: '挂单代码' }, // session_id + '!' + order_id

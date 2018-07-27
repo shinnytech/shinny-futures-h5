@@ -4,6 +4,24 @@
     padding: 3px 20px;
 }
 
+.posdetail .panel-container .frame {
+    display: block;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+
+.posdetail .panel-container.tools .frame.frame-left .row {
+    height: 40px;
+}
+
+.posdetail .panel-container.tools .frame.frame-left .row .col input{
+    width: 100%;
+    text-align: right;
+    background-color: black;
+    color: white;
+}
+
 
 /*number keyboard*/
 
@@ -57,7 +75,6 @@
 .keyboard-focus {
     border: 1px solid #c0c000;
 }
-
 
 /*transaction*/
 
@@ -138,7 +155,6 @@
     text-align: right;
 }
 
-
 /*banktransfer*/
 
 .banktransfer .item-content-balance {
@@ -158,13 +174,11 @@
     padding: 0px 5px;
 }
 
-
 /*userinfo*/
 
 .userinfo .bar {
     position: relative;
 }
-
 
 /*quote*/
 
@@ -173,8 +187,7 @@
     font-size: 14px;
 }
 
-.qt_rwrapper,
-.qt_cwrapper {
+.qt_rwrapper, .qt_cwrapper {
     overflow: hidden;
     position: absolute;
     z-index: 1004;
@@ -264,16 +277,13 @@ table.quote td:not(:first-child) {
     text-align: right;
 }
 
-table.quote td.r,
-table.quote td.R {
+table.quote td.r, table.quote td.R {
     color: #F00;
 }
 
-table.quote td.g,
-table.quote td.G {
+table.quote td.g, table.quote td.G {
     color: #0F0;
 }
-
 
 /*popup-other-pos*/
 
@@ -293,7 +303,6 @@ table.quote td.G {
     color: #0F0;
 }
 
-
 /*feedback*/
 
 .feedback .item-input {
@@ -309,10 +318,32 @@ table.quote td.G {
     background-color: #ffffff;
 }
 
-.popover .item-radio input + .radio-content .item-content {
+.popover .item-radio input+.radio-content .item-content {
     background: #fafafa;
 }
 
-.popover .item-radio input:checked + .radio-content .item-content {
+.popover .item-radio input:checked+.radio-content .item-content {
     background: #26e1ed;
 }
+
+.siiimpleToast {
+    position: absolute;
+    padding: 14px 18px;
+    min-width: 250px;
+    z-index: 999999;
+    border-radius: 2px;
+    color: #fff;
+    font-weight: 300;
+    white-space: nowrap;
+    user-select: none;
+    opacity: 0;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    box-sizing: border-box;
+    transform: scale(0.5);
+    transition: all 0.4s ease-out; }
+    .siiimpleToast[data-state="default"] {
+      background-color: #323232; }
+    .siiimpleToast[data-state="success"] {
+      background-color: #8BC34A; }
+    .siiimpleToast[data-state="alert"] {
+      background-color: #d93737; }

@@ -4,6 +4,11 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
         $scope.ins_id = DM.datas.state.detail_ins_id;
         $scope.pos_id = DM.datas.state.detail_pos_id;
 
+        $scope.order = {
+            price: DM.datas.quotes[$scope.ins_id].last_price,
+            volume: 1
+        }
+
         // 选择合约的数据集
         $scope.insList = {};
         $scope.insList.array = [];
@@ -26,7 +31,7 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
         }
 
         // c : ['chart'|'panel']
-        // p : ['TODAY'|'D1'|'H1'|'M5'] | ['info'|'discuss'|'plan'|'tools']
+        // p : ['TODAY'|'D1'|'H1'|'M5'] | ['info'|'discuss'|'plan'|'plan_2'|'tools']
         $scope.switchType = function (c, p) {
             $scope[c].type = p;
             if (c == 'panel') {
@@ -196,21 +201,6 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
         $scope.$on('$destroy', function () {
             $scope.popover.remove();
         });
-        // Execute action on hidden popover
-        $scope.$on('popover.hidden', function () {
-            // Execute action
-            console.log('popover.hidden')
-        });
-        $scope.$on('popover.shown', function () {
-            // Execute action
-            console.log('popover.shown')
-        });
-        // Execute action on remove popover
-        $scope.$on('popover.removed', function () {
-            // Execute action
-            console.log('popover.removed')
-        });
-
         $scope.history = '';
         $scope.goBack = function () {
             $rootScope.$state.go($scope.history);
@@ -221,6 +211,10 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
             $scope.ins_id = DM.datas.state.detail_ins_id;
             $scope.pos_id = DM.datas.state.detail_pos_id;
             $scope.insList.selected = $scope.ins_id;
+            $scope.order = {
+                price: DM.datas.quotes[$scope.ins_id].last_price,
+                volume: 1
+            }
             // $scope.chart.type = 'M5';
             // $scope.panel.type = 'info';
         });
@@ -282,6 +276,29 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
                         }
                     });
                 }
+            });
+        }
+
+        $scope.insert_order = function(offset, dir){
+            if(!DM.datas.account_id){
+                $rootScope.$state.go('app.userinfo');
+                return;
+            }
+
+            var req_id = DM.datas.session_id + WS.getReqid();
+            if(offset === 'CLOSE' && $scope.insObj.exchange_id === 'SHFE'){
+                offset = 'CLOSETODAY';
+            }
+            TR_WS.send({
+                aid: "insert_order", // 下单请求
+                order_id: req_id,
+                exchange_id: $scope.insObj.exchange_id,
+                instrument_id: $scope.ins_id,
+                direction: dir,
+                offset: offset, // OPEN | CLOSE | CLOSETODAY
+                volume: $scope.order.volume,
+                price_type: "LIMIT", // 报单类型
+                limit_price: $scope.order.price
             });
         }
     }

@@ -26,6 +26,7 @@ angular.module('starter', ['ionic', 'datetime', 'ionic-datepicker', 'starter.con
                 // 登录参数 
                 $rootScope.login_params = {
                     type: 'sim',
+                    account_id: '022631'
                 };
 
                 if (localStorage.getItem('mobile')) {
@@ -169,6 +170,7 @@ angular.module('starter', ['ionic', 'datetime', 'ionic-datepicker', 'starter.con
                     // WS.init(SETTING.sim_server_url);
                     if (LoginService.last_login_state() == "sim" || LoginService.last_login_state() == "none") {
                         WS.init(SETTING.sim_server_url);
+                        TR_WS.init(SETTING.tr_server_url);
                     } else {
                         WS.init(SETTING.act_server_url);
                     }
