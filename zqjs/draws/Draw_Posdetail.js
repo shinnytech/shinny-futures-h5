@@ -367,6 +367,7 @@ function draw_page_posdetail_discuss() { // 持仓
                     container.deleteRow(tr);
                 } else {
                     var last_price = DM.get_data('quotes.'+positions[symbol].instrument_id+'.last_price');
+                    
                     var vm = InstrumentManager.getInstrumentById(positions[symbol].instrument_id).volume_multiple;
                     var b_spans = tr.querySelectorAll('th.b span');
                     var c_spans = tr.querySelectorAll('th.c span');
@@ -376,8 +377,8 @@ function draw_page_posdetail_discuss() { // 持仓
                         b_spans[0].innerText = '多';
                         c_spans[0].innerText = volume_long;
                         var open_avg_price = positions[symbol].open_cost_long / volume_long / vm;
-                        d_spans[0].innerText = open_avg_price.toFixed(2);
-                        e_spans[0].innerText = last_price * volume_long * vm - positions[symbol].open_cost_long;
+                        d_spans[0].innerText = numberToFixed2(open_avg_price);
+                        e_spans[0].innerText = numberToFixed2(last_price * volume_long * vm - positions[symbol].open_cost_long);
                     } else {
                         b_spans[0].innerText = ''
                         c_spans[0].innerText = ''
@@ -395,14 +396,16 @@ function draw_page_posdetail_discuss() { // 持仓
                         b_spans[2].innerText = '空';
                         c_spans[2].innerText = volume_short;
                         var open_avg_price = positions[symbol].open_cost_short / volume_short / vm;
-                        d_spans[2].innerText = open_avg_price.toFixed(2);
-                        e_spans[2].innerText = positions[symbol].open_cost_short - last_price * volume_short * vm;
+                        d_spans[2].innerText = numberToFixed2(open_avg_price);
+                        e_spans[2].innerText = numberToFixed2(positions[symbol].open_cost_short - last_price * volume_short * vm);
                     } else {
                         b_spans[2].innerText = ''
                         c_spans[2].innerText = ''
                         d_spans[2].innerText = ''
                         e_spans[2].innerText = ''
                     }
+                    console.log(e_spans[2])
+                    console.log(positions[symbol].open_cost_short , last_price , volume_short , vm)
                 }
             } else {
                 container.deleteRow(tr);
@@ -415,7 +418,7 @@ function draw_page_posdetail_discuss() { // 持仓
             return tr;
         }
         function genTd(ins) {
-            var td = document.createElement('td');
+            var td = document.createElement('th');
             td.innerText = ins;
             return td;
         }
@@ -455,18 +458,23 @@ function draw_page_posdetail_discuss() { // 持仓
             var td_c = genTdWithSpans('c', isShow, content);
             tr.appendChild(td_c);
 
-            content[0] = volume_long>0 ? positions[symbol].open_cost_long / volume_long / vm : '';
-            content[2] = volume_short>0 ? positions[symbol].open_cost_short / volume_short / vm : '';
+            content[0] = volume_long>0 ? numberToFixed2(positions[symbol].open_cost_long / volume_long / vm) : '';
+            content[2] = volume_short>0 ? numberToFixed2(positions[symbol].open_cost_short / volume_short / vm) : '';
+            
             var td_d = genTdWithSpans('d', isShow, content);
             tr.appendChild(td_d);
 
-            content[0] = volume_long>0 ? last_price * volume_long * vm - positions[symbol].open_cost_long : '';
-            content[2] = volume_short>0 ? positions[symbol].open_cost_short - last_price * volume_short * vm : '';
+            content[0] = volume_long>0 ? numberToFixed2(last_price * volume_long * vm - positions[symbol].open_cost_long) : '';
+            content[2] = volume_short>0 ? numberToFixed2(positions[symbol].open_cost_short - last_price * volume_short * vm) : '';
             var td_e = genTdWithSpans('e', isShow, content);
             tr.appendChild(td_e);
             container.appendChild(tr);
         }
     }
+}
+
+function numberToFixed2(num){
+    return (typeof num === 'number' && !Number.isInteger(num)) ? num.toFixed(2) : num;
 }
 
 function getFormatTime(date_neno){
