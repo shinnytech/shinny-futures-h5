@@ -404,8 +404,6 @@ function draw_page_posdetail_discuss() { // 持仓
                         d_spans[2].innerText = ''
                         e_spans[2].innerText = ''
                     }
-                    console.log(e_spans[2])
-                    console.log(positions[symbol].open_cost_short , last_price , volume_short , vm)
                 }
             } else {
                 container.deleteRow(tr);
@@ -434,15 +432,20 @@ function draw_page_posdetail_discuss() { // 持仓
             return td;
         }
 
+        var quotes = DM.get_data('quotes');
+        var not_subscribe_quotes = [];
+
         for (var symbol in positions) {
+            var ins_id = positions[symbol].instrument_id;
+            if (!DM.datas.ins_list.includes(ins_id)) not_subscribe_quotes.push(ins_id);
             if (symbol_list.includes(symbol)) continue;
             var volume_long = positions[symbol].volume_long_today + positions[symbol].volume_long_his;
             var volume_short = positions[symbol].volume_short_today + positions[symbol].volume_short_his;
             if (volume_long === 0 && volume_short === 0) continue;
-            var last_price = DM.get_data('quotes.'+positions[symbol].instrument_id+'.last_price');
-            var vm = InstrumentManager.getInstrumentById(positions[symbol].instrument_id).volume_multiple;
+            var last_price = quotes[ins_id] && quotes[ins_id].last_price ? quotes[ins_id].last_price : NaN;
+            var vm = InstrumentManager.getInstrumentById(ins_id).volume_multiple;
             var tr = genTr(symbol);
-            var td_a = genTd(positions[symbol].instrument_id);
+            var td_a = genTd(ins_id);
             tr.appendChild(td_a);
             var isShow = [volume_long>0, volume_long>0&&volume_short>0, volume_short>0 ];
             var content = ['', '', ''];
@@ -469,6 +472,13 @@ function draw_page_posdetail_discuss() { // 持仓
             var td_e = genTdWithSpans('e', isShow, content);
             tr.appendChild(td_e);
             container.appendChild(tr);
+        }
+
+        if(not_subscribe_quotes.length>0){
+            WS.send({
+                aid: "subscribe_quote", // 撤单请求
+                ins_list: DM.datas.ins_list + ',' + not_subscribe_quotes.join(',')
+            });
         }
     }
 }
@@ -497,7 +507,7 @@ function draw_page_posdetail_plan() { // 委托
             var tr = trs[i];
             var id = tr.dataset.id;
             id_list.push(id);
-            var tds = tr[i].querySelectorAll('td');
+            var tds = tr.querySelectorAll('th');
             if (orders[id]) {
                 tds[0].innerText = orders[id].instrument_id;
                 tds[1].innerText = orders[id].last_msg;
@@ -547,7 +557,7 @@ function draw_page_posdetail_plan_2() { // 未成交
             var id = tr.dataset.id;
             id_list.push(id);
             if (orders[id] && orders[id].status === 'ALIVE') {
-                var tds = tr[i].querySelectorAll('td');
+                var tds = tr.querySelectorAll('th');
                 tds[0].innerText = orders[id].instrument_id;
                 tds[1].innerText = orders[id].last_msg;
                 tds[2].innerText = orders[id].offset === 'OPEN' ? '开仓' : '平仓';
