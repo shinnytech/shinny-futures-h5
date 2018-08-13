@@ -1,8 +1,8 @@
 function draw_page_posdetail() {
-    if (DM.get_data("state.page") == "posdetail") {
-        var insid = DM.get_data('state.detail_ins_id');
-        var posid = DM.get_data('state.detail_pos_id');
-        var subpage = DM.get_data("state.subpage");
+    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail") {
+        var insid = DM.get_data('state'+SEPERATOR+'detail_ins_id');
+        var posid = DM.get_data('state'+SEPERATOR+'detail_pos_id');
+        var subpage = DM.get_data("state"+SEPERATOR+"subpage");
         DM.run(draw_page_posdetail_chart);
         setTimeout(function () {
             DM.run(draw_page_posdetail_info);
@@ -44,11 +44,11 @@ function get_panels_content(insid, fixed) {
         id: 'orders',
         datas: {}
     }];
-    var posList = DM.get_data("instruments." + insid + ".pos_list");
+    var posList = DM.get_data("instruments" + SEPERATOR + insid +SEPERATOR+ "pos_list");
     if (posList) {
         posList = posList.split(',');
         for (var i = 0; i < posList.length; i++) {
-            var pos = DM.get_data("positions." + posList[i]);
+            var pos = DM.get_data("positions" + SEPERATOR + posList[i]);
             var pos_p = pos.open_price.toFixed(fixed)
             if (content[0].datas[pos_p] == undefined) {
                 content[0].datas[pos_p] = [];
@@ -83,22 +83,22 @@ function draw_page_posdetail_chart() {
     var width = chart_container.clientWidth;
     var height = chart_container.clientHeight;
 
-    var chart_id = DM.get_data('state.chart_id');
-    var chart_interval = DM.get_data('state.chart_interval');
-    var insid = DM.get_data('charts.' + chart_id + '.state.ins_list');
-    var interval = DM.get_data('charts.' + chart_id + '.state.duration'); // X 轴每个点之间的时间间隔
+    var chart_id = DM.get_data('state'+SEPERATOR+'chart_id');
+    var chart_interval = DM.get_data('state'+SEPERATOR+'chart_interval');
+    var insid = DM.get_data('charts' +SEPERATOR + chart_id +SEPERATOR + 'state'+SEPERATOR+'ins_list');
+    var interval = DM.get_data('charts' +SEPERATOR + chart_id + SEPERATOR+'state'+SEPERATOR+'duration'); // X 轴每个点之间的时间间隔
 
     // 日内图 当前交易日数据全部显示
-    var start_id = DM.get_data('klines.' + insid + '.' + interval + '.trading_day_start_id');  // 全部数据最左端 id
-    var end_id = DM.get_data('klines.' + insid + '.' + interval + '.trading_day_end_id');  // 全部数据最右端 id
+    var start_id = DM.get_data('klines'+SEPERATOR + insid +SEPERATOR + interval+SEPERATOR + 'trading_day_start_id');  // 全部数据最左端 id
+    var end_id = DM.get_data('klines'+SEPERATOR + insid +SEPERATOR + interval + SEPERATOR+ 'trading_day_end_id');  // 全部数据最右端 id
 
-    var left_id = DM.get_data('charts.' + chart_id + '.left_id');  // 屏幕最左端应该显示的元素 id
-    var right_id = DM.get_data('charts.' + chart_id + '.right_id'); // 屏幕最右端应该显示的元素 id
+    var left_id = DM.get_data('charts'+SEPERATOR + chart_id+SEPERATOR + 'left_id');  // 屏幕最左端应该显示的元素 id
+    var right_id = DM.get_data('charts'+SEPERATOR + chart_id+SEPERATOR + 'right_id'); // 屏幕最右端应该显示的元素 id
 
 
-    if (chart_interval != interval || insid != DM.get_data('state.detail_ins_id') || right_id == -1 || right_id == undefined) return;
+    if (chart_interval != interval || insid != DM.get_data('state'+SEPERATOR+'detail_ins_id') || right_id == -1 || right_id == undefined) return;
 
-    if (DM.get_data('charts.' + chart_id)) {
+    if (DM.get_data('charts'+SEPERATOR + chart_id)) {
         switch (chart_id) {
             case 'chart_day':
                 var insObj = InstrumentManager.getInstrumentById(insid);
@@ -171,7 +171,7 @@ function draw_page_posdetail_chart() {
                     ]
                 };
 
-                var last_data_close = DM.get_data('klines.' + insid + '.' + interval + '.data' + '.' + right_id + '.close');
+                var last_data_close = DM.get_data('klines'+SEPERATOR + insid+SEPERATOR + interval+SEPERATOR + 'data' +SEPERATOR + right_id +SEPERATOR + 'close');
 
                 chartset = ChartSet.create(chart_container, width, height, config);
 
@@ -249,9 +249,11 @@ function draw_page_posdetail_chart() {
                     }]
                 };
 
-                var last_data_close = DM.get_data('klines.' + insid + '.' + interval + '.data' + '.' + right_id + '.close');
+                var last_data_close = DM.get_data('klines'+SEPERATOR + insid+SEPERATOR + interval+SEPERATOR + 'data'+SEPERATOR + right_id+SEPERATOR + 'close');
 
                 chartset = ChartSet.create(chart_container, width, height, config);
+
+
 
                 if (DM.datas.klines && DM.datas.klines[insid] && DM.datas.klines[insid][interval]) {
                     if (chartset.interval != config.interval) {
@@ -266,8 +268,8 @@ function draw_page_posdetail_chart() {
         }
 
         // 是否显示挂单或者持仓
-        var showPositions = DM.get_data("state.showPositions");
-        var showOrders = DM.get_data("state.showOrders");
+        var showPositions = DM.get_data("state"+SEPERATOR+"showPositions");
+        var showOrders = DM.get_data("state"+SEPERATOR+"showOrders");
 
         if (showPositions) {
             chartset.showPanel('positions');
@@ -283,10 +285,10 @@ function draw_page_posdetail_chart() {
 }
 
 function draw_page_posdetail_info() {
-    if (DM.get_data("state.page") == "posdetail" && DM.get_data("state.subpage") == "info") {
-        var insid = DM.get_data('state.detail_ins_id');
-        var quote = DM.get_data("quotes." + insid);
-        var instrument = DM.get_data("instruments." + insid);
+    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail" && DM.get_data("state"+SEPERATOR+"subpage") == "info") {
+        var insid = DM.get_data('state'+SEPERATOR+'detail_ins_id');
+        var quote = DM.get_data("quotes"+SEPERATOR+ insid);
+        var instrument = DM.get_data("instruments"+SEPERATOR+insid);
         for (var k in instrument) {
             quote[k] = instrument[k];
         }
@@ -350,9 +352,9 @@ function draw_page_posdetail_info() {
 // }
 
 function draw_page_posdetail_discuss() { // 持仓
-    if (DM.get_data("state.page") == "posdetail" && DM.get_data("state.subpage") == "discuss") {
+    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail" && DM.get_data("state"+SEPERATOR+"subpage") == "discuss") {
         var container = document.querySelector('.posdetail .panel-container.discuss table tbody');
-        var positions = DM.get_data('trade.'+DM.datas.account_id+'.positions');
+        var positions = DM.get_data('trade'+SEPERATOR+DM.datas.account_id+SEPERATOR+'positions');
         if(!container) return;
         var trs = container.querySelectorAll('tr');
         var symbol_list = [];
@@ -366,8 +368,8 @@ function draw_page_posdetail_discuss() { // 持仓
                 if (volume_long === 0 && volume_short === 0) {
                     container.deleteRow(tr);
                 } else {
-                    var last_price = DM.get_data('quotes.'+positions[symbol].instrument_id+'.last_price');
-                    
+                    var last_price = DM.get_data('quotes'+SEPERATOR+positions[symbol].instrument_id+SEPERATOR+'last_price');
+
                     var vm = InstrumentManager.getInstrumentById(positions[symbol].instrument_id).volume_multiple;
                     var b_spans = tr.querySelectorAll('th.b span');
                     var c_spans = tr.querySelectorAll('th.c span');
@@ -463,7 +465,7 @@ function draw_page_posdetail_discuss() { // 持仓
 
             content[0] = volume_long>0 ? numberToFixed2(positions[symbol].open_cost_long / volume_long / vm) : '';
             content[2] = volume_short>0 ? numberToFixed2(positions[symbol].open_cost_short / volume_short / vm) : '';
-            
+
             var td_d = genTdWithSpans('d', isShow, content);
             tr.appendChild(td_d);
 
@@ -497,9 +499,9 @@ function getFormatTime(date_neno){
 }
 
 function draw_page_posdetail_plan() { // 委托
-    if (DM.get_data("state.page") == "posdetail" && DM.get_data("state.subpage") == "plan") {
+    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail" && DM.get_data("state"+SEPERATOR+"subpage") == "plan") {
         var container = document.querySelector('.posdetail .panel-container.plan table tbody');
-        var orders = DM.get_data('trade.'+DM.datas.account_id+'.orders');
+        var orders = DM.get_data('trade'+SEPERATOR+DM.datas.account_id+SEPERATOR+'orders');
         if(!container) return;
         var trs = container.querySelectorAll('tr');
         var id_list = [];
@@ -546,9 +548,9 @@ function draw_page_posdetail_plan() { // 委托
 
 
 function draw_page_posdetail_plan_2() { // 未成交
-    if (DM.get_data("state.page") == "posdetail" && DM.get_data("state.subpage") == "plan_2") {
+    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail" && DM.get_data("state"+SEPERATOR+"subpage") == "plan_2") {
         var container = document.querySelector('.posdetail .panel-container.plan_2 table tbody');
-        var orders = DM.get_data('trade.'+DM.datas.account_id+'.orders');
+        var orders = DM.get_data('trade'+SEPERATOR+DM.datas.account_id+SEPERATOR+'orders');
         if(!container) return;
         var trs = container.querySelectorAll('tr');
         var id_list = [];
@@ -618,9 +620,9 @@ function draw_page_posdetail_plan_2() { // 未成交
 }
 
 function draw_page_posdetail_tools() { // 交易
-    if (DM.get_data("state.page") == "posdetail" && DM.get_data("state.subpage") == "tools") {
-        var insid = DM.get_data('state.detail_ins_id');
-        var quote = DM.get_data("quotes." + insid);
+    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail" && DM.get_data("state"+SEPERATOR+"subpage") == "tools") {
+        var insid = DM.get_data('state'+SEPERATOR+'detail_ins_id');
+        var quote = DM.get_data("quotes"+SEPERATOR+insid);
         for (var i = 0; i < CONST.pos_detail_quote_tools.length; i++) {
             var param = CONST.pos_detail_quote_tools[i];
             var divs = document.querySelectorAll('.posdetail .panel-container .frame .' + param);

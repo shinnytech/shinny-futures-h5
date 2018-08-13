@@ -1,11 +1,8 @@
-var DOMAIN = "mdapi.shinnytech.com";
+var SEPERATOR = '*';
 
 var SETTING = {
-    server_base_url: 'http://' + DOMAIN,
-    sim_server_url: 'ws://mdapi.shinnytech.com/t/md/front/mobile',
+    sim_server_url: 'ws://openmd.shinnytech.com/t/md/front/mobile',
     tr_server_url: 'ws://118.31.237.98:3918',
-    // sim_server_url: 'ws://u.shinnytech.com/t/md/front/mobile',
-    act_server_url: 'ws://mdapi.shinnytech.com/t/md/front/mobile',
 };
 
 var CONST = {

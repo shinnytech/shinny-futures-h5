@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="86a1fb7b-d646-413e-9192-3b2884736ff0" name="Default" comment="" />
+    <list default="true" id="86a1fb7b-d646-413e-9192-3b2884736ff0" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zqjs/baseService.js" afterPath="$PROJECT_DIR$/zqjs/baseService.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zqjs/configuration.js" afterPath="$PROJECT_DIR$/zqjs/configuration.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zqjs/datamanager.js" afterPath="$PROJECT_DIR$/zqjs/datamanager.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zqjs/draws/Draw_Posdetail.js" afterPath="$PROJECT_DIR$/zqjs/draws/Draw_Posdetail.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zqjs/draws/Draw_Quote.js" afterPath="$PROJECT_DIR$/zqjs/draws/Draw_Quote.js" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
+    <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,13 +21,71 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="baseService.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/zqjs/baseService.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-51">
+              <caret line="23" column="5" lean-forward="true" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Draw_Quote.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/zqjs/draws/Draw_Quote.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="186">
+              <caret line="133" column="32" lean-forward="false" selection-start-line="133" selection-start-column="28" selection-end-line="133" selection-end-column="32" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Draw_Postion.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/zqjs/draws/Draw_Postion.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="35" lean-forward="false" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="669">
+              <caret line="87" column="33" lean-forward="false" selection-start-line="87" selection-start-column="33" selection-end-line="87" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>cook</find>
       <find>.json</find>
+      <find>content</find>
+      <find>initSubContent</find>
+      <find>getJsonDataAsync</find>
+      <find>content_data</find>
+      <find>futures</find>
+      <find>insid</find>
+      <find>get_data</find>
+      <find>seperator</find>
+      <find>conso</find>
+      <find>DM.get_data</find>
     </findStrings>
+    <replaceStrings>
+      <replace>content_data</replace>
+      <replace>symbol</replace>
+      <replace>SEPERATOR</replace>
+    </replaceStrings>
     <dirStrings>
       <dir>C:\project2015\shinny_h5\zqjs</dir>
     </dirStrings>
@@ -31,11 +97,16 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/zqjs/app.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/lib/configuration.js" />
         <option value="$PROJECT_DIR$/zqjs/services.js" />
-        <option value="$PROJECT_DIR$/zqjs/configuration.js" />
         <option value="$PROJECT_DIR$/todo" />
+        <option value="$PROJECT_DIR$/zqjs/baseService1.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/zqjs/baseService.js" />
+        <option value="$PROJECT_DIR$/zqjs/configuration.js" />
+        <option value="$PROJECT_DIR$/zqjs/datamanager.js" />
+        <option value="$PROJECT_DIR$/zqjs/draws/Draw_Quote.js" />
+        <option value="$PROJECT_DIR$/zqjs/draws/Draw_Posdetail.js" />
       </list>
     </option>
   </component>
@@ -74,25 +145,41 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="shinny_h5" type="b2602c69:ProjectViewProjectNode" />
-              <item name="shinny_h5" type="462c0819:PsiDirectoryNode" />
+              <item name="shinny-futures-h5" type="b2602c69:ProjectViewProjectNode" />
+              <item name="shinny-futures-h5" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="shinny-futures-h5" type="b2602c69:ProjectViewProjectNode" />
+              <item name="shinny-futures-h5" type="462c0819:PsiDirectoryNode" />
+              <item name="zqjs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="shinny-futures-h5" type="b2602c69:ProjectViewProjectNode" />
+              <item name="shinny-futures-h5" type="462c0819:PsiDirectoryNode" />
+              <item name="zqjs" type="462c0819:PsiDirectoryNode" />
+              <item name="draws" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/zqjs" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -119,24 +206,27 @@
       <workItem from="1532508854155" duration="16000" />
       <workItem from="1532587397069" duration="98000" />
       <workItem from="1533049660466" duration="9000" />
+      <workItem from="1533888354077" duration="10114000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2698000" />
+    <option name="totallyTimeSpent" value="12812000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2494043" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2494043" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24209079" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1938046" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2494043" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Salesforce" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -210,13 +300,6 @@
     <entry file="file://$PROJECT_DIR$/zqjs/Draw_Quote.js" />
     <entry file="file://$PROJECT_DIR$/lib/datamanager.js" />
     <entry file="file://$PROJECT_DIR$/zqjs/Ctrl_Quote.js" />
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1496">
-          <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/configuration.js" />
     <entry file="file://$PROJECT_DIR$/zqjs/services.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -225,26 +308,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zqjs/baseService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zqjs/configuration.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="26" column="24" lean-forward="true" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/todo" />
     <entry file="file://$PROJECT_DIR$/service-worker.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="20" column="25" lean-forward="true" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -252,6 +320,80 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zqjs/baseService0.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="203" column="27" lean-forward="false" selection-start-line="203" selection-start-column="19" selection-end-line="203" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zqjs/configuration.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="13" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zqjs/datamanager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-370">
+          <caret line="24" column="39" lean-forward="false" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zqjs/draws/Draw_App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zqjs/draws/Draw_Posdetail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="294" column="29" lean-forward="false" selection-start-line="294" selection-start-column="28" selection-end-line="294" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zqjs/draws/Draw_Quote.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="133" column="32" lean-forward="false" selection-start-line="133" selection-start-column="28" selection-end-line="133" selection-end-column="32" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="669">
+          <caret line="87" column="33" lean-forward="false" selection-start-line="87" selection-start-column="33" selection-end-line="87" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zqjs/draws/Draw_Postion.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="35" lean-forward="false" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zqjs/baseService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-51">
+          <caret line="23" column="5" lean-forward="true" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>

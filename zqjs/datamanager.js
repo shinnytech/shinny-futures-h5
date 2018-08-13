@@ -22,7 +22,7 @@
     function iterator_object(key, obj, func) {
         for (var name in obj) {
             if (obj.hasOwnProperty(name)) {
-                var t = key + "." + name;
+                var t = key + SEPERATOR + name;
                 func(t, obj);
                 var value = obj[name];
                 if (typeof value === 'object') {
@@ -108,9 +108,9 @@
 
     function dm_get(path) {
         //将current_node和对应数据 加到 node.relations 中
-        current_node.relations.push("." + path);
+        current_node.relations.push(SEPERATOR + path);
         //取数据
-        var keys = path.split(".");
+        var keys = path.split(SEPERATOR);
         var d = DM.datas;
         for (var i = 0; i < keys.length; i++) {
             d = d[keys[i]]

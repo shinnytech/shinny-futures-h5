@@ -10,7 +10,6 @@
 
     var content = {};
     var content_data = null;
-    var futures = {};
 
     // main_ins_list - 主力合约列表
     // future_list - 期货合约代码
@@ -86,8 +85,7 @@
         for(var symbol in result){
             var item = result[symbol];
             if (!result[symbol].expired && item.class === 'FUTURE'){
-                content.future_list.push(item.ins_id);
-                futures[item.ins_id] = result[symbol];
+                content.future_list.push(item.instrument_id);
                 var product_id = result[symbol].product_id;
                 if(!content.map_product_id_future[product_id]) content.map_product_id_future[product_id] = [];
                 content.map_product_id_future[product_id].push(symbol);
@@ -99,7 +97,7 @@
                 }
             } else if (!result[symbol].expired && item.class === 'FUTURE_CONT'){
                 var s = result[symbol].underlying_symbol;
-                content.main_ins_list.push(result[s].ins_id);
+                content.main_ins_list.push(result[s].instrument_id);
             }
         }
         return result;
@@ -126,6 +124,7 @@
     window.InstrumentManager.getInsListByType = getInsListByType;
     window.InstrumentManager.getMainInsList = getMainInsList;
     window.InstrumentManager.getInsSNById = getInsSNById;
+    window.InstrumentManager.getInsIdById = getInsIdById;
     window.InstrumentManager.getInsNameById = getInsNameById;
     window.InstrumentManager.getInsListByInput = getInsListByInput;
     window.InstrumentManager.getInsListByPY = getInsListByPY;
@@ -150,12 +149,12 @@
      */
     function getInstrumentById(insid) {
         var insObj = {};
-        insObj.exchange_id = futures[insid].exchange_id;
-        insObj.simple_name = futures[insid].product_short_name;
-        insObj.volume_multiple = futures[insid].volume_multiple;
-        insObj.price_tick = futures[insid].price_tick;
-        insObj.price_fixed = futures[insid].price_decs;
-        insObj.expire_date = formatDate(futures[insid].expire_datetime * 1000);
+        insObj.exchange_id = content_data[insid].exchange_id;
+        insObj.simple_name = content_data[insid].product_short_name;
+        insObj.volume_multiple = content_data[insid].volume_multiple;
+        insObj.price_tick = content_data[insid].price_tick;
+        insObj.price_fixed = content_data[insid].price_decs;
+        insObj.expire_date = formatDate(content_data[insid].expire_datetime * 1000);
         return insObj;
     }
 
@@ -205,12 +204,17 @@
      * @return {[type]}       [description]
      */
     function getInsSNById(insid) {
-        return futures[insid] ? futures[insid].product_short_name : '';
+        return content_data[insid] ? content_data[insid].product_short_name : '';
+    }
+
+    function getInsIdById(insid) {
+        return content_data[insid] ? content_data[insid].ins_id : '';
     }
 
 
+
     function getInsNameById(insid) {
-        return futures[insid] ? futures[insid].ins_name : '';
+        return content_data[insid] ? content_data[insid].ins_name : '';
     }
 
     function getInsListByInput(input) {

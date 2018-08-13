@@ -37,14 +37,14 @@ var DIVISIONS = {
 }
 
 function draw_page_quote() {
-    if (DM.get_data("state.page") == "quotes") {
+    if (DM.get_data("state"+SEPERATOR+"page") == "quotes") {
 
-        DIVISIONS.insType = DM.get_data('state.ins_type');
+        DIVISIONS.insType = DM.get_data('state'+SEPERATOR+'ins_type');
 
         if (DIVISIONS.insType == 'main') {
             DIVISIONS.insList = window.InstrumentManager.getMainInsList();
         } else {
-            DIVISIONS.insList = DM.get_data('state.custom_ins_list') == '' ? [] : DM.get_data('state.custom_ins_list').split(','); //window.InstrumentManager.getCustomInsList();
+            DIVISIONS.insList = DM.get_data('state'+SEPERATOR+'custom_ins_list') == '' ? [] : DM.get_data('state'+SEPERATOR+'custom_ins_list').split(','); //window.InstrumentManager.getCustomInsList();
         }
 
         if (!DIVISIONS["tbody"]) {
@@ -80,7 +80,7 @@ function initDIVISIONS() {
 
 function draw_page_quote_tr() {
     if (DIVISIONS.insList) {
-        // 1 删除不需要显示的合约 
+        // 1 删除不需要显示的合约
         for (var i = 0; i < DIVISIONS.showList.length; i++) {
             if (DIVISIONS.insList.length == 0 || DIVISIONS.insList.indexOf(DIVISIONS.showList[i]) < 0) {
                 if (DIVISIONS.tbody['childs'][DIVISIONS.showList[i]]) {
@@ -113,6 +113,7 @@ function draw_page_quote_tr() {
 }
 
 function draw_page_quote_addtr(insid) {
+    var ins_id = window.InstrumentManager.getInsIdById(insid);
     var insid_name = window.InstrumentManager.getInsNameById(insid);
 
     if (!DIVISIONS.tbody['childs'][insid]) {
@@ -131,12 +132,12 @@ function draw_page_quote_addtr(insid) {
 
         var temp = "<td>" + insid + "</td>";
         for (var i = 0; i < CONST.inslist_cols_odd.length; i++) {
-            temp += "<td data-content='' class='" + insid + "_" + CONST.inslist_cols_odd[i] + "'></td>"
+            temp += "<td data-content='' name='" + insid + "_" + CONST.inslist_cols_odd[i] + "'></td>"
         }
         tr_odd.innerHTML = temp;
         temp = "<td>" + insid_name + "</td>";
         for (var i = 0; i < CONST.inslist_cols_even.length; i++) {
-            temp += "<td data-content='' class='" + insid + "_" + CONST.inslist_cols_even[i] + "'></td>"
+            temp += "<td data-content='' name='" + insid + "_" + CONST.inslist_cols_even[i] + "'></td>"
         }
         tr_even.innerHTML = temp;
         DIVISIONS.tbody['childs'][insid] = {
@@ -154,7 +155,7 @@ function draw_page_quote_addtr(insid) {
         qt_c_tr_odd.addEventListener('click', click_handler);
         qt_c_tr_even.addEventListener('click', click_handler);
 
-        qt_c_tr_odd.innerHTML = "<td>" + insid + "</td>";
+        qt_c_tr_odd.innerHTML = "<td>" + ins_id + "</td>";
         qt_c_tr_even.innerHTML = "<td>" + insid_name + "</td>";
 
         DIVISIONS.c_tbody['childs'][insid] = {
@@ -176,7 +177,7 @@ function click_handler_posdetail(insid) {
         });
         location.href = "#/app/posdetail";
     } else {
-        var pos_list = DM.get_data('quotes.' + insid + '.pos_list');
+        var pos_list = DM.get_data('quotes' + +SEPERATOR+ + insid + SEPERATOR+ 'pos_list');
         if (pos_list) {
             var pos_id = pos_list.split(',')[0];
             DM.update_data({
@@ -199,14 +200,15 @@ function click_handler_posdetail(insid) {
 };
 
 function draw_page_quote_detail(insid) {
-    var quote = DM.get_data("quotes." + insid);
+    var quote = DM.get_data("quotes" + SEPERATOR + insid);
     var keys = CONST.inslist_cols_odd.concat(CONST.inslist_cols_even);
     for (var i = 0; i < keys.length; i++) {
-        var div = DIVISIONS["tbody"]['dom'].querySelector('.' + insid + '_' + keys[i]);
+        var div = DIVISIONS["tbody"]['dom'].querySelector('[name="' + insid + '_' + keys[i] + '"]');
         if (div && quote) {
             var val = quote[keys[i]] == undefined ? '' : quote[keys[i]];
             if (keys[i] == 'change_percent') {
-                val = ((quote.last_price - quote.pre_close) / quote.pre_close * 100).toFixed(2) + '%';
+                var changePercent = ((quote.last_price - quote.pre_close) / quote.pre_close * 100);
+                val = isNaN(changePercent) ? '-' : changePercent.toFixed(2) + '%';
             }
             div.setAttribute('data-content', val);
             if (keys[i] == 'last_price' ||  keys[i] == 'change_percent') {
