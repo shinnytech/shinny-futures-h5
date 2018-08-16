@@ -97,7 +97,7 @@
                 }
             } else if (!result[symbol].expired && item.class === 'FUTURE_CONT'){
                 var s = result[symbol].underlying_symbol;
-                content.main_ins_list.push(result[s].instrument_id);
+                if(s && result[s]) content.main_ins_list.push(result[s].instrument_id);
             }
         }
         return result;
