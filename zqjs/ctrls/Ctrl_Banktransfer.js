@@ -1,28 +1,24 @@
-angular.module('starter.controllers').controller('BanktransferCtrl', ['$rootScope', '$scope', 'QueryService', '$ionicLoading',
-    function ($rootScope, $scope, QueryService, $ionicLoading) {
+angular.module('starter.controllers').controller('BanktransferCtrl',
+    ['$rootScope', '$scope', '$ionicLoading',
+    function ($rootScope, $scope, $ionicLoading) {
         $scope.banklist = [];
-        $scope.bank_id = '';
-        $scope.bank_balance = null;
-        $scope.future_balance = null;
-
-        $scope.query = {};
-        $scope.query.bank_pass = '';
-        $scope.query.transfer_amount = 0;
+        $scope.query_error_msg = '';
+        $scope.query = {
+            bank_id: '', // 银行ID
+            bank_password: '', // 银行账户密码
+            future_account: '', // 期货账户
+            future_password: '', // 期货账户密码
+            currency: 'CNY', // 币种代码
+            amount: 0 // 转账金额, >0 表示转入期货账户, <0 表示转出期货账户
+        }
 
         $scope.checkAct = function () {
-            if ($rootScope.login_states.type == "sim" || $rootScope.login_states.type == "none") {
+            if ($rootScope.login_data.state !== "success") {
                 $scope.banklist = [];
-                $scope.bank_id = '';
-                $scope.bank_balance = null;
-                $scope.future_balance = null;
-                navigator.notification.alert(
-                    '实盘登录用户才能使用银期转账功能！', // message
-                    function () {
-                        return false;
-                    }, // callback
-                    '提示', // title
-                    '确定' // buttonName
-                );
+                $scope.query.bank_id = '';
+                $scope.query.bank_password = '';
+                $scope.query.future_password = '';
+                $scope.query.amount = '';
                 return false;
             } else {
                 return true;
@@ -35,159 +31,36 @@ angular.module('starter.controllers').controller('BanktransferCtrl', ['$rootScop
                     page: 'banktransfer'
                 }
             });
-
-            if (!$scope.checkAct()) {
-                return;
-            }
-
-            QueryService.bank_account()
-                .then(function (response) {
-                    console.log(response.data.banklist);
-                    $scope.banklist = response.data.banklist;
-                    if ($scope.banklist.length == 0) {
-                        navigator.notification.alert(
-                            '没有签约银行信息', // message
-                            function () {
-                                QueryService.future_balance()
-                                    .then(function (response) {
-                                        $scope.future_balance = response.data.withdrawquota;
-
-                                    }, function (response) {
-                                        navigator.notification.alert(
-                                            '查询期货可取余额失败 [' + response.status + ']', // message
-                                            function () {
-                                                return;
-                                            }, // callback
-                                            '查询失败', // title
-                                            '确定' // buttonName
-                                        );
-                                    });
-                                return;
-                            }, // callback
-                            '查询失败', // title
-                            '确定' // buttonName
-                        );
-                    }
-
-                }, function (response) {
-                    navigator.notification.alert(
-                        '查询签约银行失败 [' + response.status + ']', // message
-                        function () {
-                            return;
-                        }, // callback
-                        '查询失败', // title
-                        '确定' // buttonName
-                    );
-                });
+            $scope.query_error_msg = '';
+            if (!$scope.checkAct()) return;
+            $scope.banklist = DM.datas.trade[DM.datas.account_id].banks;
+            $scope.query.future_account = DM.datas.account_id;
+            var banks_id = Object.keys($scope.banklist);
+            $scope.query.bank_id = banks_id.length > 0 ? banks_id[0] : '';
         });
 
-        $scope.getBankId = function () {
-            var x = document.getElementById("bank_list").selectedIndex;
-            var y = document.getElementById("bank_list").getElementsByTagName("option");
-            if (y[x]) {
-                return y[x].id;
-            } else {
-                navigator.notification.alert(
-                    '未选择银行卡', // message
-                    function () {
-                        return;
-                    }, // callback
-                    '查询失败', // title
-                    '确定' // buttonName
-                );
-                return false;
-            }
-
-        }
-
-        $scope.query = function (type) {
-            if (!$scope.checkAct()) {
-                return;
-            }
-
-            $ionicLoading.show({
-                hideOnStateChange: true,
-            });
-            if (type == 'BANK') {
-                $scope.bank_id = $scope.getBankId();
-                if (!$scope.bank_id) {
-                    return;
-                }
-                $scope.query.bank_pass = $scope.query.bank_pass ? $scope.query.bank_pass : '';
-
-                QueryService.bank_balance($scope.bank_id, $scope.query.bank_pass)
-                    .then(function (response) {
-                        $scope.bank_balance = Math.max(response.data.bank_fetchamount, response.data.bank_useamount);
-                        $ionicLoading.hide();
-                    }, function (response) {
-                        navigator.notification.alert(
-                            '查询银行余额失败 [' + response.message + ']', // message
-                            function () {
-                                return;
-                            }, // callback
-                            '查询失败', // title
-                            '确定' // buttonName
-                        );
-                        $ionicLoading.hide();
-                    });
-            } else if (type == 'FUTURE') {
-                QueryService.future_balance()
-                    .then(function (response) {
-                        $scope.future_balance = response.data.withdrawquota;
-                        $ionicLoading.hide();
-                    }, function (response) {
-                        navigator.notification.alert(
-                            '查询期货余额失败 [' + response.status + ']', // message
-                            function () {
-                                return;
-                            }, // callback
-                            '查询失败', // title
-                            '确定' // buttonName
-                        );
-                        $ionicLoading.hide();
-                    });
-            }
-
-        }
-
         $scope.transfer = function (dir) {
-            if (!$scope.checkAct()) {
+            $scope.query_error_msg = '';
+            if (!$scope.checkAct()){
+                $scope.query_error_msg = '用户登录后才能使用银期转账功能！';
+                return;
+            } else if (!$scope.query.bank_id) {
+                $scope.query_error_msg = '请选择银行一个账户！';
+                return;
+            } else if (!$scope.query.bank_password) {
+                $scope.query_error_msg = '请输入银行账户密码！';
+                return;
+            } else if (!$scope.query.future_password) {
+                $scope.query_error_msg = '请输入期货账户密码！';
+                return;
+            } else if (!$scope.query.amount || $scope.query.amount < 0) {
+                $scope.query_error_msg = '请输入转账金额！';
                 return;
             }
-
-            $scope.bank_id = $scope.getBankId();
-            if (!$scope.bank_id) {
-                return;
-            }
-            console.log($scope.query.transfer_amount, dir)
-            if ($scope.query.transfer_amount > 0) {
-                var amount = $scope.query.transfer_amount;
-                if (dir == "IN") {
-
-                } else if (dir == "OUT") {
-                    amount = 0 - amount;
-                }
-
-                WS.send({
-                    aid: "req_transfer_money", // 下单请求
-                    req_id: WS.getReqid(),
-                    balance_add: amount,
-                    bank_id: $scope.bank_id,
-                    bank_password: $scope.query.bank_pass ? $scope.query.bank_pass : '',
-                });
-
-            } else {
-                navigator.notification.alert(
-                    '请输入转账金额', // message
-                    function () {
-                        return;
-                    }, // callback
-                    '提示', // title
-                    '确定' // buttonName
-                );
-            }
+            $scope.query_error_msg = '';
+            var query = Object.assign({aid: "req_transfer"}, $scope.query);
+            query.amount = dir == "IN" ? $scope.query.amount : 0 - $scope.query.amount;
+            TR_WS.send(query);
         }
-
-
     }
 ])

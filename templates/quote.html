@@ -1,4 +1,5 @@
-<div class="qt_container" table-addon on-hold="onHold($event)">
+<ion-view view-title="" >
+    <div class="qt_container" table-addon on-hold="onHold($event)">
     <ion-header-bar class="bar bar-dark" align-title="center">
         <div class="buttons nav-bar-left"></div>
         <h1 class="title" ng-click="openPopover()">{{insList.title}} <i class="icon ion-chevron-down"></i></h1>
@@ -25,3 +26,19 @@
         </div>
     </ion-content>
 </div>
+</ion-view>
+
+<script type="text/ng-template" id='ins_types.html'>
+    <ion-popover-view style="height: 480px">
+        <ion-header-bar>
+            <h1 class="title">选择合约类型</h1>
+        </ion-header-bar>
+        <ion-content>
+            <ion-radio ng-model="insList.id" style="color:#000"
+                       ng-repeat="item in ins_list_types"
+                       ng-value="item.id"
+                       ng-click="closePopover(item.id, item.name)"
+            >{{item.name}}</ion-radio>
+        </ion-content>
+    </ion-popover-view>
+</script>

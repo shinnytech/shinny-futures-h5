@@ -1,9 +1,0 @@
-{
-  "name": "shinny mobile",
-  "ios_identifier": "",
-  "android_identifier": "",
-  "update": "resume",
-  "min_native_interface": 1,
-  "content_url": "http://www.zhongqijiaoyi.com/mobile",
-  "release": "2017.04.21-15.11.02"
-}

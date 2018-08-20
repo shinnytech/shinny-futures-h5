@@ -9,19 +9,19 @@
         priceTick: 0.5,
         fixed: 1,
         showMostValue: true,
-        showPanels: true, 
+        showPanels: true,
         list: [{
-            name: 'k',  
-            type: 'kChart', 
+            name: 'k',
+            type: 'kChart',
             depends: 'right',
         },{
             name: 'bar',
-            type: 'barChart', 
+            type: 'barChart',
             depends: 'right',
             field: ''
         },{
             name: 'line',
-            type: 'lineChart', 
+            type: 'lineChart',
             depends: 'right',
             color: 'red'
             field: ''
@@ -41,11 +41,11 @@
     }
 */
 
-var chart_color = {
+var chart_color = Object.assign({
     'background': "#" + CHART_COLOR.BACKGROUND.getHexString(),
     'down': 'aqua',
     'up': 'orangered',
-}
+}, CONST.chart_color);
 
 var Chart = function (container, width, height, config){
     this.container = container;
@@ -137,16 +137,16 @@ Chart.prototype.scale = function(config){
     }
 }
 Chart.prototype.initContainers = function(){
-    this.axisYContainer = new ChartComponent({ 
-        top: this.config.margin.top, 
-        left: this.width - this.config.margin.right, 
-        width: this.config.margin.right, 
+    this.axisYContainer = new ChartComponent({
+        top: this.config.margin.top,
+        left: this.width - this.config.margin.right,
+        width: this.config.margin.right,
         height: this.height - this.config.margin.top - this.config.margin.bottom
     });
-    var args = { 
-        top: this.config.margin.top - 1, 
-        left: this.config.margin.left, 
-        width: this.width - this.config.margin.left - this.config.margin.right, 
+    var args = {
+        top: this.config.margin.top - 1,
+        left: this.config.margin.left,
+        width: this.width - this.config.margin.left - this.config.margin.right,
         height: this.height - this.config.margin.top - this.config.margin.bottom
     };
     this.chart3DContainer = new ChartComponent(args);
@@ -167,7 +167,7 @@ Chart.prototype.initChart3D = function(){
     var list = [];
     var layerIndex = 1;
     for(var i=0; i<this.config.list.length; i++, layerIndex++){
-        list.push({ 
+        list.push({
             name: this.config.list[i].name,
             type: this.config.list[i].type,
             layer: layerIndex,
@@ -192,7 +192,7 @@ Chart.prototype.initAxisYUpdate = function(){
             delete obj.axisYContainer.childrenDom;
         }
         obj.axisYContainer.childrenDom = [];
-        
+
         for (var i = 0; i < obj.axisY.datas.length; i++) {
             obj.axisYContainer.childrenDom[i] = document.createElement('div');
             obj.axisYContainer.childrenDom[i].style.position = 'absolute';
@@ -256,7 +256,7 @@ Chart.prototype.updateChart3DConfig = function(){
                 this.chart3D_config.list[index].datas.push(null);
                 this.chart3D_config.list[index].colors.push(null);
             }
-            
+
         }else if(this.chart3D_config.list[index].type == 'BARCHART'){
             var field = this.config.list[index].field;
             // get datas & colors
@@ -325,10 +325,10 @@ Chart.prototype.updateAxisY = function(){
         this.axisY.datas.push(v);
         v += grid_value;
     }
-    
+
     this.axisYContainer.update(this);
 
-    this.chart3D_config.min = this.axisY.min; 
+    this.chart3D_config.min = this.axisY.min;
     this.chart3D_config.max = this.axisY.max;
     this.chart3D_config.axisY = this.axisY.datas;
 }
@@ -336,7 +336,7 @@ Chart.prototype.updatePanels = function(){
     if(this.panelsContent){
         for(var i = 0; i<this.panelsContent.length; i++){
             var panel_id = this.panelsContent[i].id;
-            
+
             if(this.panels[panel_id] == undefined){
                 this.panels[panel_id] = {
                     dom:  ChartUtils.getContainer({
@@ -351,7 +351,7 @@ Chart.prototype.updatePanels = function(){
             if(this.panels[panel_id].dom.visibility == 'visible' || this.panels[panel_id].dom.visibility == undefined){
                 this.updateSinglePanel(panel_id, this.panelsContent[i].datas);
             }
-            
+
         }
     }
 }
@@ -456,7 +456,7 @@ Chart.prototype.getMaxMinValue = function(){
                     if(d > this.chart3D_config.list[index].max) {
                         this.chart3D_config.list[index].max = d;
                         this.chart3D_config.list[index].maxIndex = i;
-                    } 
+                    }
                     if(d < this.chart3D_config.list[index].min) {
                         this.chart3D_config.list[index].min = d;
                         this.chart3D_config.list[index].minIndex = i;

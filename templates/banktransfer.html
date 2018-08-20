@@ -8,29 +8,25 @@
         <div class="list">
             <div class="item item-input item-select">
                 <div class="input-label">银行账号</div>
-                <select id="bank_list">
-                    <option ng-repeat="bank in banklist" id="{{bank.bank_id}}">{{ bank.bank_name }} {{ bank.bank_account }}</option>
+                <select id="bank_list"
+                        ng-options="bank.id as bank.name + '(' + bank.id + ')' for (id,bank) in banklist track by bank.id"
+                        ng-model="query.bank_id" >
                 </select>
             </div>
             <div class="item item-input">
-                <div class="input-label">银行卡密码</div>
-                <input type="password" ng-model="query.bank_pass" placeholder="请输入密码">
+                <div class="input-label">银行账户密码</div>
+                <input type="password" ng-model="query.bank_password" placeholder="请输入银行账户密码">
             </div>
             <div class="item item-input">
-                <div class="input-label">期货余额</div>
-                <div class="item-content-balance">{{future_balance}}
-                    <button class="button button-stable button-small" ng-click="query('FUTURE')">查询</button>
-                </div>
-            </div>
-            <div class="item item-input">
-                <div class="input-label">银行余额</div>
-                <div class="item-content-balance">{{bank_balance}}
-                    <button class="button button-stable button-small" ng-click="query('BANK')">查询</button>
-                </div>
+                <div class="input-label">期货账户密码</div>
+                <input type="password" ng-model="query.future_password" placeholder="请输入期货账户密码">
             </div>
             <div class="item item-input">
                 <div class="input-label">转账金额</div>
-                <input type="number" ng-model="query.transfer_amount" placeholder="请输入转账金额">
+                <input type="number" ng-model="query.amount" required placeholder="请输入转账金额">
+            </div>
+            <div class="item assertive" ng-if="query_error_msg">
+                {{ query_error_msg }}
             </div>
             <div class="item">
                 <div class="row">

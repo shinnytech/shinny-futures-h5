@@ -1,14 +1,13 @@
 function draw_page_posdetail() {
-    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail") {
-        var insid = DM.get_data('state'+SEPERATOR+'detail_ins_id');
-        var posid = DM.get_data('state'+SEPERATOR+'detail_pos_id');
-        var subpage = DM.get_data("state"+SEPERATOR+"subpage");
+    if (DM.get_data("state" + SEPERATOR + "page") == "posdetail") {
+        var insid = DM.get_data('state' + SEPERATOR + 'detail_ins_id');
+        var posid = DM.get_data('state' + SEPERATOR + 'detail_pos_id');
+        var subpage = DM.get_data("state" + SEPERATOR + "subpage");
         DM.run(draw_page_posdetail_chart);
         setTimeout(function () {
             DM.run(draw_page_posdetail_info);
             DM.run(draw_page_posdetail_discuss);
             DM.run(draw_page_posdetail_plan);
-            DM.run(draw_page_posdetail_plan_2);
             DM.run(draw_page_posdetail_tools);
         }, 100);
     }
@@ -44,32 +43,40 @@ function get_panels_content(insid, fixed) {
         id: 'orders',
         datas: {}
     }];
-    var posList = DM.get_data("instruments" + SEPERATOR + insid +SEPERATOR+ "pos_list");
-    if (posList) {
-        posList = posList.split(',');
-        for (var i = 0; i < posList.length; i++) {
-            var pos = DM.get_data("positions" + SEPERATOR + posList[i]);
-            var pos_p = pos.open_price.toFixed(fixed)
-            if (content[0].datas[pos_p] == undefined) {
-                content[0].datas[pos_p] = [];
-            }
-            content[0].datas[pos_p].push({
-                text: pos.volume + '@' + pos.open_price.toFixed(fixed),
-                backgroundColor: pos.direction == 'BUY' ? 'red' : 'green',
-                color: '#fff'
+    var positions = DM.get_data("trade" + SEPERATOR + DM.datas.account_id + SEPERATOR + "positions");
+    var orders = DM.get_data("trade" + SEPERATOR + DM.datas.account_id + SEPERATOR + "orders");
+    if (positions && positions[insid]){
+        var pos = positions[insid];
+        if(pos.volume_long > 0){
+            var p = pos.open_price_long.toFixed(fixed);
+            if(!content[0].datas[p]) content[0].datas[p] = [];
+            content[0].datas[p].push({
+                text: pos.volume_long + '@' + p,
+                backgroundColor: 'yellow',
+                color: '#9d0000'
             });
-            if (pos.orders && pos.orders != null) {
-
-                for (var order in pos.orders) {
-                    if (pos.orders[order].order_id == null) continue;
-                    var p = pos.orders[order].price.toFixed(fixed);
-                    if (content[1].datas[p] == undefined) {
-                        content[1].datas[p] = [];
-                    }
+        }
+        if(pos.volume_short > 0){
+            var p = pos.open_price_short.toFixed(fixed);
+            if(!content[0].datas[p]) content[0].datas[p] = [];
+            content[0].datas[p].push({
+                text: pos.volume_short + '@' + p,
+                backgroundColor: 'yellow',
+                color: '#005a00'
+            });
+        }
+    }
+    if (orders) {
+        for(var id in orders){
+            if(orders[id].exchange_id + '.' + orders[id].instrument_id === insid){
+                var order = orders[id];
+                if(order.price_type === 'LIMIT' && order.status === 'ALIVE'){
+                    var p = order.limit_price.toFixed(fixed);
+                    if (content[1].datas[p] == undefined) content[1].datas[p] = [];
                     content[1].datas[p].push({
-                        text: pos.orders[order].volume_left + '@' + p,
+                        text: order.volume_left + '@' + p,
                         backgroundColor: 'yellow',
-                        color: '#fff'
+                        color: '#606060'
                     });
                 }
             }
@@ -83,22 +90,22 @@ function draw_page_posdetail_chart() {
     var width = chart_container.clientWidth;
     var height = chart_container.clientHeight;
 
-    var chart_id = DM.get_data('state'+SEPERATOR+'chart_id');
-    var chart_interval = DM.get_data('state'+SEPERATOR+'chart_interval');
-    var insid = DM.get_data('charts' +SEPERATOR + chart_id +SEPERATOR + 'state'+SEPERATOR+'ins_list');
-    var interval = DM.get_data('charts' +SEPERATOR + chart_id + SEPERATOR+'state'+SEPERATOR+'duration'); // X 轴每个点之间的时间间隔
+    var chart_id = DM.get_data('state' + SEPERATOR + 'chart_id');
+    var chart_interval = DM.get_data('state' + SEPERATOR + 'chart_interval');
+    var insid = DM.get_data('charts' + SEPERATOR + chart_id + SEPERATOR + 'state' + SEPERATOR + 'ins_list');
+    var interval = DM.get_data('charts' + SEPERATOR + chart_id + SEPERATOR + 'state' + SEPERATOR + 'duration'); // X 轴每个点之间的时间间隔
 
     // 日内图 当前交易日数据全部显示
-    var start_id = DM.get_data('klines'+SEPERATOR + insid +SEPERATOR + interval+SEPERATOR + 'trading_day_start_id');  // 全部数据最左端 id
-    var end_id = DM.get_data('klines'+SEPERATOR + insid +SEPERATOR + interval + SEPERATOR+ 'trading_day_end_id');  // 全部数据最右端 id
+    var start_id = DM.get_data('klines' + SEPERATOR + insid + SEPERATOR + interval + SEPERATOR + 'trading_day_start_id');  // 全部数据最左端 id
+    var end_id = DM.get_data('klines' + SEPERATOR + insid + SEPERATOR + interval + SEPERATOR + 'trading_day_end_id');  // 全部数据最右端 id
 
-    var left_id = DM.get_data('charts'+SEPERATOR + chart_id+SEPERATOR + 'left_id');  // 屏幕最左端应该显示的元素 id
-    var right_id = DM.get_data('charts'+SEPERATOR + chart_id+SEPERATOR + 'right_id'); // 屏幕最右端应该显示的元素 id
+    var left_id = DM.get_data('charts' + SEPERATOR + chart_id + SEPERATOR + 'left_id');  // 屏幕最左端应该显示的元素 id
+    var right_id = DM.get_data('charts' + SEPERATOR + chart_id + SEPERATOR + 'right_id'); // 屏幕最右端应该显示的元素 id
 
 
-    if (chart_interval != interval || insid != DM.get_data('state'+SEPERATOR+'detail_ins_id') || right_id == -1 || right_id == undefined) return;
+    if (chart_interval != interval || insid != DM.get_data('state' + SEPERATOR + 'detail_ins_id') || right_id == -1 || right_id == undefined) return;
 
-    if (DM.get_data('charts'+SEPERATOR + chart_id)) {
+    if (DM.get_data('charts' + SEPERATOR + chart_id)) {
         switch (chart_id) {
             case 'chart_day':
                 var insObj = InstrumentManager.getInstrumentById(insid);
@@ -171,7 +178,7 @@ function draw_page_posdetail_chart() {
                     ]
                 };
 
-                var last_data_close = DM.get_data('klines'+SEPERATOR + insid+SEPERATOR + interval+SEPERATOR + 'data' +SEPERATOR + right_id +SEPERATOR + 'close');
+                var last_data_close = DM.get_data('klines' + SEPERATOR + insid + SEPERATOR + interval + SEPERATOR + 'data' + SEPERATOR + right_id + SEPERATOR + 'close');
 
                 chartset = ChartSet.create(chart_container, width, height, config);
 
@@ -199,7 +206,7 @@ function draw_page_posdetail_chart() {
                     left_id: left_id, // 最左边数据 id
                     right_id: right_id, // 最右边数据 id
                     charts: [{
-                        height_proportion: 0.4,
+                        height_proportion: 0.7,
                         margin: {
                             top: 5,
                             bottom: 5
@@ -214,45 +221,45 @@ function draw_page_posdetail_chart() {
                             type: CHART_TYPE.kChart
                         }]
                     },
-                    {
-                        height_proportion: 0.3,
-                        margin: {
-                            top: 5,
-                            bottom: 0
+                        {
+                            height_proportion: 0.3,
+                            margin: {
+                                top: 5,
+                                bottom: 0
+                            },
+                            priceTick: 1,
+                            fixed: 0,
+                            showMostValue: false,
+                            showPanels: false,
+                            list: [{
+                                name: 'bar_vol',
+                                type: CHART_TYPE.barChart,
+                                field: 'volume'
+                            }]
                         },
-                        priceTick: 1,
-                        fixed: 0,
-                        showMostValue: false,
-                        showPanels: false,
-                        list: [{
-                            name: 'bar_vol',
-                            type: CHART_TYPE.barChart,
-                            field: 'volume'
-                        }]
-                    },
-                    {
-                        height_proportion: 0.3,
-                        margin: {
-                            top: 5,
-                            bottom: 0
-                        },
-                        priceTick: '100',
-                        fixed: 0,
-                        showMostValue: false,
-                        showPanels: false,
-                        list: [{
-                            name: 'line_oi',
-                            type: CHART_TYPE.lineChart,
-                            field: 'close_oi',
-                            color: 'yellow'
-                        }]
-                    }]
+                        // {
+                        //     height_proportion: 0.3,
+                        //     margin: {
+                        //         top: 5,
+                        //         bottom: 0
+                        //     },
+                        //     priceTick: '100',
+                        //     fixed: 0,
+                        //     showMostValue: false,
+                        //     showPanels: false,
+                        //     list: [{
+                        //         name: 'line_oi',
+                        //         type: CHART_TYPE.lineChart,
+                        //         field: 'close_oi',
+                        //         color: 'yellow'
+                        //     }]
+                        // }
+                        ]
                 };
 
-                var last_data_close = DM.get_data('klines'+SEPERATOR + insid+SEPERATOR + interval+SEPERATOR + 'data'+SEPERATOR + right_id+SEPERATOR + 'close');
+                var last_data_close = DM.get_data('klines' + SEPERATOR + insid + SEPERATOR + interval + SEPERATOR + 'data' + SEPERATOR + right_id + SEPERATOR + 'close');
 
                 chartset = ChartSet.create(chart_container, width, height, config);
-
 
 
                 if (DM.datas.klines && DM.datas.klines[insid] && DM.datas.klines[insid][interval]) {
@@ -268,8 +275,8 @@ function draw_page_posdetail_chart() {
         }
 
         // 是否显示挂单或者持仓
-        var showPositions = DM.get_data("state"+SEPERATOR+"showPositions");
-        var showOrders = DM.get_data("state"+SEPERATOR+"showOrders");
+        var showPositions = DM.get_data("state" + SEPERATOR + "showPositions");
+        var showOrders = DM.get_data("state" + SEPERATOR + "showOrders");
 
         if (showPositions) {
             chartset.showPanel('positions');
@@ -285,10 +292,10 @@ function draw_page_posdetail_chart() {
 }
 
 function draw_page_posdetail_info() {
-    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail" && DM.get_data("state"+SEPERATOR+"subpage") == "info") {
-        var insid = DM.get_data('state'+SEPERATOR+'detail_ins_id');
-        var quote = DM.get_data("quotes"+SEPERATOR+ insid);
-        var instrument = DM.get_data("instruments"+SEPERATOR+insid);
+    if (DM.get_data("state" + SEPERATOR + "page") == "posdetail" && DM.get_data("state" + SEPERATOR + "subpage") == "info") {
+        var insid = DM.get_data('state' + SEPERATOR + 'detail_ins_id');
+        var quote = DM.get_data("quotes" + SEPERATOR + insid);
+        var instrument = DM.get_data("instruments" + SEPERATOR + insid);
         for (var k in instrument) {
             quote[k] = instrument[k];
         }
@@ -306,28 +313,6 @@ function draw_page_posdetail_info() {
                             div.className = addClassName(div.className, 'G');
                         }
                     }
-                    if (param == 'status') {
-                        // [PREOPEN | MATCHINGORDER | MATCHING | TRADING | CLOSED]
-                        switch (val) {
-                            case 'PREOPEN':
-                                val = '开盘前';
-                                break;
-                            case 'MATCHINGORDER':
-                                val = '集合竞价';
-                                break;
-                            case 'MATCHING':
-                                val = '集合竞价';
-                                break;
-                            case 'TRADING':
-                                val = '连续交易';
-                                break;
-                            case 'CLOSED':
-                                val = '已收盘';
-                                break;
-                            default:
-                                break;
-                        }
-                    }
                     div.innerText = val;
                 }
             }
@@ -335,148 +320,208 @@ function draw_page_posdetail_info() {
     }
 }
 
-// function draw_page_posdetail_discuss() { // 委托
-//     if (DM.get_data("state.page") == "posdetail" && DM.get_data("state.subpage") == "discuss") {
-//         var time = DM.get_data("state.lastestChatTime");
-//         var msg = MessageQueue.shift();
-//         var container = document.querySelector('.posdetail .panel-container.discuss .messages');
-//         while (msg && msg.time <= time) {
-//             // TODO 处理 & 显示消息
-//             var div = document.createElement('div');
-//             div.innerText = msg.from + ' : ' + msg.text;
-//             container.appendChild(div);
-
-//             msg = MessageQueue.shift();
-//         }
-//     }
-// }
-
 function draw_page_posdetail_discuss() { // 持仓
-    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail" && DM.get_data("state"+SEPERATOR+"subpage") == "discuss") {
+    if (DM.get_data("state" + SEPERATOR + "page") == "posdetail" && DM.get_data("state" + SEPERATOR + "subpage") == "discuss") {
         var container = document.querySelector('.posdetail .panel-container.discuss table tbody');
-        var positions = DM.get_data('trade'+SEPERATOR+DM.datas.account_id+SEPERATOR+'positions');
-        if(!container) return;
+        var positions = DM.get_data('trade' + SEPERATOR + DM.datas.account_id + SEPERATOR + 'positions');
+        if (!container) return;
         var trs = container.querySelectorAll('tr');
         var symbol_list = [];
-        for (var i=0; i<trs.length; i++) {
+        // 先处理已经有的 trs，删除已经全部平仓的 / 更新持仓手数
+        // symbol_list 记录这个循环里应处理过的合约
+        for (var i = 0; i < trs.length; i++) {
             var tr = trs[i];
             var symbol = tr.dataset.symbol;
             symbol_list.push(symbol);
-            if (positions[symbol]) {
-                var volume_long = positions[symbol].volume_long_today + positions[symbol].volume_long_his;
-                var volume_short = positions[symbol].volume_short_today + positions[symbol].volume_short_his;
-                if (volume_long === 0 && volume_short === 0) {
-                    container.deleteRow(tr);
-                } else {
-                    var last_price = DM.get_data('quotes'+SEPERATOR+positions[symbol].instrument_id+SEPERATOR+'last_price');
-
-                    var vm = InstrumentManager.getInstrumentById(positions[symbol].instrument_id).volume_multiple;
-                    var b_spans = tr.querySelectorAll('th.b span');
-                    var c_spans = tr.querySelectorAll('th.c span');
-                    var d_spans = tr.querySelectorAll('th.d span');
-                    var e_spans = tr.querySelectorAll('th.e span');
-                    if (volume_long > 0) {
-                        b_spans[0].innerText = '多';
-                        c_spans[0].innerText = volume_long;
-                        var open_avg_price = positions[symbol].open_cost_long / volume_long / vm;
-                        d_spans[0].innerText = numberToFixed2(open_avg_price);
-                        e_spans[0].innerText = numberToFixed2(last_price * volume_long * vm - positions[symbol].open_cost_long);
-                    } else {
-                        b_spans[0].innerText = ''
-                        c_spans[0].innerText = ''
-                        d_spans[0].innerText = ''
-                        e_spans[0].innerText = ''
-                    }
-
-                    if (volume_long > 0 && volume_short > 0) {
-                        b_spans[1].innerText = '/'
-                        c_spans[1].innerText = '/'
-                        d_spans[1].innerText = '/'
-                        e_spans[1].innerText = '/'
-                    }
-                    if (volume_short > 0) {
-                        b_spans[2].innerText = '空';
-                        c_spans[2].innerText = volume_short;
-                        var open_avg_price = positions[symbol].open_cost_short / volume_short / vm;
-                        d_spans[2].innerText = numberToFixed2(open_avg_price);
-                        e_spans[2].innerText = numberToFixed2(positions[symbol].open_cost_short - last_price * volume_short * vm);
-                    } else {
-                        b_spans[2].innerText = ''
-                        c_spans[2].innerText = ''
-                        d_spans[2].innerText = ''
-                        e_spans[2].innerText = ''
-                    }
-                }
-            } else {
+            var position = positions[symbol];
+            if (!position) {
+                // 删除持仓对象里已经没有的合约
                 container.deleteRow(tr);
             }
+            var volume_long = position.volume_long_today + position.volume_long_his;
+            var volume_short = position.volume_short_today + position.volume_short_his;
+            if (volume_long === 0 && volume_short === 0) {
+                // 删除双向持仓都为 0 的合约
+                container.deleteRow(tr);
+            } else {
+                var last_price = DM.get_data('quotes' + SEPERATOR + symbol + SEPERATOR + 'last_price');
+                var vm = InstrumentManager.getInstrumentById(symbol).volume_multiple;
+                setTextToTd(tr, position, last_price, vm); // 填写相应的内容
+            }
         }
 
-        function genTr(symbol) {
+        function gen_close_pos(position, dir) {
+            return function () {
+                var req_id = WS.getReqid();
+                var exchange_id = position.exchange_id;
+                var instrument_id = position.instrument_id;
+                var quote = DM.datas.quotes[exchange_id+'.'+instrument_id];
+                var price = dir === 'BUY' ? quote.upper_limit : quote.lower_limit;
+                var close = 0;
+                var close_today = 0;
+                if(exchange_id === "SHFE"){
+                    close = dir === 'BUY' ? position.volume_short_his : position.volume_long_his;
+                    close_today = dir === 'BUY' ? position.volume_short_today : position.volume_long_today;
+                } else {
+                    close = dir === 'BUY' ? position.volume_short_today + position.volume_short_his : position.volume_long_today + position.volume_long_his;
+                }
+
+                var insert_order = {
+                    aid: "insert_order", // 下单请求
+                    user_id: DM.datas.account_id,
+                    order_id: req_id,
+                    exchange_id: exchange_id,
+                    instrument_id: instrument_id,
+                    direction: dir,
+                    price_type: "LIMIT", // 报单类型
+                    limit_price: price,
+                    volume_condition: "ANY",
+                    time_condition: "GFD",
+                    hedge_flag: "SPECULATION"
+                }
+
+                navigator.notification.confirm(
+                    '确认平仓?', // message
+                    function (buttonIndex) {
+                        if (buttonIndex == 1) {
+                            if(close > 0){
+                                var req_id = WS.getReqid();
+                                TR_WS.send(Object.assign(insert_order, {
+                                    offset: 'CLOSE',
+                                    volume: close}
+                                    ));
+                            }
+                            if(close_today > 0){
+                                var req_id = WS.getReqid();
+                                TR_WS.send(Object.assign(insert_order, {
+                                    offset: 'CLOSETODAY',
+                                    volume: close_today}
+                                ));
+                            }
+                        } else {
+                            return;
+                        }
+                    }, // callback to invoke with index of button pressed
+                    '全部平仓', // title
+                    ['删除', '取消'] // buttonLabels
+                );
+            }
+        }
+
+        function genTr(symbol, ins) {
             var tr = document.createElement('tr');
             tr.dataset.symbol = symbol;
+            var th_ins = document.createElement('th');
+            th_ins.innerText = ins;
+            tr.appendChild(th_ins);
+            var th_names = ['dir', 'vol', 'price', 'margin', 'close'];
+            for(var i in th_names){
+                var td = genTdWithSpans(th_names[i]);
+                tr.appendChild(td);
+            }
             return tr;
         }
-        function genTd(ins) {
-            var td = document.createElement('th');
-            td.innerText = ins;
-            return td;
-        }
-        function genTdWithSpans(className, isShow, content) {
-            var td = document.createElement('th');
-            td.className = className;
-            for(var i in isShow){
+
+        function genTdWithSpans(className) {
+            var th = document.createElement('th');
+            th.className = className;
+            for (var i = 0; i < 3; i++) {
                 var span = document.createElement('span');
-                content[i] = typeof content[i] === 'number' && !Number.isInteger(content[i]) ? content[i].toFixed(2) : content[i];
-                span.innerText = isShow[i] ? content[i] : '';
-                td.appendChild(span);
+                th.appendChild(span);
             }
-            return td;
+            return th;
         }
+
+        function calcContent(className, position, last_price, vm){
+            var content = [];
+            var volume_long = position.volume_long_today + position.volume_long_his;
+            var volume_short = position.volume_short_today + position.volume_short_his;
+            if(className === 'dir'){
+                content[0] = volume_long > 0 ? '多' : '';
+                content[1] = volume_long > 0 && volume_short > 0 ? '/' : '';
+                content[2] = volume_short > 0 ? '空' : '';
+            } else if(className === 'vol'){
+                content[0] = volume_long > 0 ? volume_long : '';
+                content[1] = volume_long > 0 && volume_short > 0 ? '/' : '';
+                content[2] = volume_short > 0 ? volume_short : '';
+            } else if(className === 'price'){
+                var buy_avg_price = volume_long > 0 ? position.open_cost_long / volume_long / vm : 0;
+                var sell_avg_price = volume_short > 0 ? position.open_cost_short / volume_short / vm : 0;
+                content[0] = buy_avg_price > 0 ? numberToFixed2(buy_avg_price) : '';
+                content[1] = buy_avg_price > 0 && sell_avg_price > 0 ? '/' : '';
+                content[2] = sell_avg_price > 0 ? numberToFixed2(sell_avg_price) : '';
+            } else if(className === 'margin'){
+                var buy_margin = volume_long > 0 ? last_price * volume_long * vm - position.open_cost_long : 0;
+                var sell_margin = volume_short > 0 ? position.open_cost_short - last_price * volume_short * vm : 0;
+                content[0] = volume_long > 0 ? numberToFixed2(buy_margin) : '';
+                content[1] = volume_long > 0 && volume_short > 0 ? '/' : '';
+                content[2] = volume_short > 0 ? numberToFixed2(sell_margin) : '';
+            } else if(className === 'close'){
+                content[0] = volume_long > 0 ? 'a' : '';
+                content[1] = volume_long > 0 && volume_short > 0 ? '/' : '';
+                content[2] = volume_short > 0 ? 'a' : '';
+            }
+            return content;
+        }
+
+        function setTextToTd(tr, position, last_price, vm) {
+            var th_names = ['dir', 'vol', 'price', 'margin', 'close'];
+            for(var i in th_names){
+                var content = calcContent(th_names[i], position, last_price, vm);
+                var spans = tr.querySelectorAll('th.' + th_names[i] + ' span');
+                if(th_names[i] === 'close'){
+                    var a_sell_close = spans[0].querySelector('a');
+                    var a_buy_close = spans[2].querySelector('a');
+                    if(content[0] === 'a' && !a_sell_close){
+                        a_sell_close = document.createElement('a');
+                        a_sell_close.className = 'button button-small button-outline button-light';
+                        a_sell_close.innerText = '平多';
+                        a_sell_close.onclick = gen_close_pos(position, 'SELL');
+                        spans[0].appendChild(a_sell_close)
+                    } else if(content[0] !== 'a') {
+                        spans[0].innerText = '';
+                    }
+                    spans[1].innerText = content[1];
+                    if(content[2] === 'a' && !a_buy_close){
+                        a_buy_close = document.createElement('a');
+                        a_buy_close.className = 'button button-small button-outline button-light';
+                        a_buy_close.innerText = '平空';
+                        a_buy_close.onclick = gen_close_pos(position, 'BUY');
+                        spans[2].appendChild(a_buy_close)
+                    } else if(content[2] !== 'a') {
+                        spans[2].innerText = '';
+                    }
+                } else {
+                    spans[0].innerText = content[0];
+                    spans[1].innerText = content[1];
+                    spans[2].innerText = content[2];
+                }
+            }
+        }
+
 
         var quotes = DM.get_data('quotes');
-        var not_subscribe_quotes = [];
+        var not_subscribe_quotes = []; // 记录没有订阅的合约列表，稍后订阅
 
         for (var symbol in positions) {
-            var ins_id = positions[symbol].instrument_id;
-            if (!DM.datas.ins_list.includes(ins_id)) not_subscribe_quotes.push(ins_id);
+            var position = positions[symbol];
+            var ins_id = position.instrument_id;
+            if (!DM.datas.ins_list.includes(symbol)) not_subscribe_quotes.push(symbol);
+            // 前面应处理过的合约
             if (symbol_list.includes(symbol)) continue;
-            var volume_long = positions[symbol].volume_long_today + positions[symbol].volume_long_his;
-            var volume_short = positions[symbol].volume_short_today + positions[symbol].volume_short_his;
+            var volume_long = position.volume_long_today + position.volume_long_his;
+            var volume_short = position.volume_short_today + position.volume_short_his;
+            // 不需要处理的合约
             if (volume_long === 0 && volume_short === 0) continue;
-            var last_price = quotes[ins_id] && quotes[ins_id].last_price ? quotes[ins_id].last_price : NaN;
-            var vm = InstrumentManager.getInstrumentById(ins_id).volume_multiple;
-            var tr = genTr(symbol);
-            var td_a = genTd(ins_id);
-            tr.appendChild(td_a);
-            var isShow = [volume_long>0, volume_long>0&&volume_short>0, volume_short>0 ];
-            var content = ['', '', ''];
-            content[1] = volume_long>0&&volume_short>0 ? '/' : '';
-
-            content[0] = volume_long>0 ? '多' : '';
-            content[2] = volume_short>0 ? '空' : '';
-            var td_b = genTdWithSpans('b', isShow, content);
-            tr.appendChild(td_b);
-
-            content[0] = volume_long>0 ? volume_long : '';
-            content[2] = volume_short>0 ? volume_short : '';
-            var td_c = genTdWithSpans('c', isShow, content);
-            tr.appendChild(td_c);
-
-            content[0] = volume_long>0 ? numberToFixed2(positions[symbol].open_cost_long / volume_long / vm) : '';
-            content[2] = volume_short>0 ? numberToFixed2(positions[symbol].open_cost_short / volume_short / vm) : '';
-
-            var td_d = genTdWithSpans('d', isShow, content);
-            tr.appendChild(td_d);
-
-            content[0] = volume_long>0 ? numberToFixed2(last_price * volume_long * vm - positions[symbol].open_cost_long) : '';
-            content[2] = volume_short>0 ? numberToFixed2(positions[symbol].open_cost_short - last_price * volume_short * vm) : '';
-            var td_e = genTdWithSpans('e', isShow, content);
-            tr.appendChild(td_e);
+            var last_price = quotes[symbol] && quotes[symbol].last_price ? quotes[symbol].last_price : NaN;
+            var insObj = InstrumentManager.getInstrumentById(symbol);
+            var vm = insObj.volume_multiple;
+            var tr = genTr(symbol, insObj.ins_id); // 生成相应的一行
+            setTextToTd(tr, position, last_price, vm); // 填写相应的内容
             container.appendChild(tr);
         }
 
-        if(not_subscribe_quotes.length>0){
+        if (not_subscribe_quotes.length > 0) {
             WS.send({
                 aid: "subscribe_quote", // 撤单请求
                 ins_list: DM.datas.ins_list + ',' + not_subscribe_quotes.join(',')
@@ -485,105 +530,83 @@ function draw_page_posdetail_discuss() { // 持仓
     }
 }
 
-function numberToFixed2(num){
+function numberToFixed2(num) {
     return (typeof num === 'number' && !Number.isInteger(num)) ? num.toFixed(2) : num;
 }
 
-function getFormatTime(date_neno){
+function getFormatTime(date_neno) {
     var d = new Date(date_neno / 1000000);
     var time = [d.getHours() + '', d.getMinutes() + '', d.getSeconds() + ''];
-    time.forEach(function(val, ind, arr){
+    time.forEach(function (val, ind, arr) {
         arr[ind] = val.padStart(2, '0');
     });
     return time.join(':');
 }
 
 function draw_page_posdetail_plan() { // 委托
-    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail" && DM.get_data("state"+SEPERATOR+"subpage") == "plan") {
+    if (DM.get_data("state" + SEPERATOR + "page") == "posdetail" && DM.get_data("state" + SEPERATOR + "subpage") == "plan") {
         var container = document.querySelector('.posdetail .panel-container.plan table tbody');
-        var orders = DM.get_data('trade'+SEPERATOR+DM.datas.account_id+SEPERATOR+'orders');
-        if(!container) return;
+        var orders = DM.get_data('trade' + SEPERATOR + DM.datas.account_id + SEPERATOR + 'orders');
+        if (!container) return;
         var trs = container.querySelectorAll('tr');
         var id_list = [];
-        for (var i=0; i<trs.length; i++) {
+        for (var i = 0; i < trs.length; i++) {
             var tr = trs[i];
             var id = tr.dataset.id;
             id_list.push(id);
+            var order = orders[id];
+            if (order) {
+                setContentToTr(tr, order);
+            }
+        }
+
+        function genTr(id) {
+            var tr = document.createElement('tr');
+            tr.dataset.id = id;
+            for(var i =0 ; i< 7; i++){
+                var td = document.createElement('th');
+                tr.appendChild(td);
+            }
+            return tr;
+        }
+
+        function setContentToTr(tr, order){
             var tds = tr.querySelectorAll('th');
-            if (orders[id]) {
-                tds[0].innerText = orders[id].instrument_id;
-                tds[1].innerText = orders[id].last_msg;
-                tds[2].innerText = orders[id].offset === 'OPEN' ? '开仓' : '平仓';
-                tds[3].innerText = orders[id].limit_price;
-                tds[4].innerText = orders[id].volume_left + '/' + orders[id].volume_orign;
-                tds[5].innerText = getFormatTime(orders[id].insert_date_time);
-            }
-        }
-
-        function genTr(id) {
-            var tr = document.createElement('tr');
-            tr.dataset.id = id;
-            return tr;
-        }
-        function genTd(ins) {
-            var td = document.createElement('th');
-            td.innerText = ins;
-            return td;
-        }
-
-        for (var id in orders) {
-            if (id_list.includes(id)) continue;
-            var tr = genTr(id);
-            tr.appendChild(genTd(orders[id].instrument_id));
-            tr.appendChild(genTd(orders[id].last_msg));
-            var offset = orders[id].offset === 'OPEN' ? '开仓' : '平仓';
-            tr.appendChild(genTd(offset));
-            tr.appendChild(genTd(orders[id].limit_price));
-            tr.appendChild(genTd(orders[id].volume_left + '/' + orders[id].volume_orign));
-            tr.appendChild(genTd(getFormatTime(orders[id].insert_date_time)));
-            container.appendChild(tr);
-        }
-    }
-}
-
-
-function draw_page_posdetail_plan_2() { // 未成交
-    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail" && DM.get_data("state"+SEPERATOR+"subpage") == "plan_2") {
-        var container = document.querySelector('.posdetail .panel-container.plan_2 table tbody');
-        var orders = DM.get_data('trade'+SEPERATOR+DM.datas.account_id+SEPERATOR+'orders');
-        if(!container) return;
-        var trs = container.querySelectorAll('tr');
-        var id_list = [];
-        for (var i=0; i<trs.length; i++) {
-            var tr = trs[i];
-            var id = tr.dataset.id;
-            id_list.push(id);
-            if (orders[id] && orders[id].status === 'ALIVE') {
-                var tds = tr.querySelectorAll('th');
-                tds[0].innerText = orders[id].instrument_id;
-                tds[1].innerText = orders[id].last_msg;
-                tds[2].innerText = orders[id].offset === 'OPEN' ? '开仓' : '平仓';
-                tds[3].innerText = orders[id].limit_price;
-                tds[4].innerText = orders[id].volume_left + '/' + orders[id].volume_orign;
-                tds[5].innerText = getFormatTime(orders[id].insert_date_time);
+            tds[0].innerText = order.instrument_id;
+            tds[1].innerText = order.last_msg;
+            if(order.last_msg === '未成交' || order.last_msg === '已撤单'){
+                tds[1].innerText = order.last_msg;
+            } else if(order.last_msg.includes('全部成交')) {
+                tds[1].innerText = '全部成交';
+            } else if(order.status === 'FINISHED') {
+                tds[1].innerText = '错单';
             } else {
-                container.deleteRow(tr);
+                tds[1].innerText = order.last_msg;
+            }
+
+            var dir_offset = (order.direction === 'BUY' ? '买' : '卖' ) + (order.offset === 'OPEN' ? '开' : '平');
+            tds[2].innerText = dir_offset;
+            tds[3].innerText = order.limit_price;
+            tds[4].innerText = order.volume_left + '/' + orders[id].volume_orign;
+            tds[5].innerText = getFormatTime(orders[id].insert_date_time);
+            var a = tds[6].querySelector('a');
+            if(order.status === 'ALIVE' && order.volume_left > 0){
+                if(!a){
+                    a = document.createElement('a');
+                    a.className = 'button button-small button-outline button-light';
+                    a.innerText = '撤单';
+                    a.onclick = gen_cancel_order(order.order_id);
+                    tds[6].appendChild(a);
+                }
+            } else {
+                if(a){
+                    tds[6].innerText = '';
+                }
             }
         }
 
-        function genTr(id) {
-            var tr = document.createElement('tr');
-            tr.dataset.id = id;
-            return tr;
-        }
-        function genTd(ins) {
-            var td = document.createElement('th');
-            td.innerText = ins;
-            return td;
-        }
-
-        function cancel_order (id){
-            return function(){
+        function gen_cancel_order(id) {
+            return function () {
                 navigator.notification.confirm(
                     '确认删除挂单?', // message
                     function (buttonIndex) {
@@ -591,6 +614,7 @@ function draw_page_posdetail_plan_2() { // 未成交
                             TR_WS.send({
                                 aid: "cancel_order", // 撤单请求
                                 order_id: id,
+                                user_id: DM.datas.account_id
                             });
                         } else {
                             return;
@@ -604,25 +628,18 @@ function draw_page_posdetail_plan_2() { // 未成交
 
         for (var id in orders) {
             if (id_list.includes(id)) continue;
-            if (orders[id].status === 'FINISHED') continue;
             var tr = genTr(id);
-            tr.onclick = cancel_order(id);
-            tr.appendChild(genTd(orders[id].instrument_id));
-            tr.appendChild(genTd(orders[id].last_msg));
-            var offset = orders[id].offset === 'OPEN' ? '开仓' : '平仓';
-            tr.appendChild(genTd(offset));
-            tr.appendChild(genTd(orders[id].limit_price));
-            tr.appendChild(genTd(orders[id].volume_left + '/' + orders[id].volume_orign));
-            tr.appendChild(genTd(getFormatTime(orders[id].insert_date_time)));
+            var order = orders[id];
+            setContentToTr(tr, order);
             container.appendChild(tr);
         }
     }
 }
 
 function draw_page_posdetail_tools() { // 交易
-    if (DM.get_data("state"+SEPERATOR+"page") == "posdetail" && DM.get_data("state"+SEPERATOR+"subpage") == "tools") {
-        var insid = DM.get_data('state'+SEPERATOR+'detail_ins_id');
-        var quote = DM.get_data("quotes"+SEPERATOR+insid);
+    if (DM.get_data("state" + SEPERATOR + "page") == "posdetail" && DM.get_data("state" + SEPERATOR + "subpage") == "tools") {
+        var insid = DM.get_data('state' + SEPERATOR + 'detail_ins_id');
+        var quote = DM.get_data("quotes" + SEPERATOR + insid);
         for (var i = 0; i < CONST.pos_detail_quote_tools.length; i++) {
             var param = CONST.pos_detail_quote_tools[i];
             var divs = document.querySelectorAll('.posdetail .panel-container .frame .' + param);

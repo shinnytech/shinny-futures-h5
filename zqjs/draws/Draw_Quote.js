@@ -40,11 +40,14 @@ function draw_page_quote() {
     if (DM.get_data("state"+SEPERATOR+"page") == "quotes") {
 
         DIVISIONS.insType = DM.get_data('state'+SEPERATOR+'ins_type');
-
-        if (DIVISIONS.insType == 'main') {
-            DIVISIONS.insList = window.InstrumentManager.getMainInsList();
-        } else {
+        if (DIVISIONS.insType == 'custom') {
             DIVISIONS.insList = DM.get_data('state'+SEPERATOR+'custom_ins_list') == '' ? [] : DM.get_data('state'+SEPERATOR+'custom_ins_list').split(','); //window.InstrumentManager.getCustomInsList();
+        } else {
+            DIVISIONS.insList = window.InstrumentManager.getInsListByType(DIVISIONS.insType);
+            WS.send({
+                aid: "subscribe_quote",
+                ins_list: DIVISIONS.insList.concat(InstrumentManager.getCustomInsList()).join(',')
+            });
         }
 
         if (!DIVISIONS["tbody"]) {
@@ -81,8 +84,25 @@ function initDIVISIONS() {
 function draw_page_quote_tr() {
     if (DIVISIONS.insList) {
         // 1 删除不需要显示的合约
-        for (var i = 0; i < DIVISIONS.showList.length; i++) {
-            if (DIVISIONS.insList.length == 0 || DIVISIONS.insList.indexOf(DIVISIONS.showList[i]) < 0) {
+        if(DIVISIONS.insType === 'custom'){
+            for (var i = 0; i < DIVISIONS.showList.length; i++) {
+                if (DIVISIONS.insList.length == 0 || DIVISIONS.insList.indexOf(DIVISIONS.showList[i]) < 0) {
+                    if (DIVISIONS.tbody['childs'][DIVISIONS.showList[i]]) {
+                        DIVISIONS.tbody['dom'].removeChild(DIVISIONS.tbody['childs'][DIVISIONS.showList[i]]['domOdd']);
+                        DIVISIONS.tbody['dom'].removeChild(DIVISIONS.tbody['childs'][DIVISIONS.showList[i]]['domEven']);
+
+                        DIVISIONS.c_tbody['dom'].removeChild(DIVISIONS.c_tbody['childs'][DIVISIONS.showList[i]]['domOdd']);
+                        DIVISIONS.c_tbody['dom'].removeChild(DIVISIONS.c_tbody['childs'][DIVISIONS.showList[i]]['domEven']);
+
+                        delete DIVISIONS.tbody['childs'][DIVISIONS.showList[i]];
+                        delete DIVISIONS.c_tbody['childs'][DIVISIONS.showList[i]];
+
+                        DIVISIONS.showList.splice(i--, 1);
+                    }
+                }
+            }
+        } else {
+            for (var i = 0; i < DIVISIONS.showList.length; i++) {
                 if (DIVISIONS.tbody['childs'][DIVISIONS.showList[i]]) {
                     DIVISIONS.tbody['dom'].removeChild(DIVISIONS.tbody['childs'][DIVISIONS.showList[i]]['domOdd']);
                     DIVISIONS.tbody['dom'].removeChild(DIVISIONS.tbody['childs'][DIVISIONS.showList[i]]['domEven']);
@@ -95,6 +115,7 @@ function draw_page_quote_tr() {
 
                     DIVISIONS.showList.splice(i--, 1);
                 }
+
             }
         }
 
@@ -201,6 +222,7 @@ function click_handler_posdetail(insid) {
 
 function draw_page_quote_detail(insid) {
     var quote = DM.get_data("quotes" + SEPERATOR + insid);
+    var price_fixed = InstrumentManager.getInstrumentById(insid).price_fixed;
     var keys = CONST.inslist_cols_odd.concat(CONST.inslist_cols_even);
     for (var i = 0; i < keys.length; i++) {
         var div = DIVISIONS["tbody"]['dom'].querySelector('[name="' + insid + '_' + keys[i] + '"]');
@@ -209,6 +231,9 @@ function draw_page_quote_detail(insid) {
             if (keys[i] == 'change_percent') {
                 var changePercent = ((quote.last_price - quote.pre_close) / quote.pre_close * 100);
                 val = isNaN(changePercent) ? '-' : changePercent.toFixed(2) + '%';
+            }
+            if(isNumber(val) && ['last_price', 'bid_price1', 'ask_price1', 'highest', 'pre_close', 'lowest', 'open'].includes(keys[i])){
+                val = val.toFixed(price_fixed);
             }
             div.setAttribute('data-content', val);
             if (keys[i] == 'last_price' ||  keys[i] == 'change_percent') {

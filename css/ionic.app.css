@@ -10026,7 +10026,8 @@ a.button {
     color: #ccc;
     font-size: 14px;
     border-radius: 0px;
-    border-width: 0px; }
+    border-width: 0px;
+    padding: 0 2px;}
     .posdetail .chart.button-bar .button.checked {
       color: #ff0;
       font-weight: bold;
@@ -10037,7 +10038,7 @@ a.button {
   position: absolute;
   font-size: smaller;
   top: 30px;
-  height: 320px;
+  height: 260px;
   width: 100%;
   padding: 2px 0px; }
   .posdetail .chart.container .chart-container:not(':first-child') {
@@ -10045,7 +10046,7 @@ a.button {
 
 .posdetail .panel.button-bar {
   position: absolute;
-  top: 350px; }
+  top: 290px; }
   .posdetail .panel.button-bar .button {
     color: #ccc;
     font-size: 14px;
@@ -10065,7 +10066,7 @@ a.button {
   margin: 12px 0px;
   width: 100%; }
   .posdetail .panel-container.flex {
-    display: flex; 
+    display: flex;
     flex-wrap: wrap;}
     .posdetail .panel-container .frame {
       display: block;
@@ -10371,8 +10372,7 @@ ion-modal-view.register ion-content {
     height: 100%;
     opacity: 0.8;
     background-color: #333333; }
-  .userinfo ion-content.sim {
-    background-image: url(../img/pc-sim-bg.jpg); }
+  .userinfo ion-content.sim { }
     .userinfo ion-content.sim .content .panel.login button {
       border: 1px solid #ae9bf6;
       background-color: #ae9bf6;
@@ -10380,8 +10380,7 @@ ion-modal-view.register ion-content {
     .userinfo ion-content.sim .content .panel.login button.button-outline {
       background-color: transparent;
       color: #ae9bf6; }
-  .userinfo ion-content.act {
-    background-image: url(../img/pc-act-bg.jpg); }
+  .userinfo ion-content.act { }
     .userinfo ion-content.act .content .panel.login button {
       border: 1px solid #8fd1f7;
       background-color: #8fd1f7;

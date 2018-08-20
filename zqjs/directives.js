@@ -130,13 +130,11 @@ angular.module('starter')
         restrict: 'C',
         template: '<button class="button">{{textBtn}}</button>',
         link: function (scope, ele, attrs) {
-            scope.$watch('login_states.type', function (v) {
-                if (v == 'sim') {
-                    scope.textBtn = '模拟';
-                } else if (v == 'act') {
-                    scope.textBtn = '实盘';
-                } else {
+            scope.$watch('login_data.state', function (v) {
+                if (v == 'none') {
                     scope.textBtn = '登录';
+                } else if (v == 'success') {
+                    scope.textBtn = $rootScope.login_data.bid;
                 }
             });
             ele[0].onclick = function (e) {

@@ -1,5 +1,5 @@
-angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$scope', '$ionicScrollDelegate', '$ionicLoading', '$ionicPopover', '$ionicPopup',
-    function ($rootScope, $scope, $ionicScrollDelegate, $ionicLoading, $ionicPopover, $ionicPopup) {
+angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$scope', '$ionicScrollDelegate', '$ionicLoading', '$ionicPopover', '$ionicPopup', '$ionicNavBarDelegate',
+    function ($rootScope, $scope, $ionicScrollDelegate, $ionicLoading, $ionicPopover, $ionicPopup, $ionicNavBarDelegate) {
         $scope.changeDMState = function (t) {
             DM.update_data({
                 'state': {
@@ -10,52 +10,38 @@ angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$s
             });
         };
 
-        $scope.insList = {
-            id: 'main',
-            title: '主力合约'
-        };
-
-        $scope.$watch('insList.id', function (t) {
-            if (t == 'custom') {
-                $scope.insList.id = 'custom';
-                $scope.insList.title = '自选合约';
-            } else {
-                $scope.insList.id = 'main';
-                $scope.insList.title = '主力合约';
-            }
-            $scope.changeDMState(t);
-        });
-
-        var template = '<ion-popover-view><ion-header-bar><h1 class="title">选择合约类型</h1></ion-header-bar><ion-content>';
-        template += '<ion-radio ng-model="insList.id" style="color:#000" ng-value="\'main\'" ng-click=\'closePopover()\'>主力合约</ion-radio>';
-        template += '<ion-radio ng-model="insList.id" style="color:#000" ng-value="\'custom\'" ng-click=\'closePopover()\'>自选合约</ion-radio>';
-        template += '</ion-content></ion-popover-view>';
-
-        $scope.popover = $ionicPopover.fromTemplate(template, {
-            scope: $scope
-        });
-
         $scope.openPopover = function ($event) {
             $scope.popover.show($event);
         };
-        $scope.closePopover = function () {
+        $scope.closePopover = function (id, name) {
+            $rootScope.insList.id = id;
+            $rootScope.insList.title = name;
             $scope.popover.hide();
         };
-
         $scope.$on('$destroy', function () {
             $scope.popover.remove();
         });
 
-        $scope.$on("$ionicView.afterEnter", function (event, data) {
-            $scope.changeDMState($scope.insList.id);
-
+        $ionicPopover.fromTemplateUrl("ins_types.html", {
+            scope: $scope
+        }).then(function(popover){
+            $scope.popover = popover;
         });
 
-        // 添加自选合约 参数 
+        $scope.$watch('insList.id', function (t) {
+            $ionicScrollDelegate.scrollTop(true);
+            $scope.changeDMState(t);
+        });
+
+        $scope.$on("$ionicView.afterEnter", function (event, data) {
+            $scope.changeDMState($rootScope.insList.id);
+        });
+
+        // 添加自选合约 参数
         //  用户输入 inside
         //  对应的合约列表 insList
         //  用户选择添加的合约 customSelect
-        //  $index 
+        //  $index
         $scope.data = { insid: '', insList: [], customSelect: [] };
 
         $scope.$watch('data.insid', function (t) {
@@ -98,7 +84,6 @@ angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$s
                 if (res) {
                     InstrumentManager.addCustomInsList(res);
                 }
-
             });
         }
 
@@ -122,12 +107,14 @@ angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$s
 
 
         $scope.followScroll = function () {
-            var top = $ionicScrollDelegate.$getByHandle('handler').getScrollPosition().top;
-            var left = $ionicScrollDelegate.$getByHandle('handler').getScrollPosition().left;
-            var qt_c = document.querySelector('.qt_container table.qt_c');
-            var qt_r = document.querySelector('.qt_container table.qt_r');
-            qt_r.style.left = (left * -1) + 'px';
-            qt_c.style.top = (top * -1) + 'px';
+            if($ionicScrollDelegate.$getByHandle('handler').getScrollPosition()){
+                var top = $ionicScrollDelegate.$getByHandle('handler').getScrollPosition().top;
+                var left = $ionicScrollDelegate.$getByHandle('handler').getScrollPosition().left;
+                var qt_c = document.querySelector('.qt_container table.qt_c');
+                var qt_r = document.querySelector('.qt_container table.qt_r');
+                qt_r.style.left = (left * -1) + 'px';
+                qt_c.style.top = (top * -1) + 'px';
+            }
         }
     }
 ]);

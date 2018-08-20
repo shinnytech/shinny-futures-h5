@@ -7,7 +7,10 @@
         return {
             restrict: 'E',
             require: '',
-            scope: {},
+            scope: {
+                onOpen: "&",
+                onClose: "&"
+            },
             templateUrl: 'templates/numericKeyboard.html',
             link: function (scope) {
                 scope.numericService = numericKeyboardService;
@@ -39,12 +42,13 @@
                 };
 
                 scope.stopPropagation = function (event) {
-                    console.log(event)
                     event.stopPropagation();
                 };
 
                 scope.$watch('numericService.isOpened()', function () {
                     scope.isOpen = scope.numericService.isOpened();
+                    if(scope.isOpen) scope.onOpen();
+                    else scope.onClose();
                 }, true);
 
                 scope.$watch('numericService.getType()', function () {
@@ -220,10 +224,9 @@
 
                     if (attrs.maxLength) scope.numericService.maxLength(attrs.maxLength);
 
-                    // 设置价格键盘 手数键盘 
+                    // 设置价格键盘 手数键盘
                     // price number
                     if (attrs.type) scope.numericService.setType(attrs.type);
-
 
                     if (angular.isDefined(scope.getterSetter)) {
                         scope.numericService.getterSetter(scope.getterSetter);

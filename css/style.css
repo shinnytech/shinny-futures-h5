@@ -10,6 +10,17 @@
     max-width: 50%;
 }
 
+.posdetail .panel-container table tr{
+    border-bottom: 1px solid #666;
+}
+
+.posdetail .panel-container table tr td{
+    margin: 35px;
+}
+
+.posdetail .panel-container table tr th{
+    vertical-align: middle;
+}
 
 .posdetail .panel-container.tools .frame.frame-left .row {
     height: 40px;
@@ -22,6 +33,39 @@
     color: white;
 }
 
+.posdetail div.numeric-keyboard-input {
+    color: #fff;
+    text-align: right; }
+
+.posdetail .price-input {
+    width: 100%;
+    height: 32px;
+    font-size: 16px;
+    background-color: black;
+    border-radius: 5px;
+    margin: 0 10px;
+}
+
+.posdetail .price-input > div {
+    display: inline-block;
+    height: 100%;
+    font-weight: bold;
+    padding-top: 3px;
+    margin-right: 3px;
+}
+
+
+.makeorder .price-input-group .price-input > div:nth-last-child(3),
+.makeorder .price-input-group .price-input > div:nth-last-child(2) {
+    border-left: 1px solid #fff; }
+.makeorder .price-input-group .price-input > div:nth-last-child(1),
+.makeorder .price-input-group .price-input > div:nth-last-child(2),
+.makeorder .price-input-group .price-input > div:nth-last-child(3) {
+    float: right; }
+
+.makeorder .price-input-group .price-input button {
+    color: #ff0;
+    padding-top: 5px; }
 
 /*number keyboard*/
 
@@ -51,9 +95,10 @@
 }
 
 .keyboard .keyboard-content table tr td button {
-    font-size: 22px;
+    font-size: 18px;
+    padding: 0 8px;
     width: 100%;
-    height: 45px;
+    height: 44px;
     border: none;
     background-color: transparent;
 }
@@ -97,62 +142,16 @@
     border-bottom-color: #ff0;
 }
 
-.transaction .datepickercontainer.row {
-    position: absolute;
-    top: 40px;
-    padding: 0px 0px 12px 0px;
+.transaction .list.all .item {
+    visibility: visible;
 }
 
-.transaction .datepickercontainer .col {
-    padding: 0px 4px;
+.transaction .list.in .item.out {
+    visibility: hidden;
 }
 
-.transaction .datepickercontainer .col-40 {
-    flex: 0 0 40%;
-    max-width: 40%;
-}
-
-.transaction .datepickercontainer .col-16 {
-    flex: 0 0 14%;
-    max-width: 14%;
-}
-
-.transaction .datepickercontainer .col-4 {
-    padding-top: 6px;
-    flex: 0 0 6%;
-    max-width: 6%;
-}
-
-.transaction .datepickercontainer input {
-    border-radius: 4px;
-    padding-left: 2px;
-    height: 32px;
-    width: 100%;
-}
-
-.transaction .col {
-    padding: 2px;
-    font-size: small;
-    text-align: center;
-    /*white-space: normal;
-    word-wrap: break-word;
-    word-break: normal;
-    overflow: hidden;*/
-}
-
-.transaction .col p {
-    line-height: 15px;
-    font-size: 13px;
-    color: #dddddd;
-    white-space: normal;
-}
-
-.transaction .col:first-child {
-    text-align: left;
-}
-
-.transaction .col:nth-child(2) {
-    text-align: right;
+.transaction .list.out .item.in {
+    visibility: hidden;
 }
 
 /*banktransfer*/
@@ -178,6 +177,16 @@
 
 .userinfo .bar {
     position: relative;
+}
+
+.userinfo ion-content .content .list.account_info .item,
+.userinfo ion-content .content .list.account_info .item-note{
+    font-size: 14px;
+    color: #FFF;
+}
+
+.userinfo ion-content .content .list.account_info .item{
+    padding: 10px;
 }
 
 /*quote*/

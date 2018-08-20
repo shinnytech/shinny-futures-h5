@@ -8,9 +8,13 @@
                 if (typeof sourceProperty === 'object' && target.hasOwnProperty(property)) {
                     if (sourceProperty === null) {
                         // typeof null === 'object' 表示不存在
+                        target[property] = null;
+                        continue;
+                    } else if(target[property] == null || target[property] == undefined ){
                         target[property] = sourceProperty;
+                    } else {
+                        target[property] = merge_object(target[property], sourceProperty);
                     }
-                    target[property] = merge_object(target[property], sourceProperty);
                 } else {
                     target[property] = sourceProperty;
                 }
@@ -120,10 +124,15 @@
         return d;
     }
 
-    function dm_clear_data() {
+    function dm_clear_data(key) {
         // 清空数据
-        var state = DM.datas.state;
-        DM.datas = { state: state };
+        if(key==='trade'){
+            delete DM.datas.trade;
+        } else {
+            var state = DM.datas.state;
+            var trade = DM.datas.trade;
+            DM.datas = { state: state, trade: trade };
+        }
     }
 
     this.DM = {

@@ -1,21 +1,14 @@
-angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope', '$scope', '$ionicPopover', '$ionicNavBarDelegate', '$interval', '$ionicHistory', '$ionicPopup', '$ionicLoading', 'LoginService',
-    function ($rootScope, $scope, $ionicPopover, $ionicNavBarDelegate, $interval, $ionicHistory, $ionicPopup, $ionicLoading, LoginService) {
+angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope', '$scope', '$ionicScrollDelegate', '$ionicPopover', '$interval', '$ionicHistory', 'numericKeyboardService',
+    function ($rootScope, $scope, $ionicScrollDelegate, $ionicPopover, $interval, $ionicHistory, numericKeyboardService) {
 
         $scope.ins_id = DM.datas.state.detail_ins_id;
-        $scope.pos_id = DM.datas.state.detail_pos_id;
+        $scope.position = null;
+        $scope.buy_close_avaliable = false;
+        $scope.sell_close_avaliable = false;
 
         $scope.order = {
             price: DM.datas.quotes[$scope.ins_id].last_price,
             volume: 1
-        }
-
-        // 选择合约的数据集
-        $scope.insList = {};
-        $scope.insList.array = [];
-        $scope.insList.selected = $scope.ins_id;
-
-        $scope.msg = {
-            text: ''
         }
 
         $scope.seconds = 5 * 60;
@@ -31,7 +24,7 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
         }
 
         // c : ['chart'|'panel']
-        // p : ['TODAY'|'D1'|'H1'|'M5'] | ['info'|'discuss'|'plan'|'plan_2'|'tools']
+        // p : ['TODAY'|'D1'|'H1'|'M5'] | ['info'|'discuss'|'plan'|'tools']
         $scope.switchType = function (c, p) {
             $scope[c].type = p;
             if (c == 'panel') {
@@ -40,6 +33,24 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
                         subpage: p,
                     }
                 });
+                if(DM.datas.account_id && DM.datas.trade[DM.datas.account_id].positions){
+                    $scope.position = DM.datas.trade[DM.datas.account_id].positions[$scope.ins_id];
+                    if($scope.position){
+                        var volume_long = $scope.position.volume_long_today + $scope.position.volume_long_his;
+                        var volume_short = $scope.position.volume_short_today + $scope.position.volume_short_his;
+                        $scope.buy_close_avaliable = volume_short > 0 ? true : false;
+                        $scope.sell_close_avaliable = volume_long > 0 ? true : false;
+                    } else {
+                        $scope.buy_close_avaliable = false;
+                        $scope.sell_close_avaliable = false;
+                    }
+                } else {
+                    $scope.buy_close_avaliable = false;
+                    $scope.sell_close_avaliable = false;
+                }
+                // $scope.numericService
+                if(numericKeyboardService.isOpened()) numericKeyboardService.close();
+                $ionicScrollDelegate.scrollTop(true);
             } else {
                 $scope.seconds = 0;
                 switch (p) {
@@ -157,43 +168,13 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
             $scope.popover = popover;
         });
 
-        $scope.popover_other_pos = $ionicPopover.fromTemplateUrl('other-pos-popover.html', {
-            scope: $scope
-        }).then(function (popover) {
-            $scope.popover_other_pos = popover;
-        });
-
         $scope.openPopover = function (type) {
-            if (type == 'choose_other_pos') {
-                $scope.popover_other_pos.show();
-            } else if (type == 'setting') {
+            if (type == 'setting') {
                 $scope.popover.show();
             }
         };
 
         $scope.closePopover = function (t) {
-            if (t == 'choose_other_pos') {
-                $scope.ins_id = $scope.insList.selected;
-                var pos_list = DM.datas.quotes[$scope.ins_id].pos_list;
-                if (pos_list) {
-                    $scope.pos_id = pos_list.split(',')[0];
-                    DM.update_data({
-                        state: {
-                            detail_ins_id: $scope.ins_id,
-                            detail_pos_id: $scope.pos_id
-                        }
-                    });
-                } else {
-                    $scope.pos_id = 'new';
-                    DM.update_data({
-                        state: {
-                            detail_ins_id: $scope.ins_id,
-                            detail_pos_id: "new"
-                        }
-                    });
-                }
-            }
-            $scope.popover_other_pos.hide();
             $scope.popover.hide();
         };
 
@@ -201,30 +182,23 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
         $scope.$on('$destroy', function () {
             $scope.popover.remove();
         });
-        $scope.history = '';
+
         $scope.goBack = function () {
-            $rootScope.$state.go($scope.history);
+            if($ionicHistory.backView().stateName === 'app.quote'){
+                DM.update_data({
+                    state: {
+                        page: "quotes"
+                    }
+                });
+            }
+            $ionicHistory.goBack();
         };
 
-        $scope.$on("$ionicView.beforeEnter", function (event, data) {
-            console.log("$ionicView.beforeEnter");
-            $scope.ins_id = DM.datas.state.detail_ins_id;
-            $scope.pos_id = DM.datas.state.detail_pos_id;
-            $scope.insList.selected = $scope.ins_id;
-            $scope.order = {
-                price: DM.datas.quotes[$scope.ins_id].last_price,
-                volume: 1
-            }
-            // $scope.chart.type = 'M5';
-            // $scope.panel.type = 'info';
-        });
-
         $scope.$on("$ionicView.afterEnter", function (event, data) {
-            console.log("$ionicView.afterEnter");
-            if ($ionicHistory.backView() == null) {
-                $scope.history = "app.tabs.position";
-            } else if ($ionicHistory.backView().stateName == "app.tabs.position" || $ionicHistory.backView().stateName == "app.tabs.quote") {
-                $scope.history = $ionicHistory.backView().stateName;
+            $scope.ins_id = DM.datas.state.detail_ins_id;
+            $scope.order = {
+                price: DM.datas.quotes[$scope.ins_id] ? DM.datas.quotes[$scope.ins_id].last_price : 0,
+                volume: 1
             }
 
             DM.update_data({
@@ -234,72 +208,173 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
                     req_id: ""
                 }
             });
-
-            // 不同页面跳转 可选的全部合约列表不同
-            if ($ionicHistory.backView().stateName == "app.tabs.position") {
-                for (var pos in DM.datas.positions) {
-                    var ins = DM.datas.positions[pos].instrument_id;
-                    if ($scope.insList.array.indexOf(ins) < 0) {
-                        $scope.insList.array.push(ins);
-                    }
-                }
-
-            } else if ($ionicHistory.backView().stateName == "app.tabs.quote") {
-                var ins_type = DM.datas.state.ins_type;
-                var ins_str = DM.datas[ins_type + "_ins_list"] || '';
-                $scope.insList.array = ins_str == '' ? [] : ins_str.split(',');
+            if(InstrumentManager.isCustomIns($scope.ins_id)){
+                $scope.btn.text = '删除自选';
+            } else {
+                $scope.btn.text = '添加自选';
             }
         });
 
+        $scope.btn = {
+            text: '',
+            toggleCustom: function(){
+                if(InstrumentManager.isCustomIns($scope.ins_id)){
+                    InstrumentManager.delCustomIns($scope.ins_id);
+                    $scope.btn.text = '添加自选';
+                    Toast.success('自选合约 已经删除 ' + $scope.ins_id);
+                } else {
+                    InstrumentManager.addCustomIns($scope.ins_id);
+                    $scope.btn.text = '删除自选';
+                    Toast.success('自选合约 已经添加 ' + $scope.ins_id);
+                }
+            }
+        };
+
         $scope.$watch('ins_id', function (newValue) {
             $scope.insObj = window.InstrumentManager.getInstrumentById(newValue);
+            $scope.ins_id_show = $scope.insObj.ins_id; //name.match(re)[2] || '';
             $scope.ins_name = $scope.insObj.simple_name; //name.match(re)[2] || '';
             if($scope.chart.type == 'TODAY'){
                 $scope.sendChart()
             }else{
                 $scope.sendKChart();
             }
-            
-        });
 
-        $scope.sendMessage = function () {
-            console.log($scope.msg.text);
-            nim.sendText({
-                scene: 'team',
-                to: '18182525',
-                text: $scope.msg.text,
-                done: function (error, msg) {
-                    MessageQueue.push(msg);
-                    DM.update_data({
-                        state: {
-                            lastestChatTime: msg.time
-                        }
-                    });
-                }
-            });
-        }
+        });
 
         $scope.insert_order = function(offset, dir){
             if(!DM.datas.account_id){
                 $rootScope.$state.go('app.userinfo');
                 return;
             }
-
-            var req_id = DM.datas.session_id + WS.getReqid();
-            if(offset === 'CLOSE' && $scope.insObj.exchange_id === 'SHFE'){
-                offset = 'CLOSETODAY';
+            if($scope.insObj.class != 'FUTURE'){
+                Toast.alert($scope.ins_name + '  不支持交易！');
+                return;
             }
-            TR_WS.send({
+
+            if($scope.order.volume <= 0){
+                navigator.notification.alert(
+                    '请输入下单手数！',
+                    function() {
+                        return;
+                    },
+                    '手数错误',
+                    '确定'
+                );
+                return;
+            }
+
+            // todo
+            var price_type = 'ANY';
+            var price = 0;
+
+            if ($scope.order.price != '市价') {
+                price_type = 'LIMIT';
+                var ins = DM.datas.quotes[$scope.ins_id];
+                switch ($scope.order.price) {
+                    case '排队价':
+                        price = dir == 'SELL' ? ins.ask_price1 : ins.bid_price1;
+                        break;
+                    case '对手价':
+                        price = dir == 'SELL' ? ins.bid_price1 : ins.ask_price1;
+                        break;
+                    case '涨停价':
+                        price = ins.upper_limit;
+                        break;
+                    case '跌停价':
+                        price = ins.lower_limit;
+                        break;
+                    default:
+                        price = $scope.order.price;
+                        break;
+                }
+                $scope.order.price = price;
+            }
+
+            var req_insert_order = {
                 aid: "insert_order", // 下单请求
-                order_id: req_id,
                 exchange_id: $scope.insObj.exchange_id,
-                instrument_id: $scope.ins_id,
-                direction: dir,
-                offset: offset, // OPEN | CLOSE | CLOSETODAY
-                volume: $scope.order.volume,
-                price_type: "LIMIT", // 报单类型
-                limit_price: $scope.order.price
-            });
+                instrument_id: $scope.insObj.ins_id,
+                volume_condition: "ANY",
+                time_condition: price_type === 'ANY' ? 'IOC' : 'GFD',
+                hedge_flag: "SPECULATION",
+                user_id: DM.datas.account_id,
+                limit_price: Number(price)
+            }
+            var insert_msg = '确认 '; // 提示用户字符串
+            var open = 0; // 开仓手数
+            var close = 0; // 平仓手数
+            var close_today = 0; // 平今手数
+
+            if(offset === 'OPEN'){
+                open = $scope.order.volume;
+                insert_msg += (dir === 'BUY' ? '买开' : '卖开');
+                insert_msg += open + '手，' + '价格' + $scope.order.price + '？';
+            } else if ($scope.position) {
+                var close_avaliable = dir === 'BUY' ?
+                    $scope.position.volume_short_today + $scope.position.volume_short_his :
+                    $scope.position.volume_long_today + $scope.position.volume_long_his;
+                close = Math.min(close_avaliable, $scope.order.volume);
+                if($scope.insObj.exchange_id === 'SHFE'){
+                    close_today = dir === 'BUY' ?
+                        ($scope.position.volume_short_today >= close ? close : $scope.position.volume_short_today) :
+                        ($scope.position.volume_long_today >= close ? close : $scope.position.volume_long_today);
+                    close = dir === 'BUY' ?
+                        ($scope.position.volume_short_today >= close ? 0 : close - $scope.position.volume_short_today) :
+                        ($scope.position.volume_long_today >= close ? 0 : close - $scope.position.volume_long_today);
+                }
+                insert_msg += (dir === 'BUY' ? '买平' : '卖平');
+                insert_msg += (close + close_today ) + '手，' + '价格' + $scope.order.price + '？';
+            } else {
+                insert_msg = '无可平仓单！';
+            }
+            // 提示用户后下单
+            navigator.notification.confirm(
+                insert_msg,
+                function (buttonIndex) {
+                    if (buttonIndex == 1) {
+                        if(open > 0){
+                            TR_WS.send(Object.assign({
+                                order_id: WS.getReqid(),
+                                direction: dir,
+                                offset: "OPEN", // OPEN | CLOSE | CLOSETODAY
+                                volume: Number(open),
+                                price_type: price_type, // 报单类型
+                            }, req_insert_order));
+                        }
+                        if(close > 0){
+                            TR_WS.send(Object.assign({
+                                order_id: WS.getReqid(),
+                                direction: dir,
+                                offset: "CLOSE", // OPEN | CLOSE | CLOSETODAY
+                                volume: Number(close),
+                                price_type: price_type, // 报单类型
+                            }, req_insert_order));
+                        }
+                        if(close_today > 0){
+                            TR_WS.send(Object.assign({
+                                order_id: WS.getReqid(),
+                                direction: dir,
+                                offset: "CLOSETODAY", // OPEN | CLOSE | CLOSETODAY
+                                volume: Number(close_today),
+                                price_type: price_type, // 报单类型
+                            }, req_insert_order));
+                        }
+                    } else {
+                        return;
+                    }
+                },
+                '确认下单',
+                ['确认', '取消']
+            );
+        }
+
+        $scope.open_cb = function() {
+            $('ion-content.posdetail').css('top', '-245px');
+        }
+
+        $scope.close_cb = function() {
+            $('ion-content.posdetail').css('top', '44px');
         }
     }
 ]);
