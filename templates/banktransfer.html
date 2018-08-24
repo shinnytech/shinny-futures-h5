@@ -8,7 +8,7 @@
         <div class="list">
             <div class="item item-input item-select">
                 <div class="input-label">银行账号</div>
-                <select id="bank_list"
+                <select id="bank_list" data-tap-disabled="true"
                         ng-options="bank.id as bank.name + '(' + bank.id + ')' for (id,bank) in banklist track by bank.id"
                         ng-model="query.bank_id" >
                 </select>

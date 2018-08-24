@@ -15,7 +15,8 @@
                         <span class="input-label">
                             选择期货公司
                         </span>
-                        <select ng-options="broker for broker in brokers track by broker"
+                        <select  data-tap-disabled="true"
+                                ng-options="broker for broker in brokers track by broker"
                                 ng-disabled='login_data.state == "success"'
                                 ng-model="login_data.bid" >
                         </select>
