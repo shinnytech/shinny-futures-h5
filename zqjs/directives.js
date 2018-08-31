@@ -1,44 +1,13 @@
 angular.module('starter')
 
-.directive('tableAddon', [function () {
-    return {
-        restrict: 'A',
-        link: function (scope, ele, attrs) {
-            var table_qt_rc = document.createElement('table');
-            table_qt_rc.className = "quote qt_rc";
-            table_qt_rc.innerHTML = '<thead> <tr class="odd"> <td>合约代码</td> </tr> <tr class="even"> <td>合约名称</td> </tr> </thead>';
-
-            var div_qt_rwrapper = document.createElement('div');
-            div_qt_rwrapper.className = "qt_rwrapper";
-            var temp = '<table class="quote qt_r"> <thead> <tr class="odd"> <td>合约代码</td>';
-            for (var i = 0; i < CONST.inslist_cols_odd_name.length; i++) {
-                temp += '<td>' + CONST.inslist_cols_odd_name[i] + '</td>';
-            }
-            temp += '</tr> <tr class="even"> <td>合约名称</td>';
-            for (var i = 0; i < CONST.inslist_cols_even_name.length; i++) {
-                temp += '<td>' + CONST.inslist_cols_even_name[i] + '</td>';
-            }
-            temp += '</tr> </thead> <tbody> </tbody></table>';
-
-            div_qt_rwrapper.innerHTML = temp;
-
-            var div_qt_cwrapper = document.createElement('div');
-            div_qt_cwrapper.className = "qt_cwrapper";
-            div_qt_cwrapper.innerHTML = '<table class="quote qt_c"> <thead> <tr class="odd"> <td>合约代码</td> </tr> <tr class="even"> <td>合约名称</td></tr> </thead> <tbody> </tbody></table>';
-            ele[0].appendChild(table_qt_rc);
-            ele[0].appendChild(div_qt_rwrapper);
-            ele[0].appendChild(div_qt_cwrapper);
-        }
-    }
-}])
-
 .directive('tableAddonOdd', [function () {
     return {
         restrict: 'A',
         link: function (scope, ele, attrs) {
             var temp = ' <td>合约代码</td>';
-            for (var i = 0; i < CONST.inslist_cols_odd_name.length; i++) {
-                temp += '<td>' + CONST.inslist_cols_odd_name[i] + '</td>';
+            for (var i = 0; i < CONST.inslist_cols_odd.length; i++) {
+                var name = CONST.inslist_cols_name[CONST.inslist_cols_odd[i]];
+                temp += '<td>' + name + '</td>';
             }
             ele[0].innerHTML = temp;
         }
@@ -50,30 +19,11 @@ angular.module('starter')
         restrict: 'A',
         link: function (scope, ele, attrs) {
             var temp = ' <td>合约名称</td>';
-            for (var i = 0; i < CONST.inslist_cols_even_name.length; i++) {
-                temp += '<td>' + CONST.inslist_cols_even_name[i] + '</td>';
+            for (var i = 0; i < CONST.inslist_cols_even.length; i++) {
+                var name = CONST.inslist_cols_name[CONST.inslist_cols_even[i]];
+                temp += '<td>' + name + '</td>';
             }
             ele[0].innerHTML = temp;
-        }
-    }
-}])
-
-.directive('bgOpacity', [function () {
-    return {
-        restrict: 'A',
-        link: function (scope, ele, attrs) {
-            var div = document.createElement('div');
-            div.style.position = 'absolute';
-            div.style.top = '0px';
-            div.style.left = '0px';
-            div.style.width = '100%';
-            div.style.height = '100%';
-            div.style.opacity = attrs.bgOpacity;
-            div.style.backgroundColor = '#333';
-            div.style.willChange = 'transform';
-
-            var c = ele[0].querySelector('.scroll');
-            ele[0].insertBefore(div, c);
         }
     }
 }])
@@ -100,7 +50,8 @@ angular.module('starter')
     };
 }])
 
-.directive('showTabs', ['$rootScope', function ($rootScope) {
+
+    .directive('showTabs', ['$rootScope', function ($rootScope) {
     return {
         restrict: 'A',
         link: function ($scope, $el) {

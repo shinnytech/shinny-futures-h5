@@ -1,13 +1,13 @@
 angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope', '$scope', '$ionicScrollDelegate', '$ionicPopover', '$interval', '$ionicHistory', 'numericKeyboardService',
     function ($rootScope, $scope, $ionicScrollDelegate, $ionicPopover, $interval, $ionicHistory, numericKeyboardService) {
 
-        $scope.ins_id = DM.datas.state.detail_ins_id;
+        $scope.ins_id = null;
         $scope.position = null;
         $scope.buy_close_avaliable = false;
         $scope.sell_close_avaliable = false;
 
         $scope.order = {
-            price: DM.datas.quotes[$scope.ins_id].last_price,
+            price: 0,
             volume: 1
         }
 
@@ -48,7 +48,6 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
                     $scope.buy_close_avaliable = false;
                     $scope.sell_close_avaliable = false;
                 }
-                // $scope.numericService
                 if(numericKeyboardService.isOpened()) numericKeyboardService.close();
                 $ionicScrollDelegate.scrollTop(true);
             } else {
@@ -157,9 +156,7 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
             updateState()
         });
 
-        $scope.$watch('setting.showAvgline', function () {
-            console.log('showAvgline: ', $scope.setting.showAvgline);
-        });
+        $scope.$watch('setting.showAvgline', function () {});
 
         // .fromTemplateUrl() method
         $scope.popover = $ionicPopover.fromTemplateUrl('chart-popover.html', {
@@ -184,18 +181,18 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
         });
 
         $scope.goBack = function () {
-            if($ionicHistory.backView().stateName === 'app.quote'){
-                DM.update_data({
-                    state: {
-                        page: "quotes"
-                    }
-                });
-            }
+            if(numericKeyboardService.isOpened()) numericKeyboardService.close();
+            $ionicScrollDelegate.scrollTop(true);
             $ionicHistory.goBack();
         };
 
         $scope.$on("$ionicView.afterEnter", function (event, data) {
+            if(!DM.datas.state.detail_ins_id){
+                $rootScope.$state.go('app.quote');
+                return;
+            }
             $scope.ins_id = DM.datas.state.detail_ins_id;
+
             $scope.order = {
                 price: DM.datas.quotes[$scope.ins_id] ? DM.datas.quotes[$scope.ins_id].last_price : 0,
                 volume: 1
@@ -231,15 +228,16 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
         };
 
         $scope.$watch('ins_id', function (newValue) {
-            $scope.insObj = window.InstrumentManager.getInstrumentById(newValue);
-            $scope.ins_id_show = $scope.insObj.ins_id; //name.match(re)[2] || '';
-            $scope.ins_name = $scope.insObj.simple_name; //name.match(re)[2] || '';
-            if($scope.chart.type == 'TODAY'){
-                $scope.sendChart()
-            }else{
-                $scope.sendKChart();
+            if(newValue){
+                $scope.insObj = InstrumentManager.getInstrumentById(newValue);
+                $scope.ins_id_show = $scope.insObj.ins_id; //name.match(re)[2] || '';
+                $scope.ins_name = $scope.insObj.simple_name; //name.match(re)[2] || '';
+                if($scope.chart.type == 'TODAY'){
+                    $scope.sendChart()
+                }else{
+                    $scope.sendKChart();
+                }
             }
-
         });
 
         $scope.insert_order = function(offset, dir){

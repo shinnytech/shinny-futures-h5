@@ -118,8 +118,7 @@
         var d = DM.datas;
         for (var i = 0; i < keys.length; i++) {
             d = d[keys[i]]
-            if (d == undefined)
-                return undefined;
+            if (d == undefined) break;
         }
         return d;
     }
@@ -136,7 +135,7 @@
     }
 
     this.DM = {
-        datas: { 'state': {} },
+        datas: { 'state': { is_scrolling: false} },
         init: dm_init,
         run: dm_run,
         get_data: dm_get,

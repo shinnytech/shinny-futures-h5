@@ -101,14 +101,11 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
 
         // 返回上一页
         $scope.goBack = function() {
-            if($ionicHistory.backView().stateName === 'app.quote'){
-                DM.update_data({
-                    state: {
-                        page: "quotes"
-                    }
-                });
+            if($ionicHistory.backView() === null) {
+                $rootScope.$state.go('app.quote');
+            } else {
+                $ionicHistory.goBack();
             }
-            $ionicHistory.goBack();
         };
     }
 ]);

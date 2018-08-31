@@ -1,5 +1,5 @@
-angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$scope', '$ionicScrollDelegate', '$ionicLoading', '$ionicPopover', '$ionicPopup', '$ionicNavBarDelegate',
-    function ($rootScope, $scope, $ionicScrollDelegate, $ionicLoading, $ionicPopover, $ionicPopup, $ionicNavBarDelegate) {
+angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$scope', '$ionicLoading', '$ionicPopover', '$ionicPopup',
+    function ($rootScope, $scope, $ionicLoading, $ionicPopover, $ionicPopup) {
         $scope.changeDMState = function (t) {
             DM.update_data({
                 'state': {
@@ -29,11 +29,11 @@ angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$s
         });
 
         $scope.$watch('insList.id', function (t) {
-            $ionicScrollDelegate.scrollTop(true);
+            if(DIVISIONS.tbody && DIVISIONS.tbody.dom) DIVISIONS.tbody.dom.scrollTo(0, 0);
             $scope.changeDMState(t);
         });
 
-        $scope.$on("$ionicView.afterEnter", function (event, data) {
+        $scope.$on("$ionicView.enter", function (event, data) {
             $scope.changeDMState($rootScope.insList.id);
         });
 
@@ -80,7 +80,6 @@ angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$s
 
             myPopup.then(function (res) {
                 // 检查是否有这个合约
-                // data.insList = InstrumentManager.getInsListByInput(res);
                 if (res) {
                     InstrumentManager.addCustomInsList(res);
                 }
@@ -102,18 +101,6 @@ angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$s
                     '删除自选合约', // title
                     ['删除', '取消'] // buttonLabels
                 );
-            }
-        }
-
-
-        $scope.followScroll = function () {
-            if($ionicScrollDelegate.$getByHandle('handler').getScrollPosition()){
-                var top = $ionicScrollDelegate.$getByHandle('handler').getScrollPosition().top;
-                var left = $ionicScrollDelegate.$getByHandle('handler').getScrollPosition().left;
-                var qt_c = document.querySelector('.qt_container table.qt_c');
-                var qt_r = document.querySelector('.qt_container table.qt_r');
-                qt_r.style.left = (left * -1) + 'px';
-                qt_c.style.top = (top * -1) + 'px';
             }
         }
     }

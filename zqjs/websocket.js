@@ -7,12 +7,16 @@
         var queue = [];
 
         var req_id = 0;
+        var req_login = null;
+        var subscribe_quote = null;
         var _sessionid = Math.random().toString(36).substr(2);
 
         // 自动重连开关
         var reconnect = true;
         var reconnectTask;
-        var reconnectInterval = 20000;
+        var reconnectInterval = SETTING.reconnect_interval ? SETTING.reconnect_interval : 2000;
+        var reconnectMaxTimes = SETTING.reconnect_max_times ? SETTING.reconnect_max_times : 5;
+        var reconnectTimes = 0;
 
         var CONNECTING = 0;
         var OPEN = 1;
@@ -35,7 +39,7 @@
         function showOrders(orders){
             for(var k in orders){
                 var order = orders[k];
-                if(_order_id_list_to_show.includes(order.order_id) && order.last_msg != '未成交'){
+                if(_order_id_list_to_show.indexOf(order.order_id) > -1 && order.last_msg != '未成交'){
                     var msg = order.instrument_id;
                     msg += order.direction === "BUY" ? " 买" : " 卖";
                     msg += order.offset === "OPEN" ? "开 " : "平 ";
@@ -64,7 +68,7 @@
             _order_id_list_to_show = [];
             ws = new WebSocket(server_url);
             ws.onmessage = function (message) {
-                var decoded = JSON.parse(message.data.replace(/\bNaN\b/g, '"-"'));
+                var decoded = eval('(' + message.data + ')');
                 // update datamanager
                 if (decoded.aid == "rtn_data") {
                     for (var i = 0; i < decoded.data.length; i++) {
@@ -90,28 +94,42 @@
                 ws.send('{"aid":"peek_message"}');
             };
             ws.onclose = function (event) {
-                console.info(JSON.stringify(event));
                 // 清空 datamanager
                 Toast.alert('服务器连接已断开！')
                 DM.clear_data(clear_key);
-                // 自动重连
-                if (reconnect) {
-                    reconnectTask = setInterval(function () {
-                        if (ws.readyState === CLOSED){
-                            Toast.message('服务器正在重连！')
-                            init();
-                        }
-                    }, reconnectInterval);
+                if(reconnectTimes >= reconnectMaxTimes){
+                    Toast.alert('服务器已经重连 ' + reconnectTimes + ' 次，到达最大重连次数，请检查网络后重新打开。');
+                    clearInterval(reconnectTask);
+                    reconnectTask = null;
+                    return;
+                } else {
+                    // 自动重连
+                    if (reconnect && !reconnectTask) {
+                        reconnectTimes += 1;
+                        reconnectTask = setInterval(function () {
+                            if (ws.readyState === CLOSED){
+                                Toast.message('服务器正在重连！');
+                                clearInterval(reconnectTask);
+                                reconnectTask = null;
+                                init();
+                            }
+                        }, reconnectInterval);
+                    }
                 }
+
             };
             ws.onerror = function (error) {
                 console.error(JSON.stringify(error, ["message", "arguments", "type", "name"]));
                 ws.close();
             };
             ws.onopen = function () {
+                reconnectTimes = 0;
                 req_id = 0;
+                if(subscribe_quote) {ws.send(JSON.stringify(subscribe_quote))};
+                if(req_login) {ws.send(JSON.stringify(req_login))};
                 if (reconnectTask) {
                     clearInterval(reconnectTask);
+                    reconnectTask = null;
                 }
                 if (queue.length > 0) {
                     while (queue.length > 0) {
@@ -128,6 +146,12 @@
         }
 
         function send(message) {
+            if(message.aid === 'req_login'){
+                req_login = message;
+            } else if (message.aid === 'subscribe_quote'){
+                subscribe_quote = message;
+            }
+
             if(message.aid === 'insert_order'){
                 _order_id_list_to_show.push(message.order_id)
             }

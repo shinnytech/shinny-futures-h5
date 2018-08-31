@@ -53,7 +53,6 @@
 
                 scope.$watch('numericService.getType()', function () {
                     scope.keyboardType = numericKeyboardService.getType();
-                    console.log('change to : ' + scope.keyboardType);
                 }, true);
             }
         };
@@ -218,6 +217,7 @@
                             }
                         }
                     }
+                    ctrl.$viewValue = String(ctrl.$viewValue)
                     // ctrl.$viewValue = "";
 
                     scope.numericService.open();

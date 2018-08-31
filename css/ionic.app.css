@@ -10133,7 +10133,7 @@ a.button {
   height: 20px; }
   .posdetail .col:nth-child(odd) {
     color: #ccc;
-    padding: 0px 0px 0px 16px;
+    padding: 0px 0px 0px 6px;
     text-align: left; }
   .posdetail .col:nth-child(even) {
     font-weight: bold;

@@ -1,5 +1,4 @@
-<ion-view view-title="" >
-    <div class="qt_container" table-addon on-hold="onHold($event)">
+<ion-view view-title="" class="qt_container">
     <ion-header-bar class="bar bar-dark" align-title="center">
         <div class="buttons nav-bar-left"></div>
         <h1 class="title" ng-click="openPopover()">{{insList.title}} <i class="icon ion-chevron-down"></i></h1>
@@ -10,22 +9,22 @@
             <div class="nav-bar-right"></div>
         </div>
     </ion-header-bar>
-    <ion-content direction="xy" on-scroll="followScroll()" has-bouncing="false" delegate-handle="handler" overflow-scroll="false">
-        <div>
-            <table class="quote qt">
-                <thead>
-                    <tr class="odd" table-addon-odd>
-                        <td>合约代码</td>
-                    </tr>
-                    <tr class="even" table-addon-even>
-                        <td>合约名称</td>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+    <ion-content scroll="false">
+        <table class="quote qt">
+            <thead>
+            <tr class="odd" table-addon-odd>
+                <td>合约代码</td>
+            </tr>
+            <tr class="even" table-addon-even>
+                <td>合约名称</td>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <ion-scroll direction="x" style="width: 100%; height: 40px">
+            <div class="products"></div>
+        </ion-scroll>
     </ion-content>
-</div>
 </ion-view>
 
 <script type="text/ng-template" id='ins_types.html'>
@@ -38,7 +37,8 @@
                        ng-repeat="item in ins_list_types"
                        ng-value="item.id"
                        ng-click="closePopover(item.id, item.name)"
-            >{{item.name}}</ion-radio>
+            >{{item.name}}
+            </ion-radio>
         </ion-content>
     </ion-popover-view>
 </script>

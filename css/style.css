@@ -48,10 +48,10 @@
 
 .posdetail .price-input > div {
     display: inline-block;
-    height: 100%;
+    line-height: 32px;
+    width: 100%;
     font-weight: bold;
-    padding-top: 3px;
-    margin-right: 3px;
+    padding-right: 6px;
 }
 
 
@@ -79,6 +79,7 @@
     position: fixed;
     bottom: 0;
     width: 100%;
+    background-color: rgb(201,205,211);
 }
 
 .keyboard .keyboard-content table tr {
@@ -89,18 +90,21 @@
     width: 25%;
     height: 45px;
     padding: 1px;
-    background-color: #eee;
+    text-align: center;
     vertical-align: middle;
-    border: 1px solid #484848;
 }
 
 .keyboard .keyboard-content table tr td button {
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: bold;
     padding: 0 8px;
-    width: 100%;
-    height: 44px;
-    border: none;
-    background-color: transparent;
+    width: 90%;
+    height: 90%;
+    border: 0;
+    background-color: #fff;
+    border-radius: 8px;
+    margin: 2px;
+    box-shadow: 1px 1px 1px #666;
 }
 
 .keyboard .keyboard-content table tr td button.big {
@@ -196,60 +200,27 @@
     font-size: 14px;
 }
 
-.qt_rwrapper, .qt_cwrapper {
-    overflow: hidden;
-    position: absolute;
-    z-index: 1004;
-    background-color: #666;
-}
-
-.qt_rwrapper {
-    top: 44px;
-}
-
-.platform-ios.platform-cordova:not(.fullscreen) .qt_rwrapper {
-    top: 64px;
-}
-
-.qt_cwrapper {
-    top: 44px;
-    left: 0px;
-}
-
-.platform-ios.platform-cordova:not(.fullscreen) .qt_cwrapper {
-    top: 64px;
-}
-
-table.qt_rc {
-    background-color: #666;
-    position: absolute;
-    top: 44px;
-    z-index: 1005;
-    width: 70px;
-}
-
-.platform-ios.platform-cordova:not(.fullscreen) table.qt_rc {
-    top: 64px;
-}
-
-table.qt_r {
-    width: 490px;
-    position: relative;
-}
-
-table.qt_c {
-    width: 70px;
-    position: relative;
-}
-
-table.qt {
-    width: 70px;
-}
-
 table.quote {
+    width: 100%;
     table-layout: fixed;
     text-align: center;
     border-collapse: collapse;
+}
+
+table.quote thead {
+    table-layout: fixed;
+}
+
+table.quote tbody {
+    display: block;
+    height: 200px;
+    overflow-y: scroll;
+}
+
+table.quote tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
 }
 
 table.quote tr.odd:first-child {
@@ -260,19 +231,15 @@ table.quote tr.even {
     border-bottom: 1px solid #eee;
 }
 
-table.quote.qt_r thead {
-    border-bottom: 2px solid #eee;
-}
-
 table.quote td:first-child {
     /*border-left: 1px solid #666;*/
 }
+
 
 table.quote td {
     /*border-right: 1px solid #666;*/
     table-layout: fixed;
     height: 20px;
-    width: 70px;
     white-space: nowrap;
     overflow: hidden;
     color: #fff;
@@ -282,16 +249,27 @@ table.quote td:after {
     content: attr(data-content);
 }
 
-table.quote td:not(:first-child) {
-    text-align: right;
-}
-
 table.quote td.r, table.quote td.R {
     color: #F00;
 }
 
 table.quote td.g, table.quote td.G {
     color: #0F0;
+}
+
+.qt_container div.products{
+    position: absolute;
+    min-width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background-color: rgb(94, 94, 94);
+}
+
+.qt_container div.products span{
+    width: 50px;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
 }
 
 /*popup-other-pos*/

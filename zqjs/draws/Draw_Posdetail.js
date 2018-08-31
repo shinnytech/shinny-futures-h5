@@ -1,7 +1,6 @@
 function draw_page_posdetail() {
     if (DM.get_data("state" + SEPERATOR + "page") == "posdetail") {
         var insid = DM.get_data('state' + SEPERATOR + 'detail_ins_id');
-        var posid = DM.get_data('state' + SEPERATOR + 'detail_pos_id');
         var subpage = DM.get_data("state" + SEPERATOR + "subpage");
         DM.run(draw_page_posdetail_chart);
         setTimeout(function () {
@@ -352,7 +351,6 @@ function draw_page_posdetail_discuss() { // 持仓
 
         function gen_close_pos(position, dir) {
             return function () {
-                var req_id = WS.getReqid();
                 var exchange_id = position.exchange_id;
                 var instrument_id = position.instrument_id;
                 var quote = DM.datas.quotes[exchange_id+'.'+instrument_id];
@@ -365,11 +363,28 @@ function draw_page_posdetail_discuss() { // 持仓
                 } else {
                     close = dir === 'BUY' ? position.volume_short_today + position.volume_short_his : position.volume_long_today + position.volume_long_his;
                 }
+                var iclose = Number(prompt("请输入平仓手数(默认全平)", "" + close));
+                if(isNumber(iclose)){
+                    if(iclose > (close + close_today)) {
+                        alert('手数大于全部可平仓手数！');
+                        return;
+                    } else {
+                        if(exchange_id === "SHFE"){
+                            var close_his_vol = iclose - close_today;
+                            close_today = close_his_vol <= 0 ? iclose : close_today;
+                            close = Math.max(0, close_his_vol);
+                        } else {
+                            close = iclose;
+                        }
+                    }
+                } else {
+                    alert('输入的不是数字！');
+                    return;
+                }
 
                 var insert_order = {
                     aid: "insert_order", // 下单请求
                     user_id: DM.datas.account_id,
-                    order_id: req_id,
                     exchange_id: exchange_id,
                     instrument_id: instrument_id,
                     direction: dir,
@@ -380,31 +395,22 @@ function draw_page_posdetail_discuss() { // 持仓
                     hedge_flag: "SPECULATION"
                 }
 
-                navigator.notification.confirm(
-                    '确认平仓?', // message
-                    function (buttonIndex) {
-                        if (buttonIndex == 1) {
-                            if(close > 0){
-                                var req_id = WS.getReqid();
-                                TR_WS.send(Object.assign(insert_order, {
-                                    offset: 'CLOSE',
-                                    volume: close}
-                                    ));
-                            }
-                            if(close_today > 0){
-                                var req_id = WS.getReqid();
-                                TR_WS.send(Object.assign(insert_order, {
-                                    offset: 'CLOSETODAY',
-                                    volume: close_today}
-                                ));
-                            }
-                        } else {
-                            return;
-                        }
-                    }, // callback to invoke with index of button pressed
-                    '全部平仓', // title
-                    ['删除', '取消'] // buttonLabels
-                );
+                if(close > 0){
+                    var req_id = WS.getReqid();
+                    TR_WS.send(Object.assign(insert_order, {
+                        order_id: req_id,
+                        offset: 'CLOSE',
+                        volume: close}
+                    ));
+                }
+                if(close_today > 0){
+                    var req_id = WS.getReqid();
+                    TR_WS.send(Object.assign(insert_order, {
+                        order_id: req_id,
+                        offset: 'CLOSETODAY',
+                        volume: close_today}
+                    ));
+                }
             }
         }
 
@@ -506,9 +512,9 @@ function draw_page_posdetail_discuss() { // 持仓
         for (var symbol in positions) {
             var position = positions[symbol];
             var ins_id = position.instrument_id;
-            if (!DM.datas.ins_list.includes(symbol)) not_subscribe_quotes.push(symbol);
+            if (DM.datas.ins_list.indexOf(symbol) == -1) not_subscribe_quotes.push(symbol);
             // 前面应处理过的合约
-            if (symbol_list.includes(symbol)) continue;
+            if (symbol_list.indexOf(symbol) > -1) continue;
             var volume_long = position.volume_long_today + position.volume_long_his;
             var volume_short = position.volume_short_today + position.volume_short_his;
             // 不需要处理的合约
@@ -576,7 +582,7 @@ function draw_page_posdetail_plan() { // 委托
             tds[1].innerText = order.last_msg;
             if(order.last_msg === '未成交' || order.last_msg === '已撤单'){
                 tds[1].innerText = order.last_msg;
-            } else if(order.last_msg.includes('全部成交')) {
+            } else if(order.last_msg.indexOf('全部成交') > -1) {
                 tds[1].innerText = '全部成交';
             } else if(order.status === 'FINISHED') {
                 tds[1].innerText = '错单';
@@ -586,7 +592,7 @@ function draw_page_posdetail_plan() { // 委托
 
             var dir_offset = (order.direction === 'BUY' ? '买' : '卖' ) + (order.offset === 'OPEN' ? '开' : '平');
             tds[2].innerText = dir_offset;
-            tds[3].innerText = order.limit_price;
+            tds[3].innerText = order.price_type === 'ANY' ? '市价' : order.limit_price;
             tds[4].innerText = order.volume_left + '/' + orders[id].volume_orign;
             tds[5].innerText = getFormatTime(orders[id].insert_date_time);
             var a = tds[6].querySelector('a');
@@ -627,7 +633,7 @@ function draw_page_posdetail_plan() { // 委托
         }
 
         for (var id in orders) {
-            if (id_list.includes(id)) continue;
+            if (id_list.indexOf(id)>-1) continue;
             var tr = genTr(id);
             var order = orders[id];
             setContentToTr(tr, order);
