@@ -15,12 +15,12 @@ var CHARTSET_CONF = {
  *      ins_id: '',
  *      draggable: false,
  *      interval: 300000000000,
- * 
+ *
  *      start_id: 0,
  *      end_id: 0,
  *      left_id: 0,
  *      right_id: 0,
- *      
+ *
  *      charts: [
  *          {
  *              height_proportion: 0.6,
@@ -52,7 +52,7 @@ var CHARTSET_CONF = {
  *                  depends: 'left',
  *              },]
  *          },
- * 
+ *
  *          {
  *              height_proportion: 0.4,
  *              margin: {
@@ -77,7 +77,7 @@ var CHARTSET_CONF = {
  *              }]
  *          },
  *      ]
- *      
+ *
  * }
  */
 
@@ -85,7 +85,7 @@ var ChartSet = function(containerParent, width, height, config) {
     this.id = config.id;
     this.ins_id = config.ins_id;
     this.draggable = config.draggable; // 是否能够左右拖拽
-    this.interval = config.interval; 
+    this.interval = config.interval;
 
     this.start_id = config.start_id; // 全部数据第一个 id
     this.end_id = config.end_id; // 全部数据最后一个 id;
@@ -124,7 +124,7 @@ var ChartSet = function(containerParent, width, height, config) {
         this.container.addEventListener('touchstart', onDocumentTouchStart, false);
         this.container.addEventListener('touchmove', onDocumentTouchMove, false);
     }
-    
+
 }
 
 var onPointerDownPointerX = 0,
@@ -160,7 +160,7 @@ function onDocumentTouchMove(event) {
                 pointerB = event.touches[1].pageX;
                 distanceAB = Math.abs(pointerA - pointerB);
             }
-        } 
+        }
     }
 }
 ChartSet.create = function(container, width, height, config) {
@@ -327,7 +327,7 @@ ChartSet.prototype.initTimeline = function() {
         delete obj.timeLine['domChildren'];
         // init datetime container
         obj.timeLine['domChildren'] = [];
-        
+
         // add new datetime
         for (var i = 0; i < obj.timeLine['datas'].length; i++) {
             if(obj.timeLine['datas'][i].show){
@@ -486,10 +486,10 @@ ChartSet.prototype.update = function(datas, config) {
 ChartSet.prototype.updateTimeline = function() {
     this.timeLine['datas'] = [];
     this.timeLine['axisX'] = [];
-    
+
     var interval = this.interval / Math.pow(10, 9);
-    var datetime = this.datas[this.show_left_id] ? moment(this.datas[this.show_left_id].datetime / 1000000) : null; 
-    var left = -5; 
+    var datetime = this.datas[this.show_left_id] ? moment(this.datas[this.show_left_id].datetime / 1000000) : null;
+    var left = -5;
     var indexOfAxisX = 0; // X轴竖线显示的位置
 
     var first_formatString = 'MM/DD-HH:mm:ss';
@@ -565,7 +565,7 @@ ChartSet.prototype.updateTimeline = function() {
                     var id = show_left_id - 1;
                     if(datetime.valueOf() -this.datas[id].datetime / 1000000 > 10 * 60 * 1000){
                         last_datetime = datetime;
-                        this.timeLine['datas'].push({   
+                        this.timeLine['datas'].push({
                             datetimeStr: datetime.format(formatString),
                             left: left,
                             must: true,
@@ -574,7 +574,7 @@ ChartSet.prototype.updateTimeline = function() {
                         this.timeLine['axisX'].push(indexOfAxisX);
                     }else{
                         last_datetime = datetime;
-                        this.timeLine['datas'].push({   
+                        this.timeLine['datas'].push({
                             datetimeStr: datetime.format(formatString),
                             left: left,
                             must: false,
@@ -586,23 +586,25 @@ ChartSet.prototype.updateTimeline = function() {
             }
         }
         // 去掉不想显示的
-        this.timeLine['datas'][1].show = false;
-        // this.timeLine['datas'][2].show = false;
-        var last_left = this.timeLine['datas'][1].left;
-        for(var i=2; i<this.timeLine['datas'].length; i++){
-            if(this.timeLine['datas'][i].left - last_left > 40){
-                last_left = this.timeLine['datas'][i].left;
-                this.timeLine['datas'][i].show = true;
-            }else{
-                if(this.timeLine['datas'][i].must){
-                    this.timeLine['datas'][i-1].show = false;
-                    last_left = this.timeLine['datas'][i].left;                    
+        if(this.timeLine['datas'].length > 1){
+            this.timeLine['datas'][1].show = false;
+            // this.timeLine['datas'][2].show = false;
+            var last_left = this.timeLine['datas'][1].left;
+            for(var i=2; i<this.timeLine['datas'].length; i++){
+                if(this.timeLine['datas'][i].left - last_left > 40){
+                    last_left = this.timeLine['datas'][i].left;
                     this.timeLine['datas'][i].show = true;
                 }else{
-                    this.timeLine['datas'][i].show = false;
+                    if(this.timeLine['datas'][i].must){
+                        this.timeLine['datas'][i-1].show = false;
+                        last_left = this.timeLine['datas'][i].left;
+                        this.timeLine['datas'][i].show = true;
+                    }else{
+                        this.timeLine['datas'][i].show = false;
+                    }
                 }
+
             }
-            
         }
         var index = 0;
         for(var k=0; k<this.timeLine['datas'].length; k++, index++){
@@ -629,7 +631,7 @@ ChartSet.prototype.showPanel = function(panel_id) {
     for (var i = 0; i < this.charts_params.length; i++) {
         this.charts[i].displayPanel('show', panel_id);
     }
-} 
+}
 
 ChartSet.prototype.hidePanel = function(panel_id) {
     for (var i = 0; i < this.charts_params.length; i++) {
