@@ -2,7 +2,7 @@ var SEPERATOR = '*';
 
 var SETTING = {
     sim_server_url: 'ws://openmd.shinnytech.com/t/md/front/mobile', // 行情接口
-    tr_server_url: 'ws://opentd.shinnytech.com/', // 交易接口
+    tr_server_url: 'ws://opentd.shinnytech.com/trade/user0', // 交易接口
     default_bid: 'S上期技术', // 默认期货公司
     reconnect_interval: 2000, // 重连时间间隔 ms
     reconnect_max_times: 5, // 最大尝试重连次数

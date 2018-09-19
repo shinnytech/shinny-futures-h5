@@ -123,6 +123,9 @@ var ChartSet = function(containerParent, width, height, config) {
     if(this.draggable){
         this.container.addEventListener('touchstart', onDocumentTouchStart, false);
         this.container.addEventListener('touchmove', onDocumentTouchMove, false);
+        this.container.addEventListener('dragstart', onDocumentDragStart, false);
+        this.container.addEventListener('drag', onDocumentDragMove, false);
+        this.container.addEventListener('wheel', onMouseWheel, false);
     }
 
 }
@@ -161,6 +164,26 @@ function onDocumentTouchMove(event) {
                 distanceAB = Math.abs(pointerA - pointerB);
             }
         }
+    }
+}
+function onDocumentDragStart(event){
+    if (CHARTSET_K.draggable) {
+        event.preventDefault();
+        onPointerDownPointerX = event.gesture.center.pageX;
+    }
+}
+function onDocumentDragMove(event){
+    if (CHARTSET_K.draggable) {
+        event.preventDefault();
+        if (CHARTSET_K.move(onPointerDownPointerX - event.gesture.center.pageX)) {
+            onPointerDownPointerX = event.gesture.center.pageX;
+        }
+    }
+}
+function onMouseWheel(event){
+    if (CHARTSET_K.draggable) {
+        event.preventDefault();
+        CHARTSET_K.scale(event.deltaY, event.pageX);
     }
 }
 ChartSet.create = function(container, width, height, config) {
