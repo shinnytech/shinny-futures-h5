@@ -1,7 +1,7 @@
 var InstrumentManager = (function () {
     var config = {
         evn: 'test',
-        url: 'http://openmd.shinnytech.com/t/md/symbols/latest.json'
+        url: 'https://openmd.shinnytech.com/t/md/symbols/latest.json'
     };
     var ins_list = {
         main: [], // 主力合约
