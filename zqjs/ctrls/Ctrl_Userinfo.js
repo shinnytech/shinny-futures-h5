@@ -15,8 +15,7 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                 if (!DM.datas.trade || !DM.datas.trade[user_name] || !DM.datas.trade[user_name].session){
                     $ionicLoading.hide().then(function() {
                         $rootScope.login_data.state = 'none';
-                        $rootScope.login_error = true;
-                        $rootScope.login_error_msg = '等待回应超时，可能的原因 (1)服务器正在运维，(2)网络不通，无法连接服务器，请稍后/检查网络后重试。';
+                        $rootScope.login_data.error_msg = '等待回应超时，可能的原因 (1)服务器正在运维，(2)网络不通，无法连接服务器，请稍后/检查网络后重试。';
                     });
                 }
                 $timeout.cancel(stopTimeout);
@@ -32,15 +31,13 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                     $interval.cancel(stop);
                     $ionicLoading.hide().then(function() {
                         $rootScope.login_data.state = 'success';
-                        $rootScope.login_error = false;
-                        $rootScope.login_error_msg = "";
+                        $rootScope.login_data.error_msg = '';
                     });
                     $timeout.cancel(stopTimeout);
                 } else if(Object.keys(DM.datas.notify).length > 0){
                     $ionicLoading.hide().then(function() {
                         $rootScope.login_data.state = 'none';
-                        $rootScope.login_error = true;
-                        $rootScope.login_error_msg = '登录失败。';
+                        $rootScope.login_data.error_msg = '登录失败。';
                     });
                     $interval.cancel(stop);
                     $timeout.cancel(stopTimeout);
@@ -58,20 +55,17 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                 var password = $rootScope.login_data.password;
                 if (bid == undefined) {
                     $ionicLoading.hide().then(function() {
-                        $rootScope.login_error = true;
-                        $rootScope.login_error_msg = "请选择期货公司";
+                        $rootScope.login_data.error_msg = "请选择期货公司";
                     });
                     return;
                 } else if (user_name == undefined) {
                     $ionicLoading.hide().then(function() {
-                        $rootScope.login_error = true;
-                        $rootScope.login_error_msg = "请输入期货账号";
+                        $rootScope.login_data.error_msg  = "请输入期货账号";
                     });
                     return;
                 } else if (password == undefined) {
                     $ionicLoading.hide().then(function() {
-                        $rootScope.login_error = true;
-                        $rootScope.login_error_msg = "请输入密码";
+                        $rootScope.login_data.error_msg = "请输入密码";
                     });
                     return;
                 }

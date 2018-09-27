@@ -34,7 +34,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
             $rootScope.login_data = {
                 state: 'none', //登录状态
                 bid: SETTING.default_bid ? SETTING.default_bid : 'S上期技术',
-                user_name: '022631'
+                user_name: '022631',
+                error_msg: ''
             };
             $rootScope.login_data.user_name = localStorage.getItem('user_name') ? localStorage.getItem('user_name') : '';
             $rootScope.login_data.bid = localStorage.getItem('bid') ? localStorage.getItem('bid') : $rootScope.login_data.bid;

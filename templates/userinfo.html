@@ -34,7 +34,7 @@
                                ng-model="login_data.password">
                     </label>
                 </div>
-                <div class="list error" ng-if="login_error">{{ login_error_msg }}</div>
+                <div class="list error" ng-if="login_data.error_msg">{{ login_data.error_msg }}</div>
                 <div class="row">
                     <div class="col">
                         <button class="right button button-block"
