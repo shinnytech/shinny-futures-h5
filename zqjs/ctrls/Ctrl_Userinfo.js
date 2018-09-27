@@ -9,12 +9,10 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                 "password": password
             });
 
-            DM.datas.notify = [];
-            var login_success = false;
-            var login_connect_trade_front = false;
+            DM.datas.notify = {};
 
             var stopTimeout = $timeout(function(){
-                if(DM.datas.notify.length === 0){
+                if (!DM.datas.trade || !DM.datas.trade[user_name] || !DM.datas.trade[user_name].session){
                     $ionicLoading.hide().then(function() {
                         $rootScope.login_data.state = 'none';
                         $rootScope.login_error = true;
@@ -25,32 +23,27 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
             }, 10000);
 
             var stop = $interval(function() {
-                for(var n in DM.datas.notify){
-                    var notify = DM.datas.notify[n];
-                    if(notify.content === '已经连接到交易前置' && !login_connect_trade_front){
-                        login_connect_trade_front = true;
-                    } else if(notify.content === '登录成功' && !login_success) {
-                        login_success = true;
-                    }
-                }
-                if( DM.datas.notify.length >= 2 && login_connect_trade_front && login_success) {
+                if (DM.datas.trade && DM.datas.trade[user_name] && DM.datas.trade[user_name].session
+                    && DM.datas.trade[user_name].session.user_id == user_name
+                ){
                     DM.update_data({
                         account_id: user_name
-                    })
+                    });
                     $interval.cancel(stop);
                     $ionicLoading.hide().then(function() {
                         $rootScope.login_data.state = 'success';
                         $rootScope.login_error = false;
                         $rootScope.login_error_msg = "";
                     });
-                    // $ionicHistory.goBack();
-                } else if( DM.datas.notify.length >= 2 ) {
+                    $timeout.cancel(stopTimeout);
+                } else if(Object.keys(DM.datas.notify).length > 0){
                     $ionicLoading.hide().then(function() {
                         $rootScope.login_data.state = 'none';
                         $rootScope.login_error = true;
-                        $rootScope.login_error_msg = login_connect_trade_front ? '登录失败，请检查密码。' : '连接交易前置失败，请检查网络。';
+                        $rootScope.login_error_msg = '登录失败。';
                     });
                     $interval.cancel(stop);
+                    $timeout.cancel(stopTimeout);
                 }
             }, 100);
         }
