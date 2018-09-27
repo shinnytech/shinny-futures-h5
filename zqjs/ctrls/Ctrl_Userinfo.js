@@ -34,13 +34,6 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                         $rootScope.login_data.error_msg = '';
                     });
                     $timeout.cancel(stopTimeout);
-                } else if(Object.keys(DM.datas.notify).length > 0){
-                    $ionicLoading.hide().then(function() {
-                        $rootScope.login_data.state = 'none';
-                        $rootScope.login_data.error_msg = '登录失败。';
-                    });
-                    $interval.cancel(stop);
-                    $timeout.cancel(stopTimeout);
                 }
             }, 100);
         }
