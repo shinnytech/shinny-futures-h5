@@ -1,6 +1,18 @@
 # shinny-futures-h5
 
-一个开源的 HTML5 期货行情交易终端。 [DEMO 演示地址](https://shinnytech.github.io/shinny-futures-h5/index.html) 。
+一个开源的 HTML5 期货行情交易终端。 
+
+## 项目预览
+-----------------------
+在线演示地址 [https://shinnytech.github.io/shinny-futures-h5/index.html](https://shinnytech.github.io/shinny-futures-h5/index.html) ，使用手机扫一扫，用手机浏览器打开效果更好。
+
+<img src="img/qrcode.png" width="200"/><br>
+
+<img src="img/quotes.jpg" width="280"/> <img src="img/order.jpg" width="280"/> <img src="img/banks.jpg" width="280"/> <br>
+
+<img src="img/quotes.gif" width="280"/> <img src="img/charts.gif" width="280"/> <img src="img/login.gif" width="280"/><br>
+
+
 
 ## 功能说明
 -----------------------
