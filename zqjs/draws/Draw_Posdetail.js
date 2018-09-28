@@ -3,12 +3,10 @@ function draw_page_posdetail() {
         var insid = DM.get_data('state' + SEPERATOR + 'detail_ins_id');
         var subpage = DM.get_data("state" + SEPERATOR + "subpage");
         DM.run(draw_page_posdetail_chart);
-        setTimeout(function () {
-            DM.run(draw_page_posdetail_info);
-            DM.run(draw_page_posdetail_discuss);
-            DM.run(draw_page_posdetail_plan);
-            DM.run(draw_page_posdetail_tools);
-        }, 100);
+        DM.run(draw_page_posdetail_info);
+        DM.run(draw_page_posdetail_discuss);
+        DM.run(draw_page_posdetail_plan);
+        DM.run(draw_page_posdetail_tools);
     }
 }
 
@@ -294,10 +292,6 @@ function draw_page_posdetail_info() {
     if (DM.get_data("state" + SEPERATOR + "page") == "posdetail" && DM.get_data("state" + SEPERATOR + "subpage") == "info") {
         var insid = DM.get_data('state' + SEPERATOR + 'detail_ins_id');
         var quote = DM.get_data("quotes" + SEPERATOR + insid);
-        var instrument = DM.get_data("instruments" + SEPERATOR + insid);
-        for (var k in instrument) {
-            quote[k] = instrument[k];
-        }
         for (var i = 0; i < CONST.pos_detail_quote.length; i++) {
             var param = CONST.pos_detail_quote[i];
             var divs = document.querySelectorAll('.posdetail .panel-container .frame .' + param);
