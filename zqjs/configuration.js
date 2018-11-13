@@ -8,6 +8,16 @@ var SETTING = {
     reconnect_max_times: 5, // 最大尝试重连次数
 };
 
+/**
+ *  SymbolFilter 过滤合约列表
+ *  symbol 合约名称
+ *  symbolObj 合约描述对象
+ */
+function SymbolFilter (symbol, symbolObj) {
+    // 需要显示的合约返回 true；不显示的合约返回 false
+    return true;
+}
+
 var CONST = {
     inslist_cols_odd: ['last_price', 'highest', 'volume', 'pre_close'],
     inslist_cols_even: ['change', 'lowest', 'open_interest', 'open'],
