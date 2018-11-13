@@ -9,6 +9,7 @@ var SETTING = {
     reconnect_max_times: 5, // 最大尝试重连次数
 };
 
+
 /**
  *  SymbolFilter 过滤合约列表
  *  symbol 合约名称
@@ -16,12 +17,8 @@ var SETTING = {
  */
 function SymbolFilter (symbol, symbolObj) {
     // 需要显示的合约返回 true；不显示的合约返回 false
-    // console.log(symbolObj)
-    // if (symbolObj.class === 'INDEX')  {
-
-    //     return true;
-    // }
-    return true;
+    if (symbol.includes('SHFE')) return true; 
+    return false;
 }
 
 var CONST = {

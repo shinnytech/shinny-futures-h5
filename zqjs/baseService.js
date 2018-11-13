@@ -64,7 +64,6 @@ var InstrumentManager = (function () {
                 delete content_data[symbol];
                 continue;
             }
-
             if (typeof SymbolFilter === 'function' && !SymbolFilter(symbol, item)) {
                 delete content_data[symbol];
                 continue;
@@ -104,9 +103,13 @@ var InstrumentManager = (function () {
             // 为主连和指数补充  product_id, product_short_name
             if (item.class === 'FUTURE_CONT' || item.class === 'FUTURE_INDEX') {
                 var product_id = symbol.match(/@(.*)\.(.*)/)[2];
-                var product_short_name = content_data[content.map_product_id_future[product_id][0]].product_short_name;
                 item.product_id = product_id;
-                item.product_short_name = product_short_name;
+                if (content.map_product_id_future[product_id] && content.map_product_id_future[product_id][0]){
+                    var product_short_name = content_data[content.map_product_id_future[product_id][0]].product_short_name;
+                    item.product_short_name = product_short_name;
+                } else {
+                    item.product_short_name = '';
+                }
             }
         }
         for (var list_name in ins_list) {
