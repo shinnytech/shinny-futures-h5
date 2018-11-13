@@ -144,6 +144,57 @@ var CONST = {
  }
 ```
 
+#### 3.5 合约列表配置
+```js
+/**
+ *  SymbolFilter 过滤合约列表
+ *  symbol 合约名称
+ *  symbolObj 合约描述对象
+ */
+function SymbolFilter (symbol, symbolObj) {
+    // 需要显示的合约返回 true；不显示的合约返回 false
+    // 示例： 只显示上期所合约
+    if (symbol.exchange_id('SHFE')) return true; 
+    return false;
+}
+
+```
+
+symbol 表示某一个的合约，格式为 `交易所代码.合约代码`。
+
+交易所代码如下:
+
+| 交易所 | 代码 |
+| --- | --- |
+| 中国金融期货交易所 | CFFEX|
+| 上海期货交易所 | SHFE|
+| 大连商品交易所 | DCE|
+| 郑州商品交易所 | CZCE|
+| 能源交易所(原油) | INE|
+
+#### 3.6 配置交易所
+```js
+ var CONST = {
+     // ......
+    // 不同交易所
+    inslist_types: [
+        {id: 'main', name: '主力合约'},
+        {id: 'custom', name: '自选合约'},
+        {id: 'SHFE', name: '上期所'},
+        {id: 'CZCE', name: '郑商所'},
+        {id: 'INE', name: '上期能源'},
+        {id: 'DCE', name: '大商所'},
+        {id: 'CFFEX', name: '中金所'}
+    ],
+    // 默认首选的交易所
+    default_inslist_type: {id: 'main', name: '主力合约'},
+    // ......
+ }
+
+```
+
+合约列表可以按照不同交易所分类显示，可以修改数组以显示不同的交易所。
+
 
 ## Changelog
 -----------------------

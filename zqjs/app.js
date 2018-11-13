@@ -8,20 +8,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
             // 全局设置 angularui-router . state
             $rootScope.$state = $state;
 
-            $rootScope.ins_list_types = [
-                {id: 'main', name: '主力合约'},
-                {id: 'custom', name: '自选合约'},
-                {id: 'SHFE', name: '上期所'},
-                {id: 'CZCE', name: '郑商所'},
-                {id: 'INE', name: '上期能源'},
-                {id: 'DCE', name: '大商所'},
-                {id: 'CFFEX', name: '中金所'},
-            ];
+            $rootScope.ins_list_types = CONST.inslist_types;
 
-            $rootScope.insList = {
-                id: 'main',
-                title: '主力合约'
-            };
+            $rootScope.insList = CONST.default_inslist_type;
 
             /**
              * 登录参数

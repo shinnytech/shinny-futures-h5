@@ -1,24 +1,16 @@
 var InstrumentManager = (function () {
-    var config = {
-        evn: 'test',
-        url: 'https://openmd.shinnytech.com/t/md/symbols/latest.json'
-    };
     var ins_list = {
-        main: [], // 主力合约
-        SHFE: [], // 上海期货交易所
-        CZCE: [], // 郑州商品交易所
-        INE: [], // 上期能源交易所
-        DCE: [], // 大连商品交易所
-        CFFEX: [], // 中国金融期货交易所
+        'main': []
     };
     var product_list = {
-        main: [], // 主力合约
-        SHFE: [], // 上海期货交易所
-        CZCE: [], // 郑州商品交易所
-        INE: [], // 上期能源交易所
-        DCE: [], // 大连商品交易所
-        CFFEX: [], // 中国金融期货交易所
+        'main': []
     };
+    for (var i = 0; i < CONST.inslist_types.length; i++) {
+        var id = CONST.inslist_types[i].id
+        ins_list[id] = [];
+        product_list[id] = [];
+    }
+
     var content_data = null;
     var content = {
         map_product_id_future: {},
@@ -40,7 +32,7 @@ var InstrumentManager = (function () {
                 Accept: "application/json; charset=utf-8"
             },
             type: 'GET',
-            url: config.url,
+            url: SETTING.symbol_server_url,
             dataType: 'json',
             async: false,
             success: function (data) {
@@ -67,15 +59,17 @@ var InstrumentManager = (function () {
 
         for (var symbol in content_data) {
             var item = content_data[symbol];
+
             if (item.expired || item.class === 'FUTURE_OPTION' || item.class === 'FUTURE_COMBINE') {
                 delete content_data[symbol];
                 continue;
             }
+
             if (typeof SymbolFilter === 'function' && !SymbolFilter(symbol, item)) {
                 delete content_data[symbol];
                 continue;
             }
-            if (item.class === 'FUTURE') {
+            if (item.class === 'FUTURE' && ins_list[item.exchange_id]) {
                 ins_list[item.exchange_id].push(symbol);
                 var product_id = content_data[symbol].product_id;
                 if (!content.map_product_id_future[product_id]) content.map_product_id_future[product_id] = [];
@@ -91,14 +85,18 @@ var InstrumentManager = (function () {
                 var match = symbol.match(/@(.*)\.(.*)/);
                 var ex = match[1];
                 var product_id = match[2];
-                ins_list[ex].push(symbol);
-                if (item.class === 'FUTURE_CONT') {
-                    var s = content_data[symbol].underlying_symbol;
-                    if (s && content_data[s]) ins_list['main'].push(content_data[s].instrument_id);
+                if (ins_list[ex]) {
+                    ins_list[ex].push(symbol);
+                    if (item.class === 'FUTURE_CONT') {
+                        var s = content_data[symbol].underlying_symbol;
+                        if (s && content_data[s]) ins_list['main'].push(content_data[s].instrument_id);
+                    }
+                    // 为主连和指数修改 ins_id, 用于quotes 显示
+                    content_data[symbol].ins_id = product_id + (content_data[symbol].class === 'FUTURE_CONT' ? '主连' : '指数');
                 }
-                // 为主连和指数修改 ins_id, 用于quotes 显示
-                content_data[symbol].ins_id = product_id + (content_data[symbol].class === 'FUTURE_CONT' ? '主连' : '指数');
-            }
+            } else if (item.class === 'INDEX' && ins_list[item.exchange_id]) {
+                ins_list[item.exchange_id].push(symbol);
+            } 
         }
 
         for (var symbol in content_data) {
@@ -151,6 +149,8 @@ var InstrumentManager = (function () {
         insObj.volume_multiple = content_data[insid].volume_multiple;
         insObj.price_tick = content_data[insid].price_tick;
         insObj.price_fixed = content_data[insid].price_decs;
+        insObj.ins_id = content_data[insid].ins_id;
+        insObj.simple_name = content_data[insid].ins_name;
         if (content_data[insid].class === 'FUTURE') {
             insObj.ins_id = content_data[insid].ins_id;
             insObj.simple_name = content_data[insid].product_short_name;

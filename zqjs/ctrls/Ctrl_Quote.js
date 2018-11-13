@@ -15,7 +15,7 @@ angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$s
         };
         $scope.closePopover = function (id, name) {
             $rootScope.insList.id = id;
-            $rootScope.insList.title = name;
+            $rootScope.insList.name = name;
             $scope.popover.hide();
         };
         $scope.$on('$destroy', function () {
