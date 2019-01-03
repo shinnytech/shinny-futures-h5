@@ -84,7 +84,10 @@ var CONST = {
         'highest',
         'lowest',
         'lower_limit',
-        'upper_limit'
+        'upper_limit',
+        'open',
+        'pre_close',
+        'change_percent'
     ],
     pos_detail_quote_tools: [
         'ask_price1',

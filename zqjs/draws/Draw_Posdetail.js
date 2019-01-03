@@ -299,7 +299,14 @@ function draw_page_posdetail_info() {
                 var div = divs[j];
                 if (div && quote) {
                     var val = quote[param] == undefined ? '' : quote[param];
-                    if (param == 'last_price') {
+                    if (param == 'change_percent') {
+                        var changePercent = ((quote.last_price - quote.pre_close) / quote.pre_close * 100);
+                        val = isNaN(changePercent) ? '-' : changePercent.toFixed(2) + '%';
+                    } else if (param == 'change') {
+                        val = quote.last_price - quote.pre_close;
+                        val = isNaN(val) ? '-' : val;
+                    }
+                    if (param == 'last_price' || param == 'open' || param == 'change' || param == 'change_percent') {
                         if (quote.last_price - quote.pre_close >= 0) {
                             div.className = addClassName(div.className, 'R');
                         } else {
