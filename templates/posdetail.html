@@ -34,6 +34,14 @@
             <div class="panel-container info flex" ng-if="panel.type=='info'">
                 <div class="frame frame-left">
                     <div class="row">
+                        <div class="col col-50">涨跌</div>
+                        <div class="col col-50 change"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-50">涨跌幅</div>
+                        <div class="col col-50 change_percent"></div>
+                    </div>
+                    <div class="row">
                         <div class="col col-50">合约乘数</div>
                         <div class="col col-50 ">{{insObj.volume_multiple}}</div>
                     </div>
@@ -78,10 +86,6 @@
                     <div class="row">
                         <div class="col col-50">卖一价</div>
                         <div class="col col-50 bid_price1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">涨跌幅</div>
-                        <div class="col col-50 change_percent"></div>
                     </div>
                     <div class="row">
                         <div class="col col-50">最新价</div>

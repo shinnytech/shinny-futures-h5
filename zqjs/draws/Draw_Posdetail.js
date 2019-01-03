@@ -304,7 +304,8 @@ function draw_page_posdetail_info() {
                         val = isNaN(changePercent) ? '-' : changePercent.toFixed(2) + '%';
                     } else if (param == 'change') {
                         val = quote.last_price - quote.pre_close;
-                        val = isNaN(val) ? '-' : val;
+                        var price_decs = InstrumentManager.data[insid].price_decs;
+                        val = isNaN(val) ? '-' : val.toFixed(price_decs);
                     }
                     if (param == 'last_price' || param == 'open' || param == 'change' || param == 'change_percent') {
                         if (quote.last_price - quote.pre_close >= 0) {

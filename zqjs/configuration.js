@@ -87,6 +87,7 @@ var CONST = {
         'upper_limit',
         'open',
         'pre_close',
+        'change',
         'change_percent'
     ],
     pos_detail_quote_tools: [
