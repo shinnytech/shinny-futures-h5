@@ -75,6 +75,13 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                 }
             });
             if(!$scope.brokers || $scope.brokers.length === 0){
+                var stop = $interval(function() {
+                    if (DM.datas.brokers) {
+                        $scope.brokers = DM.datas.brokers;
+                        $interval.cancel(stop);
+                    }
+                }, 200);
+            } else {
                 $scope.brokers = DM.datas.brokers;
             }
         });
