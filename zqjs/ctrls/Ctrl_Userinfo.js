@@ -25,15 +25,17 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                 if (DM.datas.trade && DM.datas.trade[user_name] && DM.datas.trade[user_name].session
                     && DM.datas.trade[user_name].session.user_id == user_name
                 ){
-                    DM.update_data({
-                        account_id: user_name
-                    });
                     $interval.cancel(stop);
                     $ionicLoading.hide().then(function() {
                         $rootScope.login_data.state = 'success';
                         $rootScope.login_data.error_msg = '';
                     });
                     $timeout.cancel(stopTimeout);
+                    $timeout(function(){
+                        DM.update_data({
+                            account_id: user_name
+                        });
+                    }, 300);
                 }
             }, 100);
         }
