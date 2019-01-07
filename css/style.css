@@ -231,10 +231,14 @@ table.quote tr.even {
     border-bottom: 1px solid #eee;
 }
 
-table.quote td:first-child {
-    /*border-left: 1px solid #666;*/
+table.quote tbody td {
+    padding-right: 6px;
+    text-align: right;
 }
 
+table.quote tbody td:first-child {
+    text-align: center;
+}
 
 table.quote td {
     /*border-right: 1px solid #666;*/
