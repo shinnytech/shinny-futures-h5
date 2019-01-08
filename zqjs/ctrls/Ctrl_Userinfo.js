@@ -1,5 +1,8 @@
-angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', '$scope', '$ionicLoading', '$ionicHistory', '$interval', '$timeout',
-    function($rootScope, $scope, $ionicLoading, $ionicHistory, $interval, $timeout) {
+angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', '$scope', '$ionicLoading', '$ionicPopup', '$ionicHistory', '$interval', '$timeout',
+    function($rootScope, $scope, $ionicLoading, $ionicPopup, $ionicHistory, $interval, $timeout) {
+
+        var stop_settlementconfirm = null;
+        var scope_user_name = '';
 
         $scope.do_login = function(bid, user_name, password) {
             TR_WS.send({
@@ -22,24 +25,80 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
             }, 10000);
 
             var stop = $interval(function() {
+                for (var k in DM.datas.notify) {
+                    var noty = DM.datas.notify[k]
+                    if (noty.code === 3) {
+                        $rootScope.login_data.error_msg = noty.content;
+                        $interval.cancel(stop);
+                        $timeout.cancel(stopTimeout);
+                        $ionicLoading.hide(function(){
+                            DM.datas.notify = {};
+                        })
+                    }
+                }
+                
                 if (DM.datas.trade && DM.datas.trade[user_name] && DM.datas.trade[user_name].session
                     && DM.datas.trade[user_name].session.user_id == user_name
                 ){
                     $interval.cancel(stop);
+                    scope_user_name = user_name;
                     $ionicLoading.hide().then(function() {
-                        $rootScope.login_data.state = 'success';
-                        $rootScope.login_data.error_msg = '';
+                        stop_settlementconfirm = $interval(function(){
+                            var hasSettlementConfirm = false;
+                            // 处理 success.settlementconfirm
+                            for (var k in DM.datas.notify) {
+                                var noty = DM.datas.notify[k];
+                                if (noty.type === 'SETTLEMENT') {
+                                    hasSettlementConfirm = true;
+                                    $scope.settlement_confirm(noty['content']);
+                                    $interval.cancel(stop_settlementconfirm);
+                                }
+                            }
+                            if (!hasSettlementConfirm) {
+                                $rootScope.login_data.state = 'success';
+                                $rootScope.login_data.error_msg = '';
+                                DM.update_data({
+                                    account_id: user_name
+                                });
+                            }
+                        }, 500);
+                        $timeout(function(){
+                            $interval.cancel(stop_settlementconfirm);
+                        }, 60000);
+                        DM.datas.notify = {}; 
                     });
                     $timeout.cancel(stopTimeout);
-                    $timeout(function(){
-                        DM.update_data({
-                            account_id: user_name
-                        });
-                    }, 300);
                 }
             }, 100);
         }
 
+        $scope.settlement_confirm = function (template) {
+            var myPopup = $ionicPopup.show({
+                template: template,
+                title: '交易结算单',
+                scope: $scope,
+                buttons: [ {
+                    text: '<b>确认</b>',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        $rootScope.login_data.state = 'success';
+                        $rootScope.login_data.error_msg = '';
+                        DM.update_data({
+                            account_id: scope_user_name
+                        });
+                        return true;
+                    }
+                }]
+            });
+    
+            myPopup.then(function (r) {
+                if (r) {
+                    TR_WS.send({
+                        "aid": "confirm_settlement"
+                    });
+                }
+            });
+        }
 
         $scope.click_login = function() {
             $ionicLoading.show({

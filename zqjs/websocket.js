@@ -28,9 +28,9 @@
         function showNotifications(notifications) {
             for(var k in notifications){
                 var noty = notifications[k];
-                if(noty.type === 'INFO'){
+                if(noty.level === 'INFO' && noty.type === 'MESSAGE'){
                     Toast.message(noty.content);
-                } else if(noty.type === 'WARNING' || noty.type === 'ERROR'){
+                } else if(noty.level === 'WARNING' || noty.level === 'ERROR'){
                     Toast.alert(noty.content);
                 }
             }
