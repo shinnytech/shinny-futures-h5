@@ -22,7 +22,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
              */
             $rootScope.login_data = {
                 state: 'none', //登录状态
-                bid: SETTING.default_bid ? SETTING.default_bid : 'S上期技术',
+                bid: SETTING.default_bid ? SETTING.default_bid : '快期模拟',
                 user_name: '022631',
                 error_msg: ''
             };
