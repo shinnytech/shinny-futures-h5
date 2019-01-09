@@ -28,30 +28,45 @@ angular.module('starter')
     }
 }])
 
-.directive('calHeight', ['$rootScope', function ($rootScope) {
+.directive('calChartHeight', ['$rootScope', function ($rootScope) {
     return {
         restrict: 'A',
         link: function (scope, ele, attrs) {
-            ele[0].style.height = '0px';
-            ele[0].style.position = 'absolute';
-            ele[0].style.bottom = '0px';
-            var parent = ele[0].parentElement;
-            var top = 0;
-            for (var i = 0; i < parent.childElementCount - 1; i++) {
-                top += parent.children[i].clientHeight;
-            }
-            ele[0].style.top = (top + 1) + 'px';
             var parentHeight = ele[0].parentElement.parentElement.clientHeight;
             if ($rootScope.$state.current.views) {
                 parentHeight -= 49;
             }
-            ele[0].style.height = (parentHeight - 44 - top) + 'px';
+            ele[0].style.height = (parentHeight - 360) + 'px';
+        }
+    };
+}])
+
+.directive('calBtnbarTop', ['$rootScope', function ($rootScope) {
+    return {
+        restrict: 'A',
+        link: function (scope, ele, attrs) {
+            var parentHeight = ele[0].parentElement.parentElement.clientHeight;
+            if ($rootScope.$state.current.views) {
+                parentHeight -= 49;
+            }
+            ele[0].style.top = (parentHeight - 260 - 70) + 'px';
+        }
+    };
+}])
+
+.directive('calHeight', ['$rootScope', function ($rootScope) {
+    return {
+        restrict: 'A',
+        link: function (scope, ele, attrs) {
+            ele[0].style.height = '260px';
+            ele[0].style.position = 'absolute';
+            ele[0].style.bottom = '0px';
         }
     };
 }])
 
 
-    .directive('showTabs', ['$rootScope', function ($rootScope) {
+.directive('showTabs', ['$rootScope', function ($rootScope) {
     return {
         restrict: 'A',
         link: function ($scope, $el) {

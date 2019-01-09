@@ -10038,7 +10038,7 @@ a.button {
   position: absolute;
   font-size: smaller;
   top: 30px;
-  height: 260px;
+  /* height: 260px; */
   width: 100%;
   padding: 2px 0px; }
   .posdetail .chart.container .chart-container:not(':first-child') {
@@ -10046,7 +10046,8 @@ a.button {
 
 .posdetail .panel.button-bar {
   position: absolute;
-  top: 290px; }
+  /*  top: 290px; */
+}
   .posdetail .panel.button-bar .button {
     color: #ccc;
     font-size: 14px;
@@ -10063,7 +10064,7 @@ a.button {
 
 .posdetail .panel-container {
   font-size: smaller;
-  margin: 12px 0px;
+  margin: 6px 0px;
   width: 100%; }
   .posdetail .panel-container.flex {
     display: flex;

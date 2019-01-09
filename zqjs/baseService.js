@@ -64,10 +64,10 @@ var InstrumentManager = (function () {
                 delete content_data[symbol];
                 continue;
             }
-            if (typeof SymbolFilter === 'function' && !SymbolFilter(symbol, item)) {
-                delete content_data[symbol];
-                continue;
-            }
+            // if (typeof SymbolFilter === 'function' && !SymbolFilter(symbol, item)) {
+            //     delete content_data[symbol];
+            //     continue;
+            // }
             if (item.class === 'FUTURE' && ins_list[item.exchange_id]) {
                 ins_list[item.exchange_id].push(symbol);
                 var product_id = content_data[symbol].product_id;

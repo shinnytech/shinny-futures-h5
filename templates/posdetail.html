@@ -22,9 +22,9 @@
             <button class="button button-small button-dark" ng-class="{checked: chart.type=='M5'}" ng-click="switchType('chart','M5')">5分钟</button>
             <button class="button button-small button-dark" ng-click="openPopover('setting')">设置</button>
         </div>
-        <div class="chart container">
+        <div class="chart container" cal-chart-height>
         </div>
-        <div class="panel button-bar">
+        <div class="panel button-bar" cal-btnbar-top>
             <button class="button button-small button-dark" ng-class="{checked: panel.type=='info'}" ng-click="switchType('panel','info')">信息</button>
             <button class="button button-small button-dark" ng-class="{checked: panel.type=='discuss'}" ng-click="switchType('panel','discuss')">持仓</button>
             <button class="button button-small button-dark" ng-class="{checked: panel.type=='plan'}" ng-click="switchType('panel','plan')">委托</button>
