@@ -1,5 +1,5 @@
-angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope', '$scope', '$ionicScrollDelegate', '$ionicPopover', '$interval', '$ionicHistory', 'numericKeyboardService',
-    function ($rootScope, $scope, $ionicScrollDelegate, $ionicPopover, $interval, $ionicHistory, numericKeyboardService) {
+angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope', '$scope', '$ionicScrollDelegate', '$ionicPopover', '$timeout', '$ionicHistory', 'numericKeyboardService',
+    function ($rootScope, $scope, $ionicScrollDelegate, $ionicPopover, $timeout, $ionicHistory, numericKeyboardService) {
 
         $scope.ins_id = null;
         $scope.position = null;
@@ -28,28 +28,31 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
         $scope.switchType = function (c, p) {
             $scope[c].type = p;
             if (c == 'panel') {
-                DM.update_data({
-                    state: {
-                        subpage: p,
-                    }
-                });
-                if(DM.datas.account_id && DM.datas.trade[DM.datas.account_id].positions){
-                    $scope.position = DM.datas.trade[DM.datas.account_id].positions[$scope.ins_id];
-                    if($scope.position){
-                        var volume_long = $scope.position.volume_long_today + $scope.position.volume_long_his;
-                        var volume_short = $scope.position.volume_short_today + $scope.position.volume_short_his;
-                        $scope.buy_close_avaliable = volume_short > 0 ? true : false;
-                        $scope.sell_close_avaliable = volume_long > 0 ? true : false;
+                $timeout(function(){
+                    DM.update_data({
+                        state: {
+                            subpage: p,
+                        }
+                    });
+                    if(DM.datas.account_id && DM.datas.trade[DM.datas.account_id].positions){
+                        $scope.position = DM.datas.trade[DM.datas.account_id].positions[$scope.ins_id];
+                        if($scope.position){
+                            var volume_long = $scope.position.volume_long_today + $scope.position.volume_long_his;
+                            var volume_short = $scope.position.volume_short_today + $scope.position.volume_short_his;
+                            $scope.buy_close_avaliable = volume_short > 0 ? true : false;
+                            $scope.sell_close_avaliable = volume_long > 0 ? true : false;
+                        } else {
+                            $scope.buy_close_avaliable = false;
+                            $scope.sell_close_avaliable = false;
+                        }
                     } else {
                         $scope.buy_close_avaliable = false;
                         $scope.sell_close_avaliable = false;
                     }
-                } else {
-                    $scope.buy_close_avaliable = false;
-                    $scope.sell_close_avaliable = false;
-                }
-                if(numericKeyboardService.isOpened()) numericKeyboardService.close();
-                $ionicScrollDelegate.scrollTop(true);
+                    if(numericKeyboardService.isOpened()) numericKeyboardService.close();
+                    $ionicScrollDelegate.scrollTop(true);
+                }, 100)
+                
             } else {
                 $scope.seconds = 0;
                 switch (p) {
@@ -367,12 +370,21 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
             );
         }
 
+        var height = null; // 整个页面 height 不包括 header
+        var top = null; // 最下可滚动板块 top 属性
+
         $scope.open_cb = function() {
-            $('ion-content.posdetail').css('top', '-245px');
+            if (!height) {
+                height = $('ion-content.posdetail').css('height').split('px')[0];
+                top = $('ion-content.posdetail ion-scroll').css('top');
+            }
+            $('ion-content.posdetail').css('top', '-' + top);
+            $('ion-content.posdetail ion-scroll').css('top', (height - 260 + 44 ) + 'px');
         }
 
         $scope.close_cb = function() {
             $('ion-content.posdetail').css('top', '44px');
+            $('ion-content.posdetail ion-scroll').css('top', top);
         }
     }
 ]);
