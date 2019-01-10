@@ -198,6 +198,7 @@
 .qt_container {
     width: 100%;
     font-size: 14px;
+    font-family: Helvetica Neue;
 }
 
 table.quote {

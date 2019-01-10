@@ -17,8 +17,7 @@ var SETTING = {
  */
 function SymbolFilter (symbol, symbolObj) {
     // 需要显示的合约返回 true；不显示的合约返回 false
-    if (symbol.includes('SHFE')) return true; 
-    return false;
+    return true
 }
 
 var CONST = {
