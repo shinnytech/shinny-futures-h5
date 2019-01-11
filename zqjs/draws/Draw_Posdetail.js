@@ -295,7 +295,7 @@ function draw_page_posdetail_info() {
         var price_fixed = InstrumentManager.data[insid].price_decs;
         for (var i = 0; i < CONST.pos_detail_quote.length; i++) {
             var param = CONST.pos_detail_quote[i];
-            var divs = document.querySelectorAll('.posdetail .panel-container .frame .' + param);
+            var divs = document.querySelectorAll('.posdetail .panel-container.info .' + param);
             for (var j = 0; j < divs.length; j++) {
                 var div = divs[j];
                 if (div && quote) {
@@ -307,6 +307,8 @@ function draw_page_posdetail_info() {
                         val = quote.last_price - quote.pre_close;
                         var price_decs = InstrumentManager.data[insid].price_decs;
                         val = isNaN(val) ? '-' : val.toFixed(price_decs);
+                    } else if (param == 'day_increase') {
+                        val = quote.open_interest - quote.pre_open_interest;
                     }
                     if (param == 'last_price' || param == 'open' || param == 'change' || param == 'change_percent') {
                         if (quote.last_price - quote.pre_close >= 0) {
@@ -315,7 +317,18 @@ function draw_page_posdetail_info() {
                             div.className = addClassName(div.className, 'G');
                         }
                     }
-                    val = typeof val === 'number' ? val.toFixed(price_fixed) : val;
+                    if (['ask_price1',
+                        'bid_price1',
+                        'last_price',
+                        'highest',
+                        'lowest',
+                        'lower_limit',
+                        'upper_limit',
+                        'open',
+                        'pre_close',
+                        'pre_settlement'].indexOf(param) > -1) {
+                        val = typeof val === 'number' ? val.toFixed(price_fixed) : val;
+                    }
                     div.innerText = val;
                 }
             }

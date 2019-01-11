@@ -9213,6 +9213,16 @@ a.button {
   flex: 0 0 10%;
   max-width: 10%; }
 
+.col-23{
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 23.3333%;
+  -moz-box-flex: 0;
+  -moz-flex: 0 0 23.3333%;
+  -ms-flex: 0 0 23.3333%;
+  flex: 0 0 23.3333%;
+  max-width: 23.3333%;
+}
+
 .col-20 {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 20%;
@@ -10139,10 +10149,12 @@ a.button {
   .posdetail .col:nth-child(even) {
     font-weight: bold;
     color: #fff;
-    padding: 0px 14px 0px 0px;
+    padding: 0px 10px 0px 0px;
     text-align: right; }
+  .posdetail .R,
   .posdetail .col.R {
     color: #f00; }
+  .posdetail .G,
   .posdetail .col.G {
     color: #0f0; }
 

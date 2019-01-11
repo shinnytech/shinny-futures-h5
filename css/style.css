@@ -4,11 +4,26 @@
     padding: 3px 20px;
 }
 
-.posdetail .panel-container .frame {
-    display: block;
-    flex: 0 0 50%;
-    max-width: 50%;
+.posdetail .panel-container.info .last_price {
+    font-size: 20px; 
+    font-weight: 600;
 }
+
+.posdetail .panel-container.info .row {
+    padding: 3px 0
+}
+.posdetail .panel-container.info .frame .row {
+    padding: 0
+}
+.posdetail .panel-container.info .frame .col {
+    font-size: 12px;
+    color: #FFF;
+    font-weight: bold;
+}
+.posdetail .panel-container.info .frame .col:nth-child(odd) {
+    text-align: right; }
+.posdetail .panel-container.info .frame .col:nth-child(even) {
+    text-align: left; }
 
 .posdetail .panel-container table tr{
     border-bottom: 1px solid #666;

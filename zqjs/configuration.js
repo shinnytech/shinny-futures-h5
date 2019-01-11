@@ -79,6 +79,8 @@ var CONST = {
         'commission_per_volume',
         'ask_price1',
         'bid_price1',
+        'ask_volume1',
+        'bid_volume1',
         'last_price',
         'highest',
         'lowest',
@@ -86,6 +88,10 @@ var CONST = {
         'upper_limit',
         'open',
         'pre_close',
+        'pre_settlement',
+        'volume',
+        'open_interest',
+        'day_increase', //日增仓
         'change',
         'change_percent'
     ],

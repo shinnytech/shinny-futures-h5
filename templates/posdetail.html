@@ -32,77 +32,70 @@
         </div>
         <ion-scroll direction="y" style="width:100%;" has-bouncing='false' cal-height>
             <div class="panel-container info flex" ng-if="panel.type=='info'">
-                <div class="frame frame-left">
-                    <div class="row">
-                        <div class="col col-50">涨跌</div>
-                        <div class="col col-50 change"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">涨跌幅</div>
-                        <div class="col col-50 change_percent"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">合约乘数</div>
-                        <div class="col col-50 ">{{insObj.volume_multiple}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">价格单位</div>
-                        <div class="col col-50 ">{{insObj.price_tick}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">退市日期</div>
-                        <div class="col col-50 ">{{insObj.expire_date}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">每手保证金</div>
-                        <div class="col col-50">{{insObj.margin}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">每手手续费</div>
-                        <div class="col col-50">{{insObj.commission}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">交易时间</div>
-                        <div class="col col-50">{{insObj.trading_time}}</div>
+                <div class="frame" style="padding: 10px 0px 8px 20px;">
+                    <div class="last_price"></div>
+                    <div>
+                        <span class="change"></span>
+                        ( <span class="change_percent"></span> )
                     </div>
                 </div>
-                <div class="frame frame-right">
+                <div class="frame" style="padding: 10px 20px 8px 0px;">
                     <div class="row">
-                        <div class="col col-50">昨收盘</div>
-                        <div class="col col-50 pre_close"></div>
+                        <div class="col col-50 text-right ">
+                            <span class="ask_price1"></span>
+                            &nbsp;/
+                        </div>
+                        <div class="col col-50 text-left">
+                            &nbsp;
+                            <span class="ask_volume1"></span>
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col col-50">今开盘</div>
-                        <div class="col col-50 open"></div>
+                        <div class="col col-50 text-right ">
+                            <span class="bid_price1"></span>
+                            &nbsp;/
+                        </div>
+                        <div class="col col-50 text-left">
+                            &nbsp;
+                            <span class="bid_volume1"></span>
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col col-50">涨停价</div>
-                        <div class="col col-50 upper_limit"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">今最高</div>
-                        <div class="col col-50 highest"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">卖一价</div>
-                        <div class="col col-50 bid_price1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">最新价</div>
-                        <div class="col col-50 last_price"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">买一价</div>
-                        <div class="col col-50 ask_price1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">今最低</div>
-                        <div class="col col-50 lowest"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-50">跌停价</div>
-                        <div class="col col-50 lower_limit"></div>
-                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-10">昨收</div>
+                    <div class="col col-23 pre_close"></div>
+                    <div class="col col-10">成交</div>
+                    <div class="col col-23 volume"></div>
+                    <div class="col col-10">昨结</div>
+                    <div class="col col-23 pre_settlement"></div>
+                </div>
+                <div class="row">
+                    <div class="col col-10">今开</div>
+                    <div class="col col-23 open"></div>
+                    <div class="col col-10">持仓</div>
+                    <div class="col col-23 open_interest"></div>
+                    <div class="col col-10">涨停</div>
+                    <div class="col col-23 upper_limit"></div>
+                </div>
+                <div class="row">
+                    <div class="col col-10">最高</div>
+                    <div class="col col-23 highest"></div>
+                    <div class="col col-10">日增</div>
+                    <div class="col col-23 day_increase"></div>
+                    <div class="col col-10">跌停</div>
+                    <div class="col col-23 lower_limit"></div>
+                </div>
+                <div class="row">
+                    <div class="col col-10">最低</div>
+                    <div class="col col-23 lowest"></div>
+                    <div class="col col-10">乘数</div>
+                    <div class="col col-23">{{insObj.volume_multiple}}</div>
+                    <div class="col col-10">下市</div>
+                    <div class="col col-23">{{insObj.expire_date}}</div>
+                </div>
+                <div class="row" style="padding-top:16px">
+                    <div class="col col-20">交易时间</div>
+                    <div class="col col-80">{{insObj.trading_time}}</div>
                 </div>
             </div>
             <div class="panel-container discuss" ng-if="panel.type=='discuss'">
