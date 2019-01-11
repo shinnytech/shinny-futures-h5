@@ -292,6 +292,7 @@ function draw_page_posdetail_info() {
     if (DM.get_data("state" + SEPERATOR + "page") == "posdetail" && DM.get_data("state" + SEPERATOR + "subpage") == "info") {
         var insid = DM.get_data('state' + SEPERATOR + 'detail_ins_id');
         var quote = DM.get_data("quotes" + SEPERATOR + insid);
+        var price_fixed = InstrumentManager.data[insid].price_decs;
         for (var i = 0; i < CONST.pos_detail_quote.length; i++) {
             var param = CONST.pos_detail_quote[i];
             var divs = document.querySelectorAll('.posdetail .panel-container .frame .' + param);
@@ -314,6 +315,7 @@ function draw_page_posdetail_info() {
                             div.className = addClassName(div.className, 'G');
                         }
                     }
+                    val = typeof val === 'number' ? val.toFixed(price_fixed) : val;
                     div.innerText = val;
                 }
             }
