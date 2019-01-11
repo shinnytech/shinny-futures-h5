@@ -340,3 +340,21 @@ table.quote td.g, table.quote td.G {
       background-color: #8BC34A; }
     .siiimpleToast[data-state="alert"] {
       background-color: #d93737; }
+/* app-menu */
+
+.app-menu .item {
+    padding: 10px 6px 10px 42px;
+    font-size: 14px;
+}
+
+.app-menu .item:first-child {
+    margin-top: 40px;
+}
+
+.app-menu .item-icon-left .icon {
+    left: 8px;
+}
+
+.app-menu .item-icon-left .icon, .item-icon-right .icon {
+    font-size: 22px;
+}
