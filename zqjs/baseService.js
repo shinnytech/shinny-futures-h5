@@ -80,7 +80,8 @@ var InstrumentManager = (function () {
                     content.map_py_future[py].push(symbol);
                 }
             } else if (item.class === 'FUTURE_CONT' || item.class === 'FUTURE_INDEX') {
-                ins_list['main'].push(symbol);
+                // 主力合约不显示 主力连续 和 指数
+                // ins_list['main'].push(symbol);
                 var match = symbol.match(/@(.*)\.(.*)/);
                 var ex = match[1];
                 var product_id = match[2];

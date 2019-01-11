@@ -45,9 +45,18 @@ function draw_page_quote() {
             var tbody = document.querySelector('.qt_container table.qt tbody');
             window.onresize = function(){
                 DIVISIONS.innerHeight = window.innerHeight;
-                DIVISIONS["tbody"].dom.style.height = (DIVISIONS.innerHeight - 44 - 42 - 40) + 'px';
+                if (DIVISIONS.productIndexList.length > 0) {
+                    DIVISIONS["tbody"].dom.style.height = (DIVISIONS.innerHeight - 44 - 42 - 40) + 'px';
+                } else {
+                    DIVISIONS["tbody"].dom.style.height = (DIVISIONS.innerHeight - 44 - 42) + 'px';
+                }
             }
-            tbody.style.height = (DIVISIONS.innerHeight - 44 - 42 - 40) + 'px';
+            if (DIVISIONS.productIndexList.length > 0) {
+                tbody.style.height = (DIVISIONS.innerHeight - 44 - 42 - 40) + 'px';
+            } else {
+                tbody.style.height = (DIVISIONS.innerHeight - 44 - 42) + 'px';
+            }
+            
             tbody.onscroll = function(){
                 if (!DM.datas.state.is_scrolling)
                     DM.update_data({
@@ -125,14 +134,22 @@ function draw_page_quote_produces(){
     while (DIVISIONS.products.dom.firstChild) {
         DIVISIONS.products.dom.removeChild(DIVISIONS.products.dom.firstChild);
     }
-    for(var i=0 ; i<productIndexList.length; i++){
-        var name = InstrumentManager.data[productIndexList[i]].product_short_name;
-        var span = document.createElement('span');
-        span.innerText = name;
-        span.onclick = click_handler_scroll_to(productIndexList[i]);
-        DIVISIONS.products.dom.appendChild(span);
+    if (productIndexList.length > 0) {
+        for(var i=0 ; i<productIndexList.length; i++){
+            var name = InstrumentManager.data[productIndexList[i]].product_short_name;
+            var span = document.createElement('span');
+            span.innerText = name ? name : InstrumentManager.data[productIndexList[i]].ins_name;
+            span.onclick = click_handler_scroll_to(productIndexList[i]);
+            DIVISIONS.products.dom.appendChild(span);
+        }
+        DIVISIONS.tbody.dom.style.height = (DIVISIONS.innerHeight - 44 - 42 - 40) + 'px';
+        DIVISIONS.products.dom.style.width = (50 * productIndexList.length) + 'px';
+        DIVISIONS.products.dom.style.height = '40px';
+    } else {
+        DIVISIONS.tbody.dom.style.height = (DIVISIONS.innerHeight - 44 - 42) + 'px';
+        DIVISIONS.products.dom.style.width = '0px';
+        DIVISIONS.products.dom.style.height = '0px';
     }
-    DIVISIONS.products.dom.style.width = (50 * productIndexList.length) + 'px';
 }
 
 function click_handler_scroll_to(symbol){
