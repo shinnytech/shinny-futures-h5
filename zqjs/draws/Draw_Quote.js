@@ -142,14 +142,16 @@ function draw_page_quote_produces(){
             span.onclick = click_handler_scroll_to(productIndexList[i]);
             DIVISIONS.products.dom.appendChild(span);
         }
-        DIVISIONS.tbody.dom.style.height = (DIVISIONS.innerHeight - 44 - 42 - 40) + 'px';
+        DIVISIONS.tbody.dom.style.height = (DIVISIONS.innerHeight - 44 - 42 - 40) + 'px';;
         DIVISIONS.products.dom.style.width = (50 * productIndexList.length) + 'px';
         DIVISIONS.products.dom.style.height = '40px';
     } else {
-        DIVISIONS.tbody.dom.style.height = (DIVISIONS.innerHeight - 44 - 42) + 'px';
+        DIVISIONS.tbody.dom.style.height = 
+            DIVISIONS.insType === 'custom' ? (DIVISIONS.innerHeight - 44 - 42 - 33) + 'px' : (DIVISIONS.innerHeight - 44 - 42) + 'px';;
         DIVISIONS.products.dom.style.width = '0px';
         DIVISIONS.products.dom.style.height = '0px';
     }
+    DIVISIONS.tbody.dom.nextElementSibling.hidden = DIVISIONS.insType === 'custom' ? false : true;
 }
 
 function click_handler_scroll_to(symbol){
