@@ -13,7 +13,11 @@
     padding: 3px 0
 }
 .posdetail .panel-container.info .frame .row {
-    padding: 0
+    padding: 2px 0
+}
+.posdetail .panel-container.info .col {
+    height: 16px;
+    line-height: 16px;
 }
 .posdetail .panel-container.info .frame .col {
     font-size: 12px;

@@ -379,7 +379,7 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
                 top = $('ion-content.posdetail ion-scroll').css('top');
             }
             $('ion-content.posdetail').css('top', '-' + top);
-            $('ion-content.posdetail ion-scroll').css('top', (height - 260 + 44 ) + 'px');
+            $('ion-content.posdetail ion-scroll').css('top', (height - 180 + 44 ) + 'px');
         }
 
         $scope.close_cb = function() {

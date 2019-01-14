@@ -173,13 +173,13 @@ var InstrumentManager = (function () {
                     endtime = ('' + (h - 24)).padStart(2, '0') + ':' + m;
                 }
                 trading_time_str += endtime;
-                trading_time_str += '\n';
+                trading_time_str += ',';
             }
             if (content_data[insid].trading_time && content_data[insid].trading_time.day) {
                 var day = content_data[insid].trading_time.day;
                 for (var i = 0; i < day.length; i++) {
                     trading_time_str += day[i][0].slice(0, 5) + '-' + day[i][1].slice(0, 5);
-                    trading_time_str += '\n';
+                    trading_time_str += i < day.length - 1 ? ',' : '';
                 }
             }
             insObj.trading_time = trading_time_str;

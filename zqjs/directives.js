@@ -36,7 +36,7 @@ angular.module('starter')
             if ($rootScope.$state.current.views) {
                 parentHeight -= 49;
             }
-            ele[0].style.height = (parentHeight - 360) + 'px';
+            ele[0].style.height = (parentHeight - 280) + 'px';
         }
     };
 }])
@@ -49,7 +49,7 @@ angular.module('starter')
             if ($rootScope.$state.current.views) {
                 parentHeight -= 49;
             }
-            ele[0].style.top = (parentHeight - 260 - 70) + 'px';
+            ele[0].style.top = (parentHeight - 180 - 70) + 'px';
         }
     };
 }])
@@ -58,7 +58,7 @@ angular.module('starter')
     return {
         restrict: 'A',
         link: function (scope, ele, attrs) {
-            ele[0].style.height = '260px';
+            ele[0].style.height = '180px';
             ele[0].style.position = 'absolute';
             ele[0].style.bottom = '0px';
         }
