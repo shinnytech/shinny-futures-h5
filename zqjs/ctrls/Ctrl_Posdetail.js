@@ -298,7 +298,6 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
                 instrument_id: $scope.insObj.ins_id,
                 volume_condition: "ANY",
                 time_condition: price_type === 'ANY' ? 'IOC' : 'GFD',
-                // hedge_flag: "SPECULATION",
                 user_id: DM.datas.account_id,
                 limit_price: Number(price)
             }

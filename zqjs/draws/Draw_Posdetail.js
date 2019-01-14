@@ -340,6 +340,9 @@ function draw_page_posdetail_discuss() { // 持仓
     if (DM.get_data("state" + SEPERATOR + "page") == "posdetail" && DM.get_data("state" + SEPERATOR + "subpage") == "discuss") {
         var container = document.querySelector('.posdetail .panel-container.discuss table tbody');
         var positions = DM.get_data('trade' + SEPERATOR + DM.datas.account_id + SEPERATOR + 'positions');
+        if (!positions) {
+            console.log(positions)
+        }
         if (!container) return;
         var trs = container.querySelectorAll('tr');
         var symbol_list = [];
@@ -408,8 +411,7 @@ function draw_page_posdetail_discuss() { // 持仓
                     price_type: "LIMIT", // 报单类型
                     limit_price: price,
                     volume_condition: "ANY",
-                    time_condition: "GFD",
-                    hedge_flag: "SPECULATION"
+                    time_condition: "GFD"
                 }
 
                 if(close > 0){
