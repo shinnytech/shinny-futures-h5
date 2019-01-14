@@ -340,9 +340,6 @@ function draw_page_posdetail_discuss() { // 持仓
     if (DM.get_data("state" + SEPERATOR + "page") == "posdetail" && DM.get_data("state" + SEPERATOR + "subpage") == "discuss") {
         var container = document.querySelector('.posdetail .panel-container.discuss table tbody');
         var positions = DM.get_data('trade' + SEPERATOR + DM.datas.account_id + SEPERATOR + 'positions');
-        if (!positions) {
-            console.log(positions)
-        }
         if (!container) return;
         var trs = container.querySelectorAll('tr');
         var symbol_list = [];
@@ -612,28 +609,31 @@ function draw_page_posdetail_plan() { // 委托
             var dir_offset = (order.direction === 'BUY' ? '买' : '卖' ) + (order.offset === 'OPEN' ? '开' : '平');
             tds[2].innerText = dir_offset;
             tds[3].innerText = order.price_type === 'ANY' ? '市价' : order.limit_price;
-            tds[4].innerText = order.volume_left + '/' + orders[id].volume_orign;
-            tds[5].innerText = getFormatTime(orders[id].insert_date_time);
-            var a = tds[6].querySelector('a');
+            tds[4].innerText = order.volume_left;
+            tds[5].innerText = orders[id].volume_orign;
+            tds[6].innerText = getFormatTime(orders[id].insert_date_time);
+
             if(order.status === 'ALIVE' && order.volume_left > 0){
-                if(!a){
-                    a = document.createElement('a');
-                    a.className = 'button button-small button-outline button-light';
-                    a.innerText = '撤单';
-                    a.onclick = gen_cancel_order(order.order_id);
-                    tds[6].appendChild(a);
-                }
+                if(!tr.onclick) tr.onclick = gen_cancel_order(order);
+                tr.style.fontWeight = 'bold';
+                tr.style.color = '#FFFFFF';
             } else {
-                if(a){
-                    tds[6].innerText = '';
-                }
+                if(tr.onclick) tr.onclick = null;
+                tr.style.fontWeight = 'normal';
+                tr.style.color = '#BBBBBB';
             }
         }
 
-        function gen_cancel_order(id) {
+        function gen_cancel_order(order) {
+            var id = order.order_id
             return function () {
+                var msg = '确认删除挂单 ' + order.instrument_id + '@';
+                msg += order.limit_price;
+                msg += ' ';
+                msg += order.volume_left;
+                msg += ' 手?'
                 navigator.notification.confirm(
-                    '确认删除挂单?', // message
+                    msg,
                     function (buttonIndex) {
                         if (buttonIndex == 1) {
                             TR_WS.send({
