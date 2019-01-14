@@ -377,3 +377,26 @@ table.quote td.g, table.quote td.G {
 .app-menu .item-icon-left .icon, .item-icon-right .icon {
     font-size: 22px;
 }
+
+/* popover ins type */
+
+.popover_ins_types .item-complex .item-content, 
+.popover_ins_types .item-radio .item-content {
+    padding: 8px 49px 8px 16px;
+}
+
+.popover_ins_types .item-radio .radio-icon {
+    font-size: inherit;
+}
+
+.popover_ins_types.popover {
+    top: 15%;
+}
+
+.popover_ins_types.popover .scroll-content {
+    height: 276px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
