@@ -238,10 +238,10 @@ function draw_page_quote_detail_symbol(symbol) {
             if (div && quote) {
                 var val = quote[k] == undefined ? '' : quote[k];
                 if (k == 'change_percent') {
-                    var changePercent = ((quote.last_price - quote.pre_close) / quote.pre_close * 100);
+                    var changePercent = ((quote.last_price - quote.pre_settlement) / quote.pre_close * 100);
                     val = isNaN(changePercent) ? '-' : changePercent.toFixed(2) + '%';
                 } else if (k == 'change') {
-                    val = quote.last_price - quote.pre_close;
+                    val = quote.last_price - quote.pre_settlement;
                     val = isNaN(val) ? '-' : val;
                 } else if (k == 'volume_multiple'){
                     val = InstrumentManager.data[symbol].volume_multiple;
@@ -253,7 +253,7 @@ function draw_page_quote_detail_symbol(symbol) {
                 }
                 div.setAttribute('data-content', val);
                 if (k == 'last_price' || k == 'change_percent' || k == 'change') {
-                    if (quote.last_price - quote.pre_close >= 0) {
+                    if (quote.last_price - quote.pre_settlement >= 0) {
                         div.className = addClassName(div.className, 'R');
                     } else {
                         div.className = addClassName(div.className, 'G');

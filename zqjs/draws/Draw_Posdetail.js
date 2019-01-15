@@ -301,17 +301,17 @@ function draw_page_posdetail_info() {
                 if (div && quote) {
                     var val = quote[param] == undefined ? '' : quote[param];
                     if (param == 'change_percent') {
-                        var changePercent = ((quote.last_price - quote.pre_close) / quote.pre_close * 100);
+                        var changePercent = ((quote.last_price - quote.pre_settlement) / quote.pre_close * 100);
                         val = isNaN(changePercent) ? '-' : changePercent.toFixed(2) + '%';
                     } else if (param == 'change') {
-                        val = quote.last_price - quote.pre_close;
+                        val = quote.last_price - quote.pre_settlement;
                         var price_decs = InstrumentManager.data[insid].price_decs;
                         val = isNaN(val) ? '-' : val.toFixed(price_decs);
                     } else if (param == 'day_increase') {
                         val = quote.open_interest - quote.pre_open_interest;
                     }
                     if (param == 'last_price' || param == 'open' || param == 'change' || param == 'change_percent') {
-                        if (quote.last_price - quote.pre_close >= 0) {
+                        if (quote.last_price - quote.pre_settlement >= 0) {
                             div.className = addClassName(div.className, 'R');
                         } else {
                             div.className = addClassName(div.className, 'G');
@@ -673,7 +673,7 @@ function draw_page_posdetail_tools() { // 交易
                 if (div && quote) {
                     var val = quote[param] == undefined ? '' : quote[param];
                     if (param == 'last_price') {
-                        if (quote.last_price - quote.pre_close >= 0) {
+                        if (quote.last_price - quote.pre_settlement >= 0) {
                             div.className = addClassName(div.className, 'R');
                         } else {
                             div.className = addClassName(div.className, 'G');
