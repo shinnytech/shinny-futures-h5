@@ -377,13 +377,13 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
                 height = $('ion-content.posdetail').css('height').split('px')[0];
                 top = $('ion-content.posdetail ion-scroll').css('top');
             }
-            $('ion-content.posdetail').css('top', '-' + top);
+            $('ion-content.posdetail').css('top', 180 - height + 'px');
             $('ion-content.posdetail ion-scroll').css('top', (height - 180 + 44 ) + 'px');
         }
 
         $scope.close_cb = function() {
             $('ion-content.posdetail').css('top', '44px');
-            $('ion-content.posdetail ion-scroll').css('top', top);
+            $('ion-content.posdetail ion-scroll').css('top', 'auto');
         }
     }
 ]);

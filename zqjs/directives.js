@@ -61,6 +61,7 @@ angular.module('starter')
             ele[0].style.height = '180px';
             ele[0].style.position = 'absolute';
             ele[0].style.bottom = '0px';
+            ele[0].style.top = 'auto';
         }
     };
 }])
