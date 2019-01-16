@@ -74,8 +74,9 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
 
         $scope.settlement_confirm = function (template) {
             var myPopup = $ionicPopup.show({
-                template: template,
+                template: '<pre>' + template + '</pre>',
                 title: '交易结算单',
+                cssClass: 'settlement_confirm',
                 scope: $scope,
                 buttons: [ {
                     text: '<b>确认</b>',
