@@ -305,8 +305,7 @@ function draw_page_posdetail_info() {
                         val = isNaN(changePercent) ? '-' : changePercent.toFixed(2) + '%';
                     } else if (param == 'change') {
                         val = quote.last_price - quote.pre_settlement;
-                        var price_decs = InstrumentManager.data[insid].price_decs;
-                        val = isNaN(val) ? '-' : val.toFixed(price_decs);
+                        val = isNaN(val) ? '-' : val.toFixed(price_fixed);
                     } else if (param == 'day_increase') {
                         val = quote.open_interest - quote.pre_open_interest;
                     }
@@ -665,6 +664,7 @@ function draw_page_posdetail_tools() { // 交易
     if (DM.get_data("state" + SEPERATOR + "page") == "posdetail" && DM.get_data("state" + SEPERATOR + "subpage") == "tools") {
         var insid = DM.get_data('state' + SEPERATOR + 'detail_ins_id');
         var quote = DM.get_data("quotes" + SEPERATOR + insid);
+        var price_fixed = InstrumentManager.data[insid].price_decs;
         for (var i = 0; i < CONST.pos_detail_quote_tools.length; i++) {
             var param = CONST.pos_detail_quote_tools[i];
             var divs = document.querySelectorAll('.posdetail .panel-container .frame .' + param);
@@ -678,6 +678,11 @@ function draw_page_posdetail_tools() { // 交易
                         } else {
                             div.className = addClassName(div.className, 'G');
                         }
+                    }
+                    if (['ask_price1',
+                        'bid_price1',
+                        'last_price'].indexOf(param) > -1) {
+                        val = typeof val === 'number' ? val.toFixed(price_fixed) : val;
                     }
                     div.innerText = val;
                 }

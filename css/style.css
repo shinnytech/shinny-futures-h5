@@ -3,6 +3,9 @@
 .home .col {
     padding: 3px 20px;
 }
+.posdetail .panel-container{
+    font-family: Helvetica Neue;
+}
 
 .posdetail .panel-container.info .last_price {
     font-size: 20px; 
@@ -205,6 +208,7 @@
 
 .userinfo ion-content .content .list.account_info .item,
 .userinfo ion-content .content .list.account_info .item-note{
+    font-family: Helvetica Neue;
     font-size: 14px;
     color: #FFF;
 }
@@ -399,4 +403,15 @@ table.quote td.g, table.quote td.G {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
+}
+
+/* settlement_confirm */
+.settlement_confirm.popup-container .popup-body pre {
+    font-family: Helvetica Neue;
+    font-size: 10px;
+    width: max-content;
+}
+
+.settlement_confirm.popup-container .popup {
+    background-color: rgba(55, 55, 55, 1.0);
 }
