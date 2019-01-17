@@ -22,15 +22,15 @@
             <button class="button button-small button-dark" ng-class="{checked: chart.type=='M5'}" ng-click="switchType('chart','M5')">5分钟</button>
             <button class="button button-small button-dark" ng-click="openPopover('setting')">设置</button>
         </div>
-        <div class="chart container" cal-chart-height>
+        <div class="chart container">
         </div>
-        <div class="panel button-bar" cal-btnbar-top>
+        <div class="panel button-bar">
             <button class="button button-small button-dark" ng-class="{checked: panel.type=='info'}" ng-click="switchType('panel','info')">信息</button>
             <button class="button button-small button-dark" ng-class="{checked: panel.type=='discuss'}" ng-click="switchType('panel','discuss')">持仓</button>
             <button class="button button-small button-dark" ng-class="{checked: panel.type=='plan'}" ng-click="switchType('panel','plan')">委托</button>
             <button class="button button-small button-dark" ng-class="{checked: panel.type=='tools'}" ng-click="switchType('panel','tools')">交易</button>
         </div>
-        <ion-scroll direction="y" style="width:100%;" has-bouncing='false' cal-height>
+        <ion-scroll class="panel container" direction="y" style="width:100%;" has-bouncing='false'>
             <div class="panel-container info flex" ng-if="panel.type=='info'">
                 <div class="frame" style="padding: 6px 0px 4px 20px;">
                     <div class="last_price"></div>

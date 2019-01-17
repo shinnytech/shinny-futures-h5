@@ -3,9 +3,23 @@
 .home .col {
     padding: 3px 20px;
 }
-.posdetail .panel-container{
+
+.posdetail .panel.button-bar {
+    height: 44;
+    position: absolute;
+    bottom: 180px;
+    top: auto;
+}
+
+.posdetail .panel.container {
+    height: 180px;
+    position: absolute;
+    bottom: 0;
+    top: auto;
     font-family: Helvetica Neue;
 }
+
+
 
 .posdetail .panel-container.info .last_price {
     font-size: 20px; 

@@ -84,8 +84,9 @@ function get_panels_content(insid, fixed) {
 
 function draw_page_posdetail_chart() {
     var chart_container = document.querySelector('div.chart.container');
+    var height = DIVISIONS.innerHeight - 280;
+    chart_container.style.height = height + 'px';            
     var width = chart_container.clientWidth;
-    var height = chart_container.clientHeight;
 
     var chart_id = DM.get_data('state' + SEPERATOR + 'chart_id');
     var chart_interval = DM.get_data('state' + SEPERATOR + 'chart_interval');
