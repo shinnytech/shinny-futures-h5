@@ -1,6 +1,6 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
-    .run(['$rootScope', '$state', '$ionicPlatform', '$http', '$timeout',
-        function ($rootScope, $state, $ionicPlatform, $http, $timeout) {
+    .run(['$rootScope', '$state', '$ionicPlatform', '$ionicPopup', '$http', '$timeout',
+        function ($rootScope, $state, $ionicPlatform, $ionicPopup, $http, $timeout) {
 
             // 2. init datamanager - InstrumentManager 已经初始化
             DM.init(draw_app);
@@ -41,6 +41,35 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
 
                 }
             });
+
+            $rootScope.settlement_confirm = function (template) {
+                var myPopup = $ionicPopup.show({
+                    template: '<pre>' + template + '</pre>',
+                    title: '交易结算单',
+                    cssClass: 'settlement_confirm',
+                    scope: $rootScope,
+                    buttons: [ {
+                        text: '<b>确认</b>',
+                        type: 'button-positive',
+                        onTap: function (e) {
+                            $rootScope.login_data.state = 'success';
+                            $rootScope.login_data.error_msg = '';
+                            DM.update_data({
+                                account_id: scope_user_name
+                            });
+                            return true;
+                        }
+                    }]
+                });
+        
+                myPopup.then(function (r) {
+                    if (r) {
+                        TR_WS.send({
+                            "aid": "confirm_settlement"
+                        });
+                    }
+                });
+            }
 
             $ionicPlatform.ready(function () {
                 if (window.StatusBar) {

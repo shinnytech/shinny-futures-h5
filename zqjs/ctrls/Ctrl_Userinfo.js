@@ -50,7 +50,7 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                                 var noty = DM.datas.notify[k];
                                 if (noty.type === 'SETTLEMENT') {
                                     hasSettlementConfirm = true;
-                                    $scope.settlement_confirm(noty['content']);
+                                    $rootScope.settlement_confirm(noty['content']);
                                     $interval.cancel(stop_settlementconfirm);
                                 }
                             }
@@ -70,35 +70,6 @@ angular.module('starter.controllers').controller('UserinfoCtrl', ['$rootScope', 
                     $timeout.cancel(stopTimeout);
                 }
             }, 100);
-        }
-
-        $scope.settlement_confirm = function (template) {
-            var myPopup = $ionicPopup.show({
-                template: '<pre>' + template + '</pre>',
-                title: '交易结算单',
-                cssClass: 'settlement_confirm',
-                scope: $scope,
-                buttons: [ {
-                    text: '<b>确认</b>',
-                    type: 'button-positive',
-                    onTap: function (e) {
-                        $rootScope.login_data.state = 'success';
-                        $rootScope.login_data.error_msg = '';
-                        DM.update_data({
-                            account_id: scope_user_name
-                        });
-                        return true;
-                    }
-                }]
-            });
-    
-            myPopup.then(function (r) {
-                if (r) {
-                    TR_WS.send({
-                        "aid": "confirm_settlement"
-                    });
-                }
-            });
         }
 
         $scope.click_login = function() {
