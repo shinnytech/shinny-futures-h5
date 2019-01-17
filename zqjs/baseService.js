@@ -60,7 +60,7 @@ var InstrumentManager = (function () {
         for (var symbol in content_data) {
             var item = content_data[symbol];
 
-            if (item.expired || item.class === 'FUTURE_OPTION' || item.class === 'FUTURE_COMBINE') {
+            if (item.class === 'FUTURE_OPTION' || item.class === 'FUTURE_COMBINE') {
                 delete content_data[symbol];
                 continue;
             }
@@ -68,7 +68,7 @@ var InstrumentManager = (function () {
                 delete content_data[symbol];
                 continue;
             }
-            if (item.class === 'FUTURE' && ins_list[item.exchange_id]) {
+            if (!item.expired && item.class === 'FUTURE' && ins_list[item.exchange_id]) {
                 ins_list[item.exchange_id].push(symbol);
                 var product_id = content_data[symbol].product_id;
                 if (!content.map_product_id_future[product_id]) content.map_product_id_future[product_id] = [];
@@ -79,7 +79,7 @@ var InstrumentManager = (function () {
                     if (!content.map_py_future[py]) content.map_py_future[py] = [];
                     content.map_py_future[py].push(symbol);
                 }
-            } else if (item.class === 'FUTURE_CONT' || item.class === 'FUTURE_INDEX') {
+            } else if (!item.expired && item.class === 'FUTURE_CONT' || item.class === 'FUTURE_INDEX') {
                 // 主力合约不显示 主力连续 和 指数
                 // ins_list['main'].push(symbol);
                 var match = symbol.match(/@(.*)\.(.*)/);
@@ -94,7 +94,7 @@ var InstrumentManager = (function () {
                     // 为主连和指数修改 ins_id, 用于quotes 显示
                     content_data[symbol].ins_id = product_id + (content_data[symbol].class === 'FUTURE_CONT' ? '主连' : '指数');
                 }
-            } else if (item.class === 'INDEX' && ins_list[item.exchange_id]) {
+            } else if ( !item.expired && item.class === 'INDEX' && ins_list[item.exchange_id]) {
                 ins_list[item.exchange_id].push(symbol);
             } 
         }
