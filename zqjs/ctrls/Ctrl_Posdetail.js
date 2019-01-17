@@ -186,7 +186,11 @@ angular.module('starter.controllers').controller('PosdetailCtrl', ['$rootScope',
         $scope.goBack = function () {
             if(numericKeyboardService.isOpened()) numericKeyboardService.close();
             $ionicScrollDelegate.scrollTop(true);
-            $ionicHistory.goBack();
+            if($ionicHistory.backView() === null) {
+                $rootScope.$state.go('app.quote');
+            } else {
+                $ionicHistory.goBack();
+            }
         };
 
         $scope.$on("$ionicView.afterEnter", function (event, data) {
