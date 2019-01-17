@@ -45,14 +45,14 @@ function draw_page_quote() {
             var tbody = document.querySelector('.qt_container table.qt tbody');
             window.onresize = function(){
                 DIVISIONS.innerHeight = window.innerHeight;
-                if (DIVISIONS.productIndexList.length > 0) {
-                    DIVISIONS["tbody"].dom.style.height = (DIVISIONS.innerHeight - 44 - 42 - 40) + 'px';
+                if (DIVISIONS.productIndexList.length > 0 || DIVISIONS.insType === 'custom') {
+                    DIVISIONS["tbody"].dom.style.height = (DIVISIONS.innerHeight - 44 - 42 - 33) + 'px';
                 } else {
                     DIVISIONS["tbody"].dom.style.height = (DIVISIONS.innerHeight - 44 - 42) + 'px';
                 }
             }
-            if (DIVISIONS.productIndexList.length > 0) {
-                tbody.style.height = (DIVISIONS.innerHeight - 44 - 42 - 40) + 'px';
+            if (DIVISIONS.productIndexList.length > 0 || DIVISIONS.insType === 'custom') {
+                tbody.style.height = (DIVISIONS.innerHeight - 44 - 42 - 33) + 'px';
             } else {
                 tbody.style.height = (DIVISIONS.innerHeight - 44 - 42) + 'px';
             }
