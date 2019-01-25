@@ -1,6 +1,6 @@
 angular.module('starter.controllers').controller('BanktransferCtrl',
-    ['$rootScope', '$scope', '$ionicLoading',
-    function ($rootScope, $scope, $ionicLoading) {
+    ['$rootScope', '$scope',
+    function ($rootScope, $scope) {
         $scope.banklist = [];
         $scope.query_error_msg = '';
         $scope.query = {
@@ -26,15 +26,16 @@ angular.module('starter.controllers').controller('BanktransferCtrl',
         }
 
         $scope.$on("$ionicView.afterEnter", function (event, data) {
-            DM.update_data({
+            tqsdk.update_data({
                 'state': {
                     page: 'banktransfer'
                 }
             });
             $scope.query_error_msg = '';
             if (!$scope.checkAct()) return;
-            $scope.banklist = DM.datas.trade[DM.datas.account_id].banks;
-            $scope.query.future_account = DM.datas.account_id;
+            // todo:
+            $scope.banklist = tqsdk.get_by_path('trade/' + tqsdk.get_account_id() + '/banks');
+            $scope.query.future_account = tqsdk.get_account_id();
             var banks_id = Object.keys($scope.banklist);
             $scope.query.bank_id = banks_id.length > 0 ? banks_id[0] : '';
         });
@@ -60,7 +61,7 @@ angular.module('starter.controllers').controller('BanktransferCtrl',
             $scope.query_error_msg = '';
             var query = Object.assign({aid: "req_transfer"}, $scope.query);
             query.amount = dir == "IN" ? $scope.query.amount : 0 - $scope.query.amount;
-            TR_WS.send(query);
+            tqsdk.transfer(query)
         }
     }
 ])

@@ -1,14 +1,39 @@
-angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$scope', '$ionicLoading', '$ionicPopover', '$ionicPopup',
-    function ($rootScope, $scope, $ionicLoading, $ionicPopover, $ionicPopup) {
+angular.module('starter.controllers').controller('QuoteCtrl', 
+    ['$rootScope', '$scope', '$ionicPopover', '$ionicPopup',
+    function ($rootScope, $scope, $ionicPopover, $ionicPopup) {
+
         $scope.changeDMState = function (t) {
-            DM.update_data({
+            tqsdk.update_data({
                 'state': {
                     page: 'quotes',
                     custom_ins_list: localStorage.getItem('CustomList'),
                     ins_type: t
                 }
-            });
+            })
         };
+
+        function on_rtn_data () {
+            let state = tqsdk.get_by_path('state')
+            if (state.page !== 'quotes') return
+            draw_page_quote(state)
+        }
+
+        $scope.$on('$ionicView.loaded', function() {
+            tqsdk.update_data({
+                'state': {
+                    page: 'quotes',
+                    custom_ins_list: localStorage.getItem('CustomList'),
+                    ins_type: 'main'
+                }
+            })
+            tqsdk.on('ready', function(){
+                tqsdk.on('rtn_data', on_rtn_data);
+            })
+        });
+        
+        $scope.$on('$ionicView.unloaded', function() {
+            tqsdk.off('rtn_data', on_rtn_data)
+        });
 
         $scope.openPopover = function ($event) {
             $scope.popover.show($event);
@@ -45,7 +70,9 @@ angular.module('starter.controllers').controller('QuoteCtrl', ['$rootScope', '$s
         $scope.data = { insid: '', insList: [], customSelect: [] };
 
         $scope.$watch('data.insid', function (t) {
-            $scope.data.insList = InstrumentManager.getInsListByInput(t);
+            tqsdk.on('ready', function (){
+                $scope.data.insList = tqsdk.get_quotes_by_input(t);
+            })
         })
 
         $scope.search = function () {

@@ -49,40 +49,72 @@
             <div class="list header">
             </div>
             <div class="list account_info">
-                <div class="item item-divider">
-                    日期<span class="item-note trading_day"></span>
-                </div>
-                <div class="item ">
-                    上一日账户权益<span class="item-note pre_balance"></span>
-                </div>
-                <div class="item">
-                    <div>+ 入金金额<span class="item-note deposit"></span></div>
-                    <div>- 出金金额<span class="item-note withdraw"></span></div>
-                    <div>+ 平仓盈亏<span class="item-note close_profit"></span></div>
-                    <div>- 手续费<span class="item-note commission"></span></div>
-                    <div>- 期权权利金<span class="item-note premium"></span></div>
-                </div>
-                <div class="item ">
-                    = 静态权益<span class="item-note static_balance"></span>
-                </div>
-                <div class="item">
-                    <div>+ 持仓盈亏<span class="item-note position_profit"></span></div>
-                </div>
-                <div class="item ">
-                    = 动态权益<span class="item-note balance"></span>
-                </div>
-                <div class="item">
-                    <div>- 占用保证金<span class="item-note margin"></span></div>
-                    <div>- 冻结保证金<span class="item-note frozen_margin"></span></div>
-                    <div>- 冻结手续费<span class="item-note frozen_commission"></span></div>
-                    <div>- 冻结权利金<span class="item-note frozen_premium"></span></div>
-                </div>
-                <div class="item">
-                    = 可用资金<span class="item-note available"></span>
-                </div>
-                <div class="item">
-                    风险度<span class="item-note risk_ratio"></span>
-                </div>
+                <table width="100%">
+                    <tr class="border-top border-bottom">
+                        <td>日期</td>
+                        <td class="datacontent trading_day"></td>
+                    </tr>
+                    <tr class="border-top border-bottom">
+                        <td>上一日账户权益</td>
+                        <td class="datacontent pre_balance"></td>
+                    </tr>
+                    <tr class="border-top">
+                        <td>+ 入金金额</td>
+                        <td class="datacontent deposit"></td>
+                    </tr>
+                    <tr>
+                        <td>- 出金金额</td>
+                        <td class="datacontent withdraw"></td>
+                    </tr>
+                    <tr>
+                        <td>+ 平仓盈亏</td>
+                        <td class="datacontent close_profit"></td>
+                    </tr>
+                    <tr>
+                        <td>- 手续费</td>
+                        <td class="datacontent commission"></td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td>- 期权权利金</td>
+                        <td class="datacontent premium"></td>
+                    </tr>
+                    <tr class="border-top border-bottom">
+                        <td>= 静态权益</td>
+                        <td class="datacontent static_balance"></td>
+                    </tr>
+                    <tr class="border-top border-bottom">
+                            <td>+ 持仓盈亏</td>
+                            <td class="datacontent position_profit"></td>
+                        </tr>
+                        <tr class="border-top border-bottom">
+                                <td>= 动态权益</td>
+                                <td class="datacontent balance"></td>
+                            </tr>
+                    <tr class="border-top">
+                        <td>- 占用保证金</td>
+                        <td class="datacontent margin"></td>
+                    </tr>
+                    <tr>
+                        <td>- 冻结保证金</td>
+                        <td class="datacontent frozen_margin"></td>
+                    </tr>
+                    <tr>
+                        <td>- 冻结手续费</td>
+                        <td class="datacontent frozen_commission"></td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td>- 冻结权利金</td>
+                        <td class="datacontent frozen_premium"></td>
+                    </tr>
+                    <tr class="border-top border-bottom">
+                        <td>= 可用资金</td>
+                        <td class="datacontent available"></td>
+                    </tr>
+                    <tr class="border-top border-bottom">
+                            <td>风险度</td>
+                            <td class="datacontent risk_ratio"></td>
+                        </tr>
+                </table>
             </div>
         </div>
     </ion-content>

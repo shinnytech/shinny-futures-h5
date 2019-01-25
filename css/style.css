@@ -4,6 +4,10 @@
     padding: 3px 20px;
 }
 
+.datacontent:after {
+    content: attr(data-content);
+}
+
 .posdetail .panel.button-bar {
     height: 44;
     position: absolute;
@@ -216,19 +220,43 @@
 
 /*userinfo*/
 
-.userinfo .bar {
-    position: relative;
-}
-
-.userinfo ion-content .content .list.account_info .item,
-.userinfo ion-content .content .list.account_info .item-note{
+.userinfo ion-content {
     font-family: Helvetica Neue;
     font-size: 14px;
     color: #FFF;
 }
 
-.userinfo ion-content .content .list.account_info .item{
-    padding: 10px;
+.userinfo ion-content table {
+    width: 100%;
+    text-align: left;
+    border-left: 1px #666 solid;
+    border-right: 1px #666 solid;
+}
+
+.userinfo ion-content table td {
+    width: 50%;
+    padding: 1px 10px ;
+}
+.userinfo ion-content table td:last-child {
+    text-align: right;
+}
+
+.userinfo ion-content table tr.border-top {
+    border-top: 1px #666 solid;
+}
+.userinfo ion-content table tr.border-top td {
+    padding-top: 8px;
+}
+
+.userinfo ion-content table tr.border-bottom {
+    border-bottom: 1px #666 solid;
+}
+.userinfo ion-content table tr.border-bottom td {
+    padding-bottom: 8px;
+}
+
+.userinfo .bar {
+    position: relative;
 }
 
 /*quote*/
@@ -252,7 +280,7 @@ table.quote thead {
 
 table.quote tbody {
     display: block;
-    height: 200px;
+    height: 800px;
     overflow-y: scroll;
 }
 

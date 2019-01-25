@@ -6,13 +6,13 @@ angular.module('starter.controllers').controller('TransactionCtrl',
         	type: 'all'
 		}
 		$scope.$on("$ionicView.afterEnter", function (event, data) {
-			DM.update_data({'state':{
+			tqsdk.update_data({'state':{
 				page: 'moneyhistory'
 			}});
 			if($rootScope.login_data.state !== "success"){
 				Toast.alert('用户登录后可查看转账记录！')
 				return;
 			}
-			$scope.transfers = DM.datas.trade[DM.datas.account_id].transfers;
+			$scope.transfers = tqsdk.get_by_path('trade/'+ tqsdk.get_account_id() +'/transfers');
 		});
 	}]);

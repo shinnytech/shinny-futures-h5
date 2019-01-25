@@ -38,78 +38,81 @@ var DIVISIONS = {
     innerHeight: window.innerHeight
 }
 
-function draw_page_quote() {
-    if (DM.get_data("state" + SEPERATOR + "page") == "quotes") {
-        // 1 init tbody
-        if (!DIVISIONS["tbody"]){
-            var tbody = document.querySelector('.qt_container table.qt tbody');
-            window.onresize = function(){
-                DIVISIONS.innerHeight = window.innerHeight;
-                if (DIVISIONS.productIndexList.length > 0 || DIVISIONS.insType === 'custom') {
-                    DIVISIONS["tbody"].dom.style.height = (DIVISIONS.innerHeight - 44 - 42 - 33) + 'px';
-                } else {
-                    DIVISIONS["tbody"].dom.style.height = (DIVISIONS.innerHeight - 44 - 42) + 'px';
-                }
-            }
+function _init_tbody() {
+    if (!DIVISIONS["tbody"]){
+        var tbody = document.querySelector('.qt_container table.qt tbody');
+        window.onresize = function(){
+            DIVISIONS.innerHeight = window.innerHeight;
             if (DIVISIONS.productIndexList.length > 0 || DIVISIONS.insType === 'custom') {
-                tbody.style.height = (DIVISIONS.innerHeight - 44 - 42 - 33) + 'px';
+                DIVISIONS["tbody"].dom.style.height = (DIVISIONS.innerHeight - 44 - 42 - 33) + 'px';
             } else {
-                tbody.style.height = (DIVISIONS.innerHeight - 44 - 42) + 'px';
+                DIVISIONS["tbody"].dom.style.height = (DIVISIONS.innerHeight - 44 - 42) + 'px';
             }
-            
-            tbody.onscroll = function(){
-                if (!DM.datas.state.is_scrolling)
-                    DM.update_data({
-                        'state': { is_scrolling: true }
-                    });
-                if(!DIVISIONS.stopScroll) DIVISIONS.stopScroll = setTimeout(function(){
-                    DIVISIONS.stopScroll = null;
-                    DM.update_data({
-                        'state': { is_scrolling: false }
-                    });
-                }, 150);
-            }
-            DIVISIONS["tbody"] = {
-                dom: tbody,
-                childs: {}
-            }
-            DIVISIONS["products"] = {
-                dom: document.querySelector('.qt_container div.products'),
-                childs: {}
-            };
         }
-        DIVISIONS.insType = DM.get_data('state' + SEPERATOR + 'ins_type');
+        if (DIVISIONS.productIndexList.length > 0 || DIVISIONS.insType === 'custom') {
+            tbody.style.height = (DIVISIONS.innerHeight - 44 - 42 - 33) + 'px';
+        } else {
+            tbody.style.height = (DIVISIONS.innerHeight - 44 - 42) + 'px';
+        }
+        
+        tbody.onscroll = function(){
+            if (!tqsdk.get_by_path('state/is_scrolling'))
+                tqsdk.update_data({
+                    'state': { is_scrolling: true }
+                });
+            if(!DIVISIONS.stopScroll) DIVISIONS.stopScroll = setTimeout(function(){
+                DIVISIONS.stopScroll = null;
+                tqsdk.update_data({
+                    'state': { is_scrolling: false }
+                });
+            }, 150);
+        }
+        DIVISIONS["tbody"] = {
+            dom: tbody,
+            childs: {}
+        }
+        DIVISIONS["products"] = {
+            dom: document.querySelector('.qt_container div.products'),
+            childs: {}
+        };
+    }
+}
+
+function draw_page_quote(state) {
+    if (state.page !== 'quotes' ) return 
+    _init_tbody();
+    if (DIVISIONS.insType === 'custom' || DIVISIONS.insType !== state.ins_type) {
+        DIVISIONS.insType = state.ins_type;
         if (DIVISIONS.insType == 'custom') {
-            DIVISIONS.insList = DM.get_data('state' + SEPERATOR + 'custom_ins_list') == '' ? [] : DM.get_data('state' + SEPERATOR + 'custom_ins_list').split(','); //window.InstrumentManager.getCustomInsList();
+            DIVISIONS.insList = state.custom_ins_list == '' ? [] : state.custom_ins_list.split(','); //window.InstrumentManager.getCustomInsList();
         } else {
             DIVISIONS.insList = InstrumentManager.getInsListByType(DIVISIONS.insType);
-            WS.send({
-                aid: "subscribe_quote",
-                ins_list: DIVISIONS.insList.concat(InstrumentManager.getCustomInsList()).join(',')
-            });
+            tqsdk.subscribe_quote(DIVISIONS.insList.concat(InstrumentManager.getCustomInsList()));
         }
-
+    
         DIVISIONS.tbody.dom.scrollTo(0, 0);
         DIVISIONS.products.dom.scrollTo(0, 0);
 
         // 2 删除不需要显示的合约 增加新的合约
-        DM.run(draw_page_quote_tbody);
-        DM.run(draw_page_quote_produces);
-
-        // 3 更新数据
-        DM.run(draw_page_quote_detail);
-    }
+        draw_page_quote_tbody(state);
+        draw_page_quote_produces(state);
+        setImmediate(draw_page_quote_detail)
+    } 
+    // 3 更新数据
+    setImmediate(draw_page_quote_detail);
 }
 
-function draw_page_quote_tbody() {
+function draw_page_quote_tbody(state) {
     if (DIVISIONS.insList) {
         // 1 删除旧的合约
         for (var i = 0; i < DIVISIONS.showList.length; i++) {
             if (DIVISIONS.insType === 'custom' && DIVISIONS.insList.length > 0 && DIVISIONS.insList.indexOf(DIVISIONS.showList[i]) > -1)
                 continue;
-            if (DIVISIONS.tbody['childs'][DIVISIONS.showList[i]]) {
-                DIVISIONS.tbody['dom'].removeChild(DIVISIONS.tbody['childs'][DIVISIONS.showList[i]]['odd']);
-                DIVISIONS.tbody['dom'].removeChild(DIVISIONS.tbody['childs'][DIVISIONS.showList[i]]['even']);
+            let ins_id = DIVISIONS.showList[i]
+            if (DIVISIONS.tbody['childs'][ins_id]) {
+                DIVISIONS.tbody['dom'].removeChild(DIVISIONS.tbody['childs'][ins_id]['odd']);
+                DIVISIONS.tbody['dom'].removeChild(DIVISIONS.tbody['childs'][ins_id]['even']);
+                // tqsdk.unsubscribe('quotes/' + ins_id, DIVISIONS.tbody.childs[ins_id]['cb'])
                 delete DIVISIONS.tbody['childs'][DIVISIONS.showList[i]];
                 DIVISIONS.showList.splice(i--, 1);
             }
@@ -117,19 +120,16 @@ function draw_page_quote_tbody() {
         // 2 增加新的合约
         for (var i = 0; i < DIVISIONS.insList.length; i++) {
             if (DIVISIONS.showList.indexOf(DIVISIONS.insList[i]) < 0) {
-                DM.run(function (insid) {
-                    return function () {
-                        draw_page_quote_addtr(insid)
-                    };
-                }(DIVISIONS.insList[i]));
+                draw_page_quote_addtr(DIVISIONS.insList[i]);
                 DIVISIONS.showList.push(DIVISIONS.insList[i]);
             }
         }
     }
 }
 
-function draw_page_quote_produces(){
+function draw_page_quote_produces(state){
     var productIndexList = InstrumentManager.getProductListByType(DIVISIONS.insType);
+    
     // remove all children
     while (DIVISIONS.products.dom.firstChild) {
         DIVISIONS.products.dom.removeChild(DIVISIONS.products.dom.firstChild);
@@ -165,7 +165,8 @@ function click_handler_scroll_to(symbol){
 
 
 function draw_page_quote_addtr(symbol) {
-    var instument = InstrumentManager.data[symbol];
+    var instument = tqsdk.get_quote(symbol);
+    
     if (!DIVISIONS.tbody['childs'][symbol]) {
         // need paint the tr - .insid = quotes_keys[i]
         var tr_odd = document.createElement('tr'),
@@ -198,8 +199,9 @@ function draw_page_quote_addtr(symbol) {
 
 function click_handler_posdetail(insid) {
     return function(){
-        DM.update_data({
+        tqsdk.update_data({
             state: {
+                page: 'posdetail',
                 detail_ins_id: insid
             }
         });
@@ -207,19 +209,16 @@ function click_handler_posdetail(insid) {
     }
 }
 
-function draw_page_quote_detail(){
-    var is_scrolling = DM.get_data('state' + SEPERATOR + 'is_scrolling');
+function draw_page_quote_detail(state){
+    var is_scrolling = tqsdk.get_by_path('state/is_scrolling');
     if (!is_scrolling) {
         var scrollTop = DIVISIONS.tbody.dom.scrollTop;
         var startIndex = Math.floor(scrollTop / 41);
         var length = Math.ceil(DIVISIONS.innerHeight / 41);
         for (var i = 0; i < length && i + startIndex < DIVISIONS.showList.length; i++) {
             // 只更新可见数据
-            DM.run(function (insid) {
-                return function () {
-                    draw_page_quote_detail_symbol(insid)
-                };
-            }(DIVISIONS.showList[i + startIndex]));
+            var ins_id = DIVISIONS.showList[i + startIndex];
+            draw_page_quote_detail_symbol(ins_id);
         }
     }
 }
@@ -227,7 +226,7 @@ function draw_page_quote_detail(){
 var _cols_to_price_fixed_list = ['change', 'last_price', 'bid_price1', 'ask_price1', 'highest', 'close', 'pre_close', 'lowest', 'open', 'price_tick', 'average', 'lower_limit', 'upper_limit', 'pre_settlement', 'settlement'];
 
 function draw_page_quote_detail_symbol(symbol) {
-    var quote = DM.get_data("quotes" + SEPERATOR + symbol);
+    var quote = tqsdk.get_quote(symbol);
     var price_fixed = InstrumentManager.data[symbol].price_decs;
     var row_types = ['odd', 'even'];
     for (var j in row_types) {

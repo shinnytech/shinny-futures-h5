@@ -1,4 +1,21 @@
-var InstrumentManager = (function () {
+var tqsdk = new TQSDK({
+    symbolsServerUrl: SETTING.symbol_server_url,
+    wsQuoteUrl: SETTING.sim_server_url,
+    wsTradeUrl: SETTING.tr_server_url,
+    reconnectInterval: SETTING.reconnect_interval,
+    reconnectMaxTimes: SETTING.reconnect_max_times,
+    prefix: 'h5'
+})
+
+tqsdk.on('error', function(e){
+    Toast.alert('获取合约列表失败，请检查网络后刷新页面。')
+})
+
+var InstrumentManager = null
+
+tqsdk.on('ready', function (){
+    var content_data = tqsdk.quotesInfo;
+
     var ins_list = {
         'main': []
     };
@@ -10,39 +27,14 @@ var InstrumentManager = (function () {
         ins_list[id] = [];
         product_list[id] = [];
     }
-
-    var content_data = null;
+    
     var content = {
         map_product_id_future: {},
         map_py_future: {},
     };
 
     function send() {
-        WS.send({
-            aid: "subscribe_quote",
-            ins_list: InstrumentManager.getMainInsList().concat(InstrumentManager.getCustomInsList()).join(',')
-        });
-    }
-
-    // 非异步读取合约 JSON
-    var getJsonDataAsync = function () {
-        var response = null;
-        $.ajax({
-            headers: {
-                Accept: "application/json; charset=utf-8"
-            },
-            type: 'GET',
-            url: SETTING.symbol_server_url,
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                response = data;
-            },
-            error: function () {
-                alert('下载合约列表失败，请检查网络后重试。')
-            }
-        });
-        return response;
+        tqsdk.subscribe_quote(InstrumentManager.getMainInsList().concat(InstrumentManager.getCustomInsList()))
     }
 
     /**
@@ -55,7 +47,6 @@ var InstrumentManager = (function () {
         if (localStorage.getItem('CustomList') === null) {
             localStorage.setItem('CustomList', '');
         }
-        content_data = getJsonDataAsync();
 
         for (var symbol in content_data) {
             var item = content_data[symbol];
@@ -127,83 +118,17 @@ var InstrumentManager = (function () {
                 var symbol = ins_list[list_name][i];
                 if(content_data[symbol].class === 'FUTURE_INDEX' && product_list[list_name].indexOf(symbol) < 0){
                     product_list[list_name].push(symbol);
+                } else if(content_data[symbol].class === 'INDEX') {
+                    var product_id = content_data[symbol].product_id;
+                    var hasProductid = product_list[list_name].some(function(item){
+                        return product_id === content_data[item].product_id
+                    })
+                    if (!hasProductid){
+                        product_list[list_name].push(symbol);
+                    }
                 }
             }
         }
-    }
-
-    /**
-     * [getInstrumentById description]
-     * @param  {[type]} insid [description]
-     * @return {Object}
-     * {    exchange_id:
-     *      class:
-     *      ins_id:
-     *      simple_name:
-     *      volume_multiple: 合约乘数
-     *      price_tick: 最小报价单位
-     *      price_fixed: 保留小数位数
-     *      expire_date: 到期日
-     * }
-     */
-    function getInstrumentById(insid) {
-        var insObj = {};
-        insObj.exchange_id = content_data[insid].exchange_id;
-        insObj.class = content_data[insid].class;
-        insObj.volume_multiple = content_data[insid].volume_multiple;
-        insObj.price_tick = content_data[insid].price_tick;
-        insObj.price_fixed = content_data[insid].price_decs;
-        insObj.ins_id = content_data[insid].ins_id;
-        insObj.simple_name = content_data[insid].ins_name;
-        if (content_data[insid].class === 'FUTURE') {
-            insObj.ins_id = content_data[insid].ins_id;
-            insObj.simple_name = content_data[insid].product_short_name;
-            insObj.expire_date = formatDate(content_data[insid].expire_datetime * 1000);
-            insObj.margin = content_data[insid].margin;
-            insObj.commission = content_data[insid].commission;
-            var trading_time_str = '';
-            if (content_data[insid].trading_time && content_data[insid].trading_time.night) {
-                var night = content_data[insid].trading_time.night[0];
-                trading_time_str += night[0].slice(0, 5) + '-';
-                var endtime = night[1].slice(0, 5);
-                var hm = endtime.split(':');
-                var h = hm[0];
-                var m = hm[1];
-                if (h > 24) {
-                    endtime = ('' + (h - 24)).padStart(2, '0') + ':' + m;
-                }
-                trading_time_str += endtime;
-                trading_time_str += ',';
-            }
-            if (content_data[insid].trading_time && content_data[insid].trading_time.day) {
-                var day = content_data[insid].trading_time.day;
-                for (var i = 0; i < day.length; i++) {
-                    trading_time_str += day[i][0].slice(0, 5) + '-' + day[i][1].slice(0, 5);
-                    trading_time_str += i < day.length - 1 ? ',' : '';
-                }
-            }
-            insObj.trading_time = trading_time_str;
-        } else if (content_data[insid].class === 'FUTURE_CONT' || content_data[insid].class === 'FUTURE_INDEX') {
-            insObj.ins_id = content_data[insid].underlying_product;
-            insObj.simple_name = content_data[insid].ins_name;
-            insObj.expire_date = '';
-            insObj.margin = '';
-            insObj.commission = '';
-            insObj.trading_time = '';
-        }
-
-        return insObj;
-    }
-
-    /**
-     * 格式化日期
-     */
-    function formatDate(int) {
-        var d = new Date(int);
-        var str = '' + d.getFullYear();
-        str += (1 + d.getMonth() + '').padStart(2, '0');
-        str += (d.getDate() + '').padStart(2, '0');
-        return str;
     }
 
     /**
@@ -237,27 +162,6 @@ var InstrumentManager = (function () {
         }
     }
 
-    function getInsListByInput(input) {
-        // 优先匹配 合约 Id
-        if (input == undefined || input == '') {
-            return [];
-        } else if (content.map_product_id_future[input]) {
-            return content.map_product_id_future[input];
-        }
-        // 再匹配 拼音
-        return getInsListByPY(input);
-    }
-
-    function getInsListByPY(input_py) {
-        // TODO 数字 字母分开匹配
-        for (var py in content.map_py_future) {
-            if (py.indexOf(input_py) > -1) {
-                return content.map_py_future[py]
-            }
-        }
-        return [];
-    }
-
     function getCustomInsList() {
         var s = localStorage.getItem('CustomList');
         return s == '' ? [] : s.split(',');
@@ -265,11 +169,11 @@ var InstrumentManager = (function () {
 
     function setCustomInsList(str) {
         localStorage.setItem('CustomList', str);
-        DM.update_data({
+        tqsdk.update_data({
             state: {
                 custom_ins_list: str
             }
-        });
+        })
         send();
     }
 
@@ -308,19 +212,17 @@ var InstrumentManager = (function () {
     }
 
     init();
-    return {
+    InstrumentManager = {
         data: content_data,
-        getInstrumentById: getInstrumentById,
         getInsListByType: getInsListByType,
         getProductListByType: getProductListByType,
         getMainInsList: getMainInsList,
         getInsSNById: getInsSNById,
-        getInsListByInput: getInsListByInput,
-        getInsListByPY: getInsListByPY,
         getCustomInsList: getCustomInsList,
         addCustomInsList: addCustomInsList,
         addCustomIns: addCustomIns,
         delCustomIns: delCustomIns,
         isCustomIns: isCustomIns
     }
-})();
+})
+

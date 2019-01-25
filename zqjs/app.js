@@ -3,13 +3,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
         function ($rootScope, $state, $ionicPlatform, $ionicPopup, $http, $timeout) {
 
             // 2. init datamanager - InstrumentManager 已经初始化
-            DM.init(draw_app);
+            // DM.init(draw_app);
 
             // 全局设置 angularui-router . state
             $rootScope.$state = $state;
 
             $rootScope.ins_list_types = CONST.inslist_types;
-
             $rootScope.insList = CONST.default_inslist_type;
 
             /**
@@ -31,17 +30,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
 
             $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
                 if(toState.name === 'app.quote'){
-                    $timeout(function () {
-                        DM.update_data({
-                            state: {
-                                page: "quotes"
-                            }
-                        });
-                    }, 100)
-
+                    tqsdk.update_data({
+                        state: {
+                            page: "quotes"
+                        }
+                    });
                 }
             });
-
             $rootScope.settlement_confirm = function (template) {
                 var myPopup = $ionicPopup.show({
                     template: '<pre>' + template + '</pre>',
@@ -54,9 +49,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
                         onTap: function (e) {
                             $rootScope.login_data.state = 'success';
                             $rootScope.login_data.error_msg = '';
-                            DM.update_data({
-                                account_id: scope_user_name
-                            });
                             return true;
                         }
                     }]
@@ -64,9 +56,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
         
                 myPopup.then(function (r) {
                     if (r) {
-                        TR_WS.send({
-                            "aid": "confirm_settlement"
-                        });
+                        tqsdk.confirm_settlement()
                     }
                 });
             }
@@ -76,8 +66,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
                     // org.apache.cordova.statusbar required
                     StatusBar.styleDefault();
                 }
-                WS.init(SETTING.sim_server_url); // 行情websocket
-                TR_WS.init(SETTING.tr_server_url); // 交易websocket
                 document.addEventListener("offline", function () {
                     window.plugins.toast.showWithOptions({
                         message: "请检查网络连接",
@@ -90,14 +78,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
         }
     ])
 
-    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider',
-        function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider',
+        function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             $urlRouterProvider.otherwise('/app/quote');
             $stateProvider
                 .state('app', {
                     url: '/app',
                     abstract: true,
-                    templateUrl: 'menus.html',
+                    templateUrl: 'menus.html'
                 })
                 // 报价
                 .state('app.quote', {

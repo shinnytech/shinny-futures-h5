@@ -9,7 +9,6 @@ var SETTING = {
     reconnect_max_times: 5, // 最大尝试重连次数
 };
 
-
 /**
  *  SymbolFilter 过滤合约列表
  *  symbol 合约名称
@@ -93,7 +92,9 @@ var CONST = {
         'open_interest',
         'day_increase', //日增仓
         'change',
-        'change_percent'
+        'change_percent',
+        'trading_time',
+        'expire_datetime'
     ],
     pos_detail_quote_tools: [
         'ask_price1',
