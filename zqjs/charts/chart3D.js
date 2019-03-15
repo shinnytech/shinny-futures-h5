@@ -422,6 +422,7 @@ Chart3D.prototype.update = function(config) {
             price3DRatio: price3DRatio,
             datas: conf.datas,
             colors: conf.colors,
+            color: conf.color,
             layer: this.list_params[conf.name].layer
         }
         if (conf.type == CHART_TYPE.kChart) {
