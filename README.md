@@ -6,7 +6,7 @@
 -----------------------
 在线演示地址 [https://shinnytech.github.io/shinny-futures-h5/index.html](https://shinnytech.github.io/shinny-futures-h5/webpage.html) ，使用手机扫一扫，用手机浏览器打开效果更好。
 
-<img src="img/qrcode.png" width="200"/><br>
+<img src="img/qrcode2.png" width="200"/><br>
 
 <img src="img/quotes.jpg" width="280"/> <img src="img/order.jpg" width="280"/> <img src="img/banks.jpg" width="280"/> <br>
 
