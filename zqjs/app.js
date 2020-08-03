@@ -85,7 +85,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'numericKeyboard'])
                 .state('app', {
                     url: '/app',
                     abstract: true,
-                    templateUrl: 'menus.html'
+                    templateUrl: 'templates/menus.html'
                 })
                 // 报价
                 .state('app.quote', {

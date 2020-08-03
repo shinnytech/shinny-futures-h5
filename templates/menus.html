@@ -1,0 +1,28 @@
+<ion-side-menus enable-menu-with-back-views="true">
+            <ion-side-menu-content drag-content="false">
+                <ion-nav-view></ion-nav-view>
+            </ion-side-menu-content>
+            <ion-side-menu side="left">
+                <ion-content class="app-menu">
+                    <div class="list list-borderless">
+                        <a menu-toggle class="item item-icon-left item-dark"
+                           ng-repeat="item in ins_list_types" href="#/app/quote"
+                            ng-click="insList.id=item.id;insList.name=item.name;">
+                            <i class="icon ion-arrow-graph-up-right"></i>{{item.name}}
+                        </a>
+                        <a menu-toggle class="item item-icon-left item-dark" href="#/app/userinfo">
+                            <i class="icon ion-person"></i> 账户
+                        </a>
+                        <a menu-toggle class="item item-icon-left item-dark" href="#/app/banktransfer">
+                            <i class="icon ion-arrow-swap"></i> 银期转账
+                        </a>
+                        <a menu-toggle class="item item-icon-left item-dark" href="#/app/transaction">
+                            <i class="icon ion-clock"></i> 转账记录
+                        </a>
+                        <a menu-toggle class="item item-icon-left item-dark" onclick="location.href='https://wgw.shinnytech.com/webtrader-mobile';">
+                            <i class="icon ion-wand"></i> 重新加载
+                        </a>
+                    </div>
+                </ion-content>
+            </ion-side-menu>
+        </ion-side-menus>
