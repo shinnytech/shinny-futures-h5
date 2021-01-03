@@ -12,6 +12,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
+    "axios": "^0.21.1",
     "ionicons": "^5.0.1",
     "node-sass": "^4.13.0",
     "react": "^16.13.1",

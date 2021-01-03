@@ -36,6 +36,19 @@ import Tutorial from './pages/Tutorial';
 import HomeOrTutorial from './components/HomeOrTutorial';
 import { Schedule } from "./models/Schedule";
 import RedirectToLogin from './components/RedirectToLogin';
+import TQSDK from "./lib/tqsdk";
+
+const tqsdk = new TQSDK({
+	symbolsServerUrl: 'https://openmd.shinnytech.com/t/md/symbols/latest.json',
+	wsQuoteUrl: 'wss://openmd.shinnytech.com/t/md/front/mobile'
+})
+
+tqsdk.on('ready', function () {
+  console.log(tqsdk.quotesInfo);
+})
+tqsdk.on('error', function () {
+
+})
 
 const App: React.FC = () => {
   return (
