@@ -39,12 +39,23 @@ import RedirectToLogin from './components/RedirectToLogin';
 import TQSDK from "./lib/tqsdk";
 
 const tqsdk = new TQSDK({
-	symbolsServerUrl: 'https://openmd.shinnytech.com/t/md/symbols/latest.json',
-	wsQuoteUrl: 'wss://openmd.shinnytech.com/t/md/front/mobile'
+	symbolsServerUrl: 'https://u.shinnytech.com/t/md/symbols/latest.json',
+  wsQuoteUrl: 'wss://u.shinnytech.com/t/md/front/mobile',
+  autoInit: true,
 })
+const account = { bid: '快期模拟', user_id: '138960', password: '123456cl' };
 
 tqsdk.on('ready', function () {
   console.log(tqsdk.quotesInfo);
+})
+tqsdk.on('rtn_brokers', function (brokers) {
+  console.log(brokers);
+  tqsdk.login(account);
+})
+tqsdk.on('rtn_data', function () {
+  if (tqsdk.isLogined(account)) {
+    console.log(tqsdk.getAccount(account));
+  }
 })
 tqsdk.on('error', function () {
 

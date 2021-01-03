@@ -86,8 +86,8 @@ class Tqsdk extends EventEmitter {
   constructor ({
     symbolsServerUrl = 'https://openmd.shinnytech.com/t/md/symbols/latest.json',
     wsQuoteUrl = 'wss://openmd.shinnytech.com/t/md/front/mobile',
-    clientSystemInfo = '',
-    clientAppId = '',
+    clientSystemInfo = 'aa',
+    clientAppId = 'SHINNY_XQ_1.0',
     autoInit = true,
     data = {
       klines: {},
