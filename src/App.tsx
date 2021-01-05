@@ -43,15 +43,15 @@ const tqsdk = new TQSDK({
   wsQuoteUrl: 'wss://u.shinnytech.com/t/md/front/mobile',
   autoInit: true,
 })
-const account = { bid: '快期模拟', user_id: '138960', password: '123456cl' };
+const account = { bid: 'sinmow', user_id: '138960', password: '123456cl' };
 
 tqsdk.on('ready', function () {
   console.log(tqsdk.quotesInfo);
 })
 tqsdk.on('rtn_brokers', function (brokers) {
   console.log(brokers);
-  tqsdk.login(account);
 })
+
 tqsdk.on('rtn_data', function () {
   if (tqsdk.isLogined(account)) {
     console.log(tqsdk.getAccount(account));

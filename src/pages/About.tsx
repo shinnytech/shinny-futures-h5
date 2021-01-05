@@ -3,6 +3,22 @@ import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, 
 import './About.scss';
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons';
 import AboutPopover from '../components/AboutPopover';
+import { Plugins } from '@capacitor/core';
+import 'ctp-plugin';
+
+const { Toast, CtpPlugin } = Plugins;
+
+const toast = async () => {
+  await Toast.show({
+    text: 'Hello!'
+  });
+}
+
+const ctp = async () => {
+  console.log("采集");
+  const data = (await CtpPlugin.collect()).value;
+  console.log(data);
+};
 
 interface AboutProps { }
 
@@ -48,7 +64,7 @@ const About: React.FC<AboutProps> = () => {
               <IonMenuButton></IonMenuButton>
             </IonButtons>
             <IonButtons slot="end">
-              <IonButton onClick={presentPopover}>
+              <IonButton onClick={ctp}>
                 <IonIcon slot="icon-only" ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
               </IonButton>
             </IonButtons>
