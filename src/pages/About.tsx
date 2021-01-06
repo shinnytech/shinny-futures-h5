@@ -6,13 +6,7 @@ import AboutPopover from '../components/AboutPopover';
 import { Plugins } from '@capacitor/core';
 import 'ctp-plugin';
 
-const { Toast, CtpPlugin } = Plugins;
-
-const toast = async () => {
-  await Toast.show({
-    text: 'Hello!'
-  });
-}
+const { CtpPlugin } = Plugins;
 
 const ctp = async () => {
   console.log("采集");

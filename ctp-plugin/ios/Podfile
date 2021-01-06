@@ -9,6 +9,7 @@ end
 
 target 'Plugin' do
   capacitor_pods
+  pod 'libIOSDataCollect_single_realease_v1.0-2019-05-30', :path => 'ios/Pods/Frameworks/libIOSDataCollect_single_realease_v1.0-2019-05-30.a'
 end
 
 target 'PluginTests' do

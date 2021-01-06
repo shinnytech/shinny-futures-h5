@@ -41,18 +41,15 @@ public class CtpPlugin extends Plugin {
     JSObject ret = new JSObject();
     try {
       byte[] info = DeviceInfoManager.getCollectInfo(this.getContext());
+      String systemInfo = "";
       if (info != null) {
-        String systemInfo = Base64.encode(info);
-        Log.e("ClientInfo: ", systemInfo);
-        if (!TextUtils.isEmpty(systemInfo)) {
-          ret.put("value", systemInfo);
-          call.resolve(ret);
-        } else {
-          call.reject("");
-        }
-      } else {
-        call.reject("");
+        systemInfo = Base64.encode(info);
       }
+      if (TextUtils.isEmpty(systemInfo)) {
+        systemInfo = "";
+      }
+      ret.put("value", systemInfo);
+      call.resolve(ret);
     } catch (Exception e) {
       call.reject(e.getLocalizedMessage(), e);
     }

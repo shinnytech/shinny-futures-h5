@@ -8,10 +8,10 @@ import Capacitor
 @objc(CtpPlugin)
 public class CtpPlugin: CAPPlugin {
 
-    @objc func echo(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
-        call.success([
-            "value": value
-        ])
+    @objc func collect(_ call: CAPPluginCall) {
+        // 更新上报信息
+        let supersion: Supervision = Supervision()
+        let systemInfo = supersion.getSystemInfo() ?? ""
+        call.resolve(["value": systemInfo])
     }
 }
