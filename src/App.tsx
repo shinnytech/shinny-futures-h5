@@ -46,15 +46,15 @@ const tqsdk = new TQSDK({
 const account = { bid: 'sinmow', user_id: '138960', password: '123456cl' };
 
 tqsdk.on('ready', function () {
-  console.log(tqsdk.quotesInfo);
+  //console.log(tqsdk.quotesInfo);
 })
 tqsdk.on('rtn_brokers', function (brokers) {
-  console.log(brokers);
+  //console.log(brokers);
 })
 
 tqsdk.on('rtn_data', function () {
   if (tqsdk.isLogined(account)) {
-    console.log(tqsdk.getAccount(account));
+    //console.log(tqsdk.getAccount(account));
   }
 })
 tqsdk.on('error', function () {

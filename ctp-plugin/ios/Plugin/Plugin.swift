@@ -10,8 +10,7 @@ public class CtpPlugin: CAPPlugin {
 
     @objc func collect(_ call: CAPPluginCall) {
         // 更新上报信息
-        let supersion: Supervision = Supervision()
-        let systemInfo = supersion.getSystemInfo() ?? ""
+        let systemInfo = ctplib().getSystemInfo() ?? ""
         call.resolve(["value": systemInfo])
     }
 }

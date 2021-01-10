@@ -9,7 +9,6 @@
 #ifndef Plugin_Bridging_Header_h
 #define Plugin_Bridging_Header_h
 
-#import "Supervision.h"
-#import "IOSDataCollect.h"
+#import "ctplib.h"
 
 #endif /* Plugin_Bridging_Header_h */
