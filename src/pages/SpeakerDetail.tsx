@@ -87,7 +87,7 @@ const SpeakerDetail: React.FC<SpeakerDetailProps> = ({ speaker }) => {
         <IonHeader className="ion-no-border">
           <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton defaultHref="/tabs/speakers" />
+              <IonBackButton defaultHref="/tabs/chart" />
             </IonButtons>
             <IonButtons slot="end">
               <IonButton onClick={() => openContact(speaker)}>

@@ -4,6 +4,8 @@ import { Schedule, Session } from '../models/Schedule';
 import SessionListItem from './SessionListItem';
 import { connect } from '../data/connect';
 import { addFavorite, removeFavorite } from '../data/sessions/sessions.actions';
+import Tqsdk from '../lib/tqsdk';
+import App, { dataManager } from '../App';
 
 interface OwnProps {
   schedule: Schedule
@@ -36,11 +38,6 @@ const SessionList: React.FC<SessionListProps> = ({ addFavorite, removeFavorite, 
     <IonList>
     {schedule.groups.map((group, index: number) => (
       <IonItemGroup key={`group-${index}`}>
-        <IonItemDivider sticky>
-          <IonLabel>
-            {group.time}
-          </IonLabel>
-        </IonItemDivider>
         {group.sessions.map((session: Session, sessionIndex: number) => (
           <SessionListItem
             isFavorite={favoriteSessions.indexOf(session.id) > -1}

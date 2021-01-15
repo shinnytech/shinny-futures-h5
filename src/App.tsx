@@ -46,15 +46,15 @@ const tqsdk = new TQSDK({
 const account = { bid: 'sinmow', user_id: '138960', password: '123456cl' };
 
 tqsdk.on('ready', function () {
-  //console.log(tqsdk.quotesInfo);
+ console.log(tqsdk.getFutureContQuotes());
 })
 tqsdk.on('rtn_brokers', function (brokers) {
-  //console.log(brokers);
+  console.log(brokers);
 })
 
 tqsdk.on('rtn_data', function () {
   if (tqsdk.isLogined(account)) {
-    //console.log(tqsdk.getAccount(account));
+    console.log(tqsdk.getAccount(account));
   }
 })
 tqsdk.on('error', function () {
@@ -92,10 +92,7 @@ const IonicApp: React.FC<IonicAppProps> = ({ darkMode, schedule, setIsLoggedIn, 
   }, []);
 
   return (
-    schedule.groups.length === 0 ? (
-      <div></div>
-    ) : (
-        <IonApp className={`${darkMode ? 'dark-theme' : ''}`}>
+    <IonApp className={`${darkMode ? 'dark-theme' : ''}`}>
           <IonReactRouter>
             <IonSplitPane contentId="main">
               <Menu />
@@ -121,11 +118,11 @@ const IonicApp: React.FC<IonicAppProps> = ({ darkMode, schedule, setIsLoggedIn, 
             </IonSplitPane>
           </IonReactRouter>
         </IonApp>
-      )
   )
 }
 
 export default App;
+export const dataManager = tqsdk;
 
 const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({

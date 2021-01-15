@@ -333,6 +333,16 @@ class Tqsdk extends EventEmitter {
     return result
   }
 
+  getFutureContQuotes () {
+    const result = []
+    for (const symbol in this.quotesInfo) {
+      if ( this.quotesInfo[symbol].class === 'FUTURE_CONT') {
+        result.push(symbol)
+      }
+    }
+    return result
+  }
+
   /**
    * @private
    * @param {object} filterOption 筛选条件

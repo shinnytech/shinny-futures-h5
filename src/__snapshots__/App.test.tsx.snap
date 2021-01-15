@@ -231,12 +231,12 @@ exports[`renders without crashing 1`] = `
             </ion-router-outlet>
           </div>
           <ion-tab-bar
-            current-path="/tabs/schedule"
+            current-path="/tabs/quote"
             selected-tab="schedule"
             slot="bottom"
           >
             <ion-tab-button
-              href="/tabs/schedule"
+              href="/tabs/quote"
               tab="schedule"
             >
               <ion-icon />
@@ -245,7 +245,7 @@ exports[`renders without crashing 1`] = `
               </ion-label>
             </ion-tab-button>
             <ion-tab-button
-              href="/tabs/speakers"
+              href="/tabs/chart"
               tab="speakers"
             >
               <ion-icon />
@@ -254,7 +254,7 @@ exports[`renders without crashing 1`] = `
               </ion-label>
             </ion-tab-button>
             <ion-tab-button
-              href="/tabs/map"
+              href="/tabs/trade"
               tab="map"
             >
               <ion-icon />
@@ -263,7 +263,7 @@ exports[`renders without crashing 1`] = `
               </ion-label>
             </ion-tab-button>
             <ion-tab-button
-              href="/tabs/about"
+              href="/tabs/me"
               tab="about"
             >
               <ion-icon />
