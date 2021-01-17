@@ -17,7 +17,7 @@
     "axios": "^0.21.1",
     "ctp-plugin": "file:ctp-plugin",
     "ionicons": "^5.0.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router": "^5.2.0",

@@ -1,14 +1,15 @@
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader } from '@ionic/react';
-import React from 'react';
 import { Schedule, Session } from '../models/Schedule';
-import SessionListItem from './SessionListItem';
 import { connect } from '../data/connect';
 import { addFavorite, removeFavorite } from '../data/sessions/sessions.actions';
-import Tqsdk from '../lib/tqsdk';
-import App, { dataManager } from '../App';
+import QuoteListItem from './QuoteListItem';
+import React from 'react';
+import { tqsdk } from '../data/dataApi';
 
 interface OwnProps {
-  schedule: Schedule
+  schedule: Schedule;
+  listType: 'all' | 'favorites';
+  hide: boolean;
 }
 
 interface StateProps {
@@ -22,9 +23,9 @@ interface DispatchProps {
 
 interface SessionListProps extends OwnProps, StateProps, DispatchProps { };
 
-const SessionList: React.FC<SessionListProps> = ({ addFavorite, removeFavorite, favoriteSessions, schedule }) => {
+const SessionList: React.FC<SessionListProps> = ({ addFavorite, removeFavorite, favoriteSessions, hide, schedule, listType }) => {
 
-  if (schedule.groups.length === 0) {
+  if (schedule.groups.length === 0 && !hide) {
     return (
       <IonList>
         <IonListHeader>
@@ -35,14 +36,11 @@ const SessionList: React.FC<SessionListProps> = ({ addFavorite, removeFavorite, 
   }
 
   return (
-    <IonList>
+    <IonList style={hide ? { display: 'none' } : {}}>
     {schedule.groups.map((group, index: number) => (
       <IonItemGroup key={`group-${index}`}>
         {group.sessions.map((session: Session, sessionIndex: number) => (
-          <SessionListItem
-            isFavorite={favoriteSessions.indexOf(session.id) > -1}
-            onAddFavorite={addFavorite}
-            onRemoveFavorite={removeFavorite}
+          <QuoteListItem
             key={`group-${index}-${sessionIndex}`}
             session={session}
           />

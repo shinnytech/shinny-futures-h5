@@ -2,6 +2,7 @@ import { Plugins } from '@capacitor/core';
 import { Schedule, Session } from '../models/Schedule';
 import { Speaker } from '../models/Speaker';
 import { Location } from '../models/Location';
+import TQSDK from "../lib/tqsdk";
 
 const { Storage } = Plugins;
 
@@ -11,6 +12,29 @@ const locationsUrl = '/assets/data/locations.json';
 const HAS_LOGGED_IN = 'hasLoggedIn';
 const HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
 const USERNAME = 'username';
+const ACCOUNT = { bid: 'sinmow', user_id: '138960', password: '123456cl' };
+
+export const tqsdk = new TQSDK({
+	symbolsServerUrl: 'https://u.shinnytech.com/t/md/symbols/latest.json',
+  wsQuoteUrl: 'wss://u.shinnytech.com/t/md/front/mobile',
+  autoInit: true,
+})
+
+tqsdk.on('ready', function () {
+  console.log(tqsdk.getFutureContQuotes());
+ })
+ tqsdk.on('rtn_brokers', function (brokers) {
+   console.log(brokers);
+ })
+ 
+ tqsdk.on('rtn_data', function () {
+   if (tqsdk.isLogined(ACCOUNT)) {
+     console.log(tqsdk.getAccount(ACCOUNT));
+   }
+ })
+ tqsdk.on('error', function () {
+ 
+ })
 
 export const getConfData = async () => {
   const response = await Promise.all([

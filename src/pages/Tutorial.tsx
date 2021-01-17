@@ -6,16 +6,6 @@ import { setHasSeenTutorial } from '../data/user/user.actions';
 import './Tutorial.scss';
 import { connect } from '../data/connect';
 import { RouteComponentProps } from 'react-router';
-import { Plugins } from '@capacitor/core';
-import 'ctp-plugin';
-
-const { CtpPlugin } = Plugins;
-
-const ctp = async () => {
-  console.log("采集");
-  const data = (await CtpPlugin.collect()).value;
-  console.log(data);
-};
 
 interface OwnProps extends RouteComponentProps {};
 
@@ -35,9 +25,9 @@ const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMen
   });
   
   const startApp = async () => { 
-    console.log("采集");
-  const data = (await CtpPlugin.collect()).value;
-  console.log(data);
+    await setHasSeenTutorial(true);
+    await setMenuEnabled(true);
+    history.push('/tabs/schedule', {direction: 'none'});
   };
 
   const handleSlideChangeStart = () => { 

@@ -36,30 +36,6 @@ import Tutorial from './pages/Tutorial';
 import HomeOrTutorial from './components/HomeOrTutorial';
 import { Schedule } from "./models/Schedule";
 import RedirectToLogin from './components/RedirectToLogin';
-import TQSDK from "./lib/tqsdk";
-
-const tqsdk = new TQSDK({
-	symbolsServerUrl: 'https://u.shinnytech.com/t/md/symbols/latest.json',
-  wsQuoteUrl: 'wss://u.shinnytech.com/t/md/front/mobile',
-  autoInit: true,
-})
-const account = { bid: 'sinmow', user_id: '138960', password: '123456cl' };
-
-tqsdk.on('ready', function () {
- console.log(tqsdk.getFutureContQuotes());
-})
-tqsdk.on('rtn_brokers', function (brokers) {
-  console.log(brokers);
-})
-
-tqsdk.on('rtn_data', function () {
-  if (tqsdk.isLogined(account)) {
-    console.log(tqsdk.getAccount(account));
-  }
-})
-tqsdk.on('error', function () {
-
-})
 
 const App: React.FC = () => {
   return (
@@ -122,7 +98,6 @@ const IonicApp: React.FC<IonicAppProps> = ({ darkMode, schedule, setIsLoggedIn, 
 }
 
 export default App;
-export const dataManager = tqsdk;
 
 const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
